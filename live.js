@@ -35,6 +35,7 @@ const pubUrl=p=>`${SUPA_URL}/storage/v1/object/public/${BUCKET}/${p}`;
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const fmtT=iso=>{const d=new Date(iso);return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');};
 const DAYLBL=(typeof DAYS!=='undefined')?Object.fromEntries(DAYS.map(d=>[d.id,`${d.h2} ${d.full}`])):{};
+DAYLBL.x='înainte de festival';
 
 /* compresie pe telefon: latura mare max 1280px, JPEG 0.8 */
 async function shrink(file){
@@ -163,7 +164,7 @@ const vitemHtml=r=>{
   const own=mine()[r.id];
   const media=isVideo(r.path)
     ?`<video controls playsinline preload="metadata" src="${pubUrl(r.path)}"></video>`
-    :`<img loading="lazy" src="${pubUrl(r.path)}" alt="" data-lbx>`;
+    :`<img loading="lazy" src="${pubUrl(r.path)}" alt="" data-lbx onerror="var f=this.closest('.vitem');if(f)f.remove()">`;
   return `<figure class="vitem" data-id="${r.id}">
     ${media}
     <figcaption class="vmeta">${fmtT(r.created_at)}${r.caption?' · '+esc(r.caption):''}${own?' <button class="vdel" title="șterge postarea ta">✕</button>':''}</figcaption>
@@ -243,12 +244,19 @@ function openSheet(file){
   let sh=document.getElementById('vsheet'); if(sh)sh.remove();
   sh=document.createElement('div'); sh.id='vsheet';
   const url=URL.createObjectURL(file);
+  const unreadable=!file.size;
   const vid=file.type.startsWith('video/');
   sh.innerHTML=`<button class="vx" title="renunță">✕</button>
     ${vid?`<video src="${url}" controls muted playsinline></video>`:`<img src="${url}" alt="">`}
     <input class="vname" type="text" maxlength="80" placeholder="descriere (opțional)">
     <button class="vpost">postează</button>
     <p class="jnote verr" hidden></p>`;
+  if(unreadable){
+    const err=sh.querySelector('.verr');
+    err.textContent='telefonul nu a putut da poza (probabil e doar în iCloud și nu e spațiu să se descarce) · încearcă alta';
+    err.hidden=false;
+    sh.querySelector('.vpost').disabled=true;
+  }
   document.body.appendChild(sh);
   sh.querySelector('.vx').addEventListener('click',()=>{URL.revokeObjectURL(url);sh.remove();});
   sh.querySelector('.vpost').addEventListener('click',async()=>{
@@ -264,7 +272,7 @@ function openSheet(file){
         ext=ctype.includes('quicktime')?'mov':ctype.includes('webm')?'webm':'mp4';
       }else{
         blob=await shrink(file);
-        if(!blob)throw new Error('formatul nu e suportat');
+        if(!blob)throw new Error('poza nu s-a putut citi (iCloud / spațiu pe telefon?) · încearcă alta');
         ctype='image/jpeg'; ext='jpg';
       }
       const day=window.CURRENT_DAY||'x';
