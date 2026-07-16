@@ -36,9 +36,40 @@ http://localhost:8080/?test=v31-19:32
 
 (id-urile zilelor: ma28, mi29, j30, v31, s1, d2, l3, ma4, mi5)
 
+## Linkuri personale pentru trupe
+
+`?t=<id>` deschide programul cu salutul trupei, cu marcaj pe evenimentele ei
+și fără repetițiile/spectacolele celorlalte trupe:
+
+```
+https://ideoideis.github.io/program-intern-21/?t=leira
+```
+
+Id-uri: `leira`, `atelierul`, `artwork`, `amprente`, `brainstorming`,
+`alexandria`, `act`, `protha` (definite în `TRUPE_IDS` din `program.js`).
+
+## Offline & print
+
+- **Offline**: după prima vizită, pagina funcționează și fără net
+  (service worker, `sw.js`); datele se împrospătează automat când există
+  conexiune.
+- **Print** (foi pe pereți pentru backstage): alegi ziua, Cmd/Ctrl+P.
+  Pagina se tipărește pe fundal alb, în vederea listă, cu listele de săli
+  expandate.
+
+## Alte date editabile în `program.js`
+
+- `BIRTHDAYS` — zile de naștere afișate în antetul zilei
+  (ex. `{ v31: ['Maria (Artwork)'] }`).
+- `FEEDBACK_URL` — linkul documentului de feedback în timp real
+  (apare în +info când nu e `null`).
+- `DEMO_NOW` — simulează marcajul „acum” în afara festivalului
+  (`null` ca să îl stingi).
+
 ## Structură
 
 - `index.html` — pagina (stil + logică, fără dependențe externe)
 - `program.js` — datele programului (singurul fișier de editat uzual)
+- `sw.js` — service worker (offline)
 - `fonts/` — Söhne (buch + halbfett)
 - `assets/` — eticheta ideo ideis, favicon

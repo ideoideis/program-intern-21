@@ -189,6 +189,41 @@ section.day.on{display:block}
 footer{padding:30px 0 46px;font-family:var(--mono);font-size:11px;color:var(--muted)}
 footer a{color:var(--amber);text-decoration:none}
 
+/* ── personalizări ───────────────────────── */
+.greet{margin:18px 0 0;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.03em}
+.greet[hidden]{display:none}
+.minetag{display:inline-block;font-family:var(--mono);font-size:10px;border:1px solid var(--red);color:var(--red);padding:1px 5px;margin-left:8px;vertical-align:2px}
+.bday{margin:-6px 0 14px;font-size:14px;color:var(--amber)}
+.egg{position:fixed;left:16px;bottom:24px;z-index:69;font-family:var(--mono);font-size:12px;color:var(--red)}
+.egg[hidden]{display:none}
+.gblock.mine{border-left-width:6px}
+
+/* ── print: foi pe pereți pentru backstage ── */
+@media print{
+  :root{color-scheme:light}
+  body{background:#fff;color:#111}
+  nav.rail,.filters,.fab,.public-link,.greet,.egg,.viewgrid,.nowline,.updated,.nowtag,.minetag,.xbtn{display:none!important}
+  header.site{padding:0}
+  .eticheta{padding:0;border:1px solid #ddd}
+  h1{font-size:2rem;margin:12px 0 0}
+  .header-meta{color:#333;margin-top:4px}
+  section.day{padding-bottom:0}
+  .dayhero .dd{color:#333}.dayhero .dd b{color:#000}
+  .ev{background:#fff;border:1px solid #bbb;border-left:4px solid var(--cat,#888);break-inside:avoid}
+  .title{color:#000}.locline{color:#333}.locline b{color:#000}.sub{color:#222}.sub.note,.t2{color:#555}
+  .ev.compact .title{color:#333}.ev.compact .title b{color:#000}
+  .tr{border-color:#b08900}.tr .tag,.tr .tt{color:#8a6d00}.tr .route{color:#000}.tr .note{color:#444}
+  .meal{border-color:#ccc}.meal .tag,.meal .note{color:#555}.meal .mt,.meal .tt{color:#000}
+  .tech{color:#8a6d00;border-color:#b08900}
+  .xlist{display:block!important;border-color:#ccc}
+  .xrow .xa{color:#000}.xrow .xb{color:#444}
+  .bday{color:#8a6d00}
+  .irow{border-color:#ddd}.irow .ra small,.irow .rb{color:#444}
+  .maplink{display:none}
+  .bigpublic{background:#fff;color:#000;border:1px solid #bbb}
+  footer{color:#555}
+}
+
 @media (min-width:760px){
   .eticheta img{height:88px}
   .rail-inner{padding:10px 16px}
@@ -205,6 +240,7 @@ footer a{color:var(--amber);text-decoration:none}
   <div class="wrap">
     <div class="eticheta"><img src="assets/eticheta-ideoideis.png" alt="festivalul ideo ideis"></div>
     <h1>festivalul #21<br>program intern</h1>
+    <p class="greet" id="greet" hidden></p>
     <p class="header-meta"><strong>29 iulie · 5 august</strong> · Alexandria</p>
     <p class="updated">last updated <span id="lastupd"></span></p>
     <a class="public-link" href="https://ideoideis.ro/proiectele/festivalul/program/" target="_blank" rel="noopener">program public <span class="arr">↗</span></a>
@@ -232,6 +268,7 @@ footer a{color:var(--amber);text-decoration:none}
   </footer>
 </div>
 
+<div class="egg" id="egg" hidden>ne vedem la #22 ♥</div>
 <button class="fab" id="fab" hidden>acum<small id="fabt"></small></button>
 
 <script src="program.js"></script>
@@ -266,6 +303,19 @@ function roNow(){
   return {day, mins:h*60+m+(h<5?1440:0), hm:`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`};
 }
 
+/* link personal pe trupă: ?t=<id din TRUPE_IDS din program.js> */
+const TRUPA=(()=>{const v=new URLSearchParams(location.search).get('t');return v&&TRUPE_IDS[v]?v:null;})();
+
+/* ziua de azi, sau cea mai apropiată zi de festival (înainte: prima; după: ultima) */
+function nearestDay(){
+  const parts=new Intl.DateTimeFormat('ro-RO',{timeZone:'Europe/Bucharest',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
+  const g=t=>parts.find(x=>x.type===t).value;
+  const today=g('year')+g('month')+g('day');
+  const list=Object.keys(DATEMAP).map(k=>({key:k.split('.').reverse().join(''),id:DATEMAP[k]})).sort((a,b)=>a.key<b.key?-1:1);
+  const nxt=list.find(x=>x.key>=today);
+  return (nxt||list[list.length-1]).id;
+}
+
 /* ── banda de zile ──────────────────────── */
 const railEl=document.getElementById('rail');
 const daysEl=document.getElementById('days');
@@ -293,7 +343,7 @@ function evHtml(ev,dayId){
   }
   const subs=(ev.sub||[]).map(s=>`<div class="sub">${s}</div>`).join('');
   const locline=ev.loc?`<div class="locline"><b>${esc(ev.loc)}</b>${ev.locd?' · '+esc(ev.locd):''}</div>`:'';
-  return `<article class="ev${ev.c?' compact':''}" data-cat="${ev.cat||'alt'}"${ev.c?' data-tech="1"':''} data-s="${mins(ev.t)}"${ev.e?` data-e="${mins(ev.e)}"`:''} data-search="${esc(search)}" style="--cat:${cat.color}">
+  return `<article class="ev${ev.c?' compact':''}" data-cat="${ev.cat||'alt'}"${ev.c?' data-tech="1"':''}${ev.trupa?` data-trupa="${ev.trupa}"`:''} data-s="${mins(ev.t)}"${ev.e?` data-e="${mins(ev.e)}"`:''} data-search="${esc(search)}" style="--cat:${cat.color}">
     <div class="tcol"><div class="t1">${ev.t}</div>${ev.e?`<div class="t2">${ev.e}</div>`:''}</div>
     <div>
       <div class="title">${ev.title}<span class="nowtag" hidden>acum</span></div>
@@ -301,8 +351,8 @@ function evHtml(ev,dayId){
     </div>
   </article>`;
 }
-const trHtml=ev=>`<div class="tr" data-s="${smins(ev)}" data-search="transport ${esc(ev.route.toLowerCase())} ${esc((ev.note||'').toLowerCase())}"><span class="tag">transport</span><span class="tt">${ev.t}</span><span class="route">${esc(ev.route)}</span>${ev.note?`<span class="note">${esc(ev.note)}</span>`:''}</div>`;
-const mealHtml=ev=>`<div class="meal" data-s="${smins(ev)}" data-search="masa ${ev.meal} ${esc((ev.loc||'').toLowerCase())} ${esc((ev.note||'').toLowerCase())}"><span class="tag">masă</span><span class="tt">${ev.t}–${ev.e}</span><span class="mt">${ev.meal} · ${esc(ev.loc)}</span>${ev.note?`<span class="note">${esc(ev.note)}</span>`:''}</div>`;
+const trHtml=ev=>`<div class="tr"${ev.trupa?` data-trupa="${ev.trupa}"`:''} data-s="${smins(ev)}" data-search="transport ${esc(ev.route.toLowerCase())} ${esc((ev.note||'').toLowerCase())}"><span class="tag">transport</span><span class="tt">${ev.t}</span><span class="route">${esc(ev.route)}</span>${ev.note?`<span class="note">${esc(ev.note)}</span>`:''}</div>`;
+const mealHtml=ev=>`<div class="meal"${ev.trupa?` data-trupa="${ev.trupa}"`:''} data-s="${smins(ev)}" data-search="masa ${ev.meal} ${esc((ev.loc||'').toLowerCase())} ${esc((ev.note||'').toLowerCase())}"><span class="tag">masă</span><span class="tt">${ev.t}–${ev.e}</span><span class="mt">${ev.meal} · ${esc(ev.loc)}</span>${ev.note?`<span class="note">${esc(ev.note)}</span>`:''}</div>`;
 const techHtml=ev=>`<div class="tech" data-s="${smins(ev)}" data-search="tehnic ${esc(ev.text.toLowerCase())}"><span class="tt">${ev.t}</span><span>@tehnic · ${esc(ev.text)}</span></div>`;
 
 /* ── vederea pe locații ─────────────────── */
@@ -367,7 +417,7 @@ function gridHtml(d){
       const inner=short
         ?`<i>${e.t}</i>${e.title}`
         :`<i>${e.t}${e.e?'–'+e.e:''}</i><span class="gt" style="-webkit-line-clamp:${lines}">${e.title}</span>`;
-      return `<div class="gblock${e.c?' ops':''}${short?' short':''}" data-cat="${e.cat||'alt'}"${e.c?' data-tech="1"':''} data-search="${esc(search)}" style="top:${top}px;height:${h}px;left:${l}%;width:${w}%;--cat:${cat.color}">${inner}</div>`;
+      return `<div class="gblock${e.c?' ops':''}${short?' short':''}" data-cat="${e.cat||'alt'}"${e.c?' data-tech="1"':''}${e.trupa?` data-trupa="${e.trupa}"`:''} data-search="${esc(search)}" style="top:${top}px;height:${h}px;left:${l}%;width:${w}%;--cat:${cat.color}">${inner}</div>`;
     }).join('')
   }</div>`).join('');
   return `<div class="gridwrap">
@@ -392,6 +442,7 @@ DAYS.forEach(d=>{
     else list+=evHtml(ev,d.id);
   });
   s.innerHTML=`<div class="dayhero"><h2>${d.h2}</h2><div class="dd"><b>${d.full}</b>festivalul #21</div></div>
+    ${(BIRTHDAYS[d.id]||[]).length?`<p class="bday">🎂 la mulți ani: ${BIRTHDAYS[d.id].join(', ')}!</p>`:''}
     <div class="viewlist">${list}</div>
     <div class="viewgrid">${gridHtml(d)}</div>`;
   daysEl.appendChild(s);
@@ -417,6 +468,7 @@ infoS.innerHTML=`
   <div class="dayhero"><h2>info extra</h2><div class="dd"><b>hărți · trupe · legături</b>festivalul #21</div></div>
   <div class="info-grid">
     <a class="bigpublic iblock wide" href="https://ideoideis.ro/proiectele/festivalul/program/" target="_blank" rel="noopener"><span>programul public #21<small>ideoideis.ro · pentru public & invitați</small></span><span>↗</span></a>
+    ${FEEDBACK_URL?`<a class="bigpublic iblock wide" style="background:var(--panel-2);color:var(--fg)" href="${FEEDBACK_URL}" target="_blank" rel="noopener"><span>feedback în timp real<small>idei & probleme, direct în doc</small></span><span>↗</span></a>`:''}
     <div class="iblock">
       <h3>locații & hărți</h3>
       ${LOCS.map(l=>`<div class="irow"><span class="ra">${l[0]}${l[1]?`<small>${l[1]}</small>`:''}</span><a class="maplink" target="_blank" rel="noopener" href="${maps(l[0])}">hartă ↗</a></div>`).join('')}
@@ -490,6 +542,8 @@ function applyFilters(){
   document.getElementById('fcount').textContent=nActive?` · ${nActive} active`:'';
   /* doar conținutul zilelor; chipurile de filtre nu se ating niciodată */
   daysEl.querySelectorAll('.ev,.tr,.meal,.tech,.gblock,.gtr,.gtrt').forEach(el=>{
+    /* pe linkul unei trupe ascundem repetițiile/spectacolele celorlalte trupe */
+    if(TRUPA && el.dataset.trupa && el.dataset.trupa!==TRUPA){el.style.display='none';return;}
     let show=true;
     if(el.classList.contains('tech')) show=techOn; /* independent de categorii */
     else if(el.classList.contains('tr')||el.classList.contains('gtr')||el.classList.contains('gtrt')){
@@ -536,6 +590,8 @@ function updateNow(){
   document.querySelectorAll('[data-gridnow]').forEach(x=>x.hidden=true);
   if(nowlineEl.parentNode) nowlineEl.remove();
   fab.hidden=!n.day;
+  document.getElementById('egg').hidden=!(n.day==='ma4'&&n.mins>=mins('22:30'));
+  updateGreet(n);
   if(!n.day) return;
   fabT.textContent=(n.demo?'demo · ':'')+n.hm;
   const sec=document.getElementById('day-'+n.day);
@@ -574,11 +630,32 @@ fab.addEventListener('click',()=>{
 const railH=document.querySelector('nav.rail').offsetHeight;
 document.documentElement.style.setProperty('--railh',railH+'px');
 
-/* pornim pe ziua curentă a festivalului (sau prima zi, în afara lui) */
-selectDay(roNow().day||'mi29',false);
+/* salut personalizat: pe linkul trupei, sau după ora zilei */
+function updateGreet(n){
+  const g=document.getElementById('greet');
+  g.hidden=false;
+  if(TRUPA){g.textContent=`salut, ${TRUPE_IDS[TRUPA]} · programul vostru`;return;}
+  const h=n&&n.hm?+n.hm.slice(0,2):new Date().getHours();
+  g.textContent=h<5?'somn ușor, ideo':h<10?'bună dimineața, ideo':h<18?'salut, ideo':'seară faină, ideo';
+}
+
+/* pe linkul unei trupe, evenimentele ei primesc marcaj */
+if(TRUPA){
+  document.querySelectorAll(`[data-trupa="${TRUPA}"]`).forEach(el=>{
+    el.classList.add('mine');
+    const t=el.querySelector('.title');
+    if(t){const s=document.createElement('span');s.className='minetag';s.textContent='trupa voastră';t.appendChild(s);}
+  });
+}
+
+/* pornim pe ziua curentă a festivalului; în afara lui, pe cea mai apropiată */
+selectDay(roNow().day||nearestDay(),false);
 updateNow();
 setInterval(updateNow,30000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)updateNow();});
+
+/* offline: service worker cu cache local (vezi sw.js) */
+if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
 </body>
 </html>
