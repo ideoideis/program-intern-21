@@ -117,10 +117,13 @@ function injectDayAdd(day){
 function toggleDayPanel(sec,day){
   let p=sec.querySelector('.jdaypanel');
   if(p){p.hidden=!p.hidden;return;}
+  const cleanTitle=ev=>{const t=ev.querySelector('.title');if(!t)return'';
+    const c=t.cloneNode(true);c.querySelectorAll('.nowtag,.jchip,.minetag').forEach(x=>x.remove());
+    return c.textContent.trim();};
   const evs=[...sec.querySelectorAll('.viewlist .ev')].map(ev=>({
     eid:ev.dataset.eid,
     s:+ev.dataset.s,
-    label:`${(ev.querySelector('.t1')||{}).textContent||''} · ${((ev.querySelector('.title')||{}).textContent||'').replace(/📷.*$/,'').trim().slice(0,60)}`
+    label:`${(ev.querySelector('.t1')||{}).textContent||''} · ${cleanTitle(ev).slice(0,60)}`
   }));
   if(!evs.length)return;
   /* preselectăm ce e „acum”: ultimul eveniment început */
