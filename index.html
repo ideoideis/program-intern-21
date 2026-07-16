@@ -308,7 +308,7 @@ footer a{color:var(--amber);text-decoration:none}
   </div>
   <main id="days"><noscript>Pagina are nevoie de JavaScript ca să afișeze programul.</noscript></main>
   <footer>
-    CMT = Centrul Multifuncțional pentru Tineri · Piața = Piața Ideo Ideis (parc & pietonală) · Șc. 5 = Școala Gimnazială nr. 5 „Mihai Eminescu”
+    CMT = Centrul Multifuncțional pentru Tineri
   </footer>
 </div>
 
@@ -507,7 +507,7 @@ DAYS.forEach(d=>{
     else if(ev.k==='x')list+=techHtml(ev);
     else list+=evHtml(ev,d.id);
   });
-  s.innerHTML=`<div class="dayhero"><h2>${d.h2}</h2><div class="dd"><b>${d.full}</b>festivalul #21</div></div>
+  s.innerHTML=`<div class="dayhero"><h2>${d.h2}</h2><div class="dd"><b>${d.full}</b></div></div>
     ${(BIRTHDAYS[d.id]||[]).length?`<p class="bday">🎂 la mulți ani: ${BIRTHDAYS[d.id].join(', ')}!</p>`:''}
     <div class="viewlist">${list}</div>
     <div class="viewgrid">${gridHtml(d)}</div>`;
@@ -531,7 +531,7 @@ document.body.dataset.view='lista';
 const infoS=document.createElement('section');
 infoS.className='day'; infoS.id='day-info';
 infoS.innerHTML=`
-  <div class="dayhero"><h2>info extra</h2><div class="dd"><b>hărți · trupe · legături</b>festivalul #21</div></div>
+  <div class="dayhero"><h2>info extra</h2><div class="dd"><b>hărți · trupe · legături</b></div></div>
   <div class="info-grid">
     ${FEEDBACK_URL?`<a class="bigpublic iblock wide" style="background:var(--panel-2);color:var(--fg)" href="${FEEDBACK_URL}" target="_blank" rel="noopener"><span>feedback în timp real<small>idei & probleme, direct în doc</small></span><span>↗</span></a>`:''}
     <div class="iblock acc">
