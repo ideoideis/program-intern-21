@@ -345,7 +345,7 @@ section.day.on{display:block}
 <div class="egg" id="egg" hidden>ne vedem la #22 ♥</div>
 <button class="fab" id="fab" hidden>acum<small id="fabt"></small></button>
 
-<script src="program.js?v=3"></script>
+<script src="program.js?v=4"></script>
 <script>
 /* ── utilitare ──────────────────────────── */
 const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -604,8 +604,8 @@ infoS.innerHTML=`
     ${typeof ARTPLAY_INFO==='undefined'?'':`<div class="iblock wide acc">
       <h3>ateliere comunitate · Art&Play</h3>
       <div class="tscroll"><table class="ttable">
-        <tr><th>atelier</th><th>sală</th><th>zile</th><th>necesar</th></tr>
-        ${ARTPLAY_INFO.map(r=>`<tr><td><b>${r[0]}</b>${r[1]?`<br><small>${r[1]} part.</small>`:''}</td><td><small>${r[2]}</small></td><td><small>${r[3]}</small></td><td><small>${[r[4]?'tehnic: '+r[4]:'',r[5]?'producție: '+r[5]:''].filter(Boolean).join('<br>')||'·'}</small></td></tr>`).join('')}
+        <tr><th>atelier</th><th>sală</th><th>zile & ore</th><th>necesar</th></tr>
+        ${ARTPLAY_INFO.map(r=>`<tr><td><b>${r[0]}</b>${r[1]?`<br><small>${r[1]} part.</small>`:''}</td><td><small>${r[2]}</small></td><td><small>${r[3]}<br><b>${r[4]}</b></small></td><td><small>${[r[5]?'tehnic: '+r[5]:'',r[6]?'producție: '+r[6]:''].filter(Boolean).join('<br>')||'·'}</small></td></tr>`).join('')}
       </table></div>
       <p class="inote" style="margin-top:10px">orele sunt în program, pe zilele respective · sălile sunt orientative.</p>
     </div>`}
