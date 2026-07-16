@@ -1,0 +1,584 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>program intern #21 · ideo ideis</title>
+<meta name="description" content="Programul intern al Festivalului ideo ideis #21 · 29 iulie - 5 august · Alexandria">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#1c1d20">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<style>
+@font-face{font-family:'Söhne';src:url('fonts/soehne-buch.woff2') format('woff2');font-weight:400 500;font-style:normal;font-display:swap}
+@font-face{font-family:'Söhne';src:url('fonts/soehne-halbfett.woff2') format('woff2');font-weight:600 700;font-style:normal;font-display:swap}
+
+:root{
+  color-scheme:dark;
+  --ground:#1c1d20;
+  --panel:#26272c;
+  --panel-2:#2c2d34;
+  --line:rgba(255,255,255,.14);
+  --line-soft:rgba(255,255,255,.08);
+  --fg:#ffffff;
+  --muted:#9da0a8;
+  --red:#E7004C;
+  --amber:#FFC42E;
+  --amber-dim:#d9b154;
+  --mono:ui-monospace,'SF Mono',Menlo,monospace;
+}
+*,*::before,*::after{box-sizing:border-box;border-radius:0!important}
+html{font-family:'Söhne','Inter',system-ui,sans-serif;scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--ground);color:var(--fg);font-family:'Söhne','Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;line-height:1.45}
+a{color:inherit}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;padding:0}
+:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+
+.wrap{max-width:680px;margin:0 auto;padding:0 16px}
+
+/* ── header ──────────────────────────────── */
+header.site{padding:0 0 8px}
+.eticheta{display:inline-block;background:#fff;padding:10px}
+.eticheta img{display:block;height:76px;width:auto}
+h1{font-weight:700;font-size:clamp(2.5rem,10vw,4.2rem);line-height:.95;letter-spacing:-.015em;margin:26px 0 0}
+.header-meta{margin-top:14px;font-size:15px;color:var(--muted)}
+.header-meta strong{color:var(--fg);font-weight:600}
+.updated{margin-top:10px;font-family:var(--mono);font-size:12px;color:var(--amber)}
+.public-link{display:inline-flex;align-items:center;gap:8px;margin-top:18px;border:1px solid var(--line);padding:10px 14px;font-weight:600;font-size:14px;text-decoration:none;transition:border-color .15s,color .15s}
+.public-link:hover{border-color:var(--red);color:var(--red)}
+.public-link span.arr{font-weight:400}
+
+/* ── day rail ────────────────────────────── */
+nav.rail{position:sticky;top:0;z-index:60;background:var(--ground);border-bottom:1px solid var(--line);margin-top:22px}
+.rail-inner{display:flex;gap:2px;overflow-x:auto;padding:8px 16px;max-width:680px;margin:0 auto;scrollbar-width:none}
+.rail-inner::-webkit-scrollbar{display:none}
+.daychip{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;min-width:50px;padding:7px 9px 6px;border:1px solid transparent;color:var(--muted)}
+.daychip .dw{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase}
+.daychip .dn{font-weight:700;font-size:21px;line-height:1.1}
+.daychip[aria-selected="true"]{background:var(--red);color:#fff}
+.daychip:not([aria-selected="true"]):hover{border-color:var(--line)}
+.daychip.info .dn{font-size:17px;padding-top:3px}
+
+/* ── comutator vedere + filtre ───────────── */
+.filters{padding:14px 0 4px;border-bottom:1px solid var(--line-soft)}
+.viewtog{display:flex;gap:0;margin-bottom:10px}
+.vbtn{flex:1;border:1px solid var(--line);padding:9px 10px;font-weight:600;font-size:13.5px;color:var(--muted)}
+.vbtn+.vbtn{border-left:none}
+.vbtn[aria-pressed="true"]{background:var(--red);border-color:var(--red);color:#fff}
+body[data-view="loc"] .viewlist{display:none}
+.viewgrid{display:none}
+body[data-view="loc"] .viewgrid{display:block}
+.fhead{display:flex;align-items:center;gap:8px;width:100%;font-family:var(--mono);font-size:12px;color:var(--muted);padding:4px 0;text-align:left}
+.fhead .fcount{color:var(--amber)}
+.filters.collapsed .fbody{display:none}
+.search{width:100%;background:var(--panel);border:1px solid var(--line);color:var(--fg);padding:10px 12px;font-size:15px;font-family:inherit;margin-top:8px}
+.search::placeholder{color:var(--muted)}
+.chiprow{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.fchip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);padding:5px 9px;font-size:12px;font-weight:500;color:var(--fg)}
+.fchip .sw{width:9px;height:9px;flex:0 0 auto}
+.fchip[aria-pressed="true"]{border-color:var(--selc,#fff);color:var(--selc,#fff);font-weight:600}
+.filters.filtering .fchip:not(.tech)[aria-pressed="false"]{opacity:.4}
+.fchip.tech{font-family:var(--mono);font-size:11px;color:var(--amber);border-color:rgba(255,196,46,.55)}
+.fchip.tech[aria-pressed="false"]{color:var(--muted);border-color:var(--line);border-style:dashed}
+.legend-note{margin-top:10px;font-size:12px;color:var(--muted)}
+
+/* ── secțiunea zilei ─────────────────────── */
+section.day{display:none;padding-bottom:90px}
+section.day.on{display:block}
+.dayhero{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:26px 0 4px;margin-bottom:14px}
+.dayhero h2{font-weight:700;font-size:clamp(2rem,8vw,3rem);line-height:1;margin:0;letter-spacing:-.01em}
+.dayhero .dd{text-align:right;color:var(--muted);font-size:14px;line-height:1.3}
+.dayhero .dd b{display:block;color:var(--fg);font-weight:600;font-size:16px}
+
+/* ── card eveniment (listă) ──────────────── */
+.ev{display:grid;grid-template-columns:62px 1fr;gap:0 12px;background:var(--panel);border:1px solid var(--line-soft);border-left:4px solid var(--cat,#8b8e98);padding:12px 14px 12px 10px;margin:0 0 8px}
+.ev.compact{padding:7px 14px 7px 10px;background:transparent;border-color:transparent;border-left:4px solid var(--cat,#8b8e98)}
+.ev.compact .t1{font-size:13px}
+.ev.compact .title{font-size:13.5px;font-weight:500;color:var(--muted)}
+.ev.compact .title b{color:var(--fg);font-weight:600}
+.ev.compact .locline{font-size:12px}
+.tcol{padding-top:1px}
+.t1{font-weight:700;font-size:17px;line-height:1.15;font-variant-numeric:tabular-nums}
+.t2{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.title{font-weight:600;font-size:16.5px;line-height:1.25}
+.locline{margin-top:3px;font-size:13px;color:var(--muted)}
+.locline b{color:#c7c9cf;font-weight:500}
+.sub{margin-top:4px;font-size:13.5px;color:#c7c9cf}
+.sub.note{color:var(--muted)}
+.ev.now-active{border-color:var(--red);border-left-color:var(--red)}
+.nowtag{display:inline-block;font-family:var(--mono);font-size:10px;background:var(--red);color:#fff;padding:2px 6px;margin-left:8px;vertical-align:2px}
+.nowtag[hidden]{display:none}
+
+/* liste expandabile */
+.xbtn{font-family:var(--mono);font-size:11px;color:var(--amber);margin-top:8px;letter-spacing:.03em}
+.xlist{display:none;margin-top:8px;border-top:1px dashed var(--line);padding-top:8px}
+.xlist.open{display:block}
+.xrow{display:flex;justify-content:space-between;gap:12px;font-size:13px;padding:3px 0}
+.xrow .xa{color:var(--fg);font-weight:500}
+.xrow .xb{color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+
+/* ── benzi transport & masă (listă) ──────── */
+.tr{display:flex;align-items:baseline;gap:10px;border-top:1px dashed rgba(255,196,46,.45);border-bottom:1px dashed rgba(255,196,46,.45);padding:9px 2px;margin:14px 0;flex-wrap:wrap}
+.tr .tag{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--amber);text-transform:uppercase;flex:0 0 auto}
+.tr .tt{font-weight:700;font-size:15px;color:var(--amber);font-variant-numeric:tabular-nums;flex:0 0 auto}
+.tr .route{font-weight:600;font-size:14.5px}
+.tr .note{font-size:12px;color:var(--muted)}
+.meal{display:flex;align-items:baseline;gap:10px;border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);padding:9px 2px;margin:14px 0;flex-wrap:wrap}
+.meal .tag{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;flex:0 0 auto}
+.meal .tt{font-weight:700;font-size:15px;font-variant-numeric:tabular-nums;flex:0 0 auto}
+.meal .mt{font-weight:600;font-size:14.5px}
+.meal .note{font-size:12px;color:var(--muted)}
+
+/* ── rând @tehnic ────────────────────────── */
+.tech{display:flex;gap:10px;align-items:baseline;font-family:var(--mono);font-size:12px;color:var(--amber-dim);border-left:2px dashed rgba(255,196,46,.5);padding:4px 0 4px 10px;margin:6px 0}
+.tech .tt{font-weight:600;font-variant-numeric:tabular-nums;flex:0 0 auto}
+
+/* ── linia "acum" (listă) ────────────────── */
+.nowline{display:flex;align-items:center;gap:10px;margin:16px 0;color:var(--red)}
+.nowline::before,.nowline::after{content:"";flex:1;border-top:2px solid var(--red)}
+.nowline span{font-weight:700;font-size:13px;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+
+/* ── vederea pe locații (grilă timp × loc) ── */
+.gridwrap{margin-top:6px}
+.gheadwrap{position:sticky;top:var(--railh,54px);z-index:40;display:flex;background:var(--ground);border-bottom:1px solid var(--line);padding:6px 0 6px}
+.gheadspace{flex:0 0 48px}
+.gheadclip{flex:1;overflow:hidden}
+.ghead{display:flex;gap:6px;will-change:transform}
+.gcolh{flex:0 0 auto;font-weight:700;font-size:13px;padding:2px 4px;text-transform:lowercase}
+.gridrow{display:flex}
+.gtimes{flex:0 0 48px;position:relative}
+.gtime{position:absolute;left:0;font-family:var(--mono);font-size:10px;color:var(--muted);transform:translateY(-5px);font-variant-numeric:tabular-nums}
+.gtrt{position:absolute;right:3px;transform:translateY(-6px);font-family:var(--mono);font-size:9px;font-weight:700;color:var(--amber);font-variant-numeric:tabular-nums}
+.gmealt{position:absolute;right:3px;writing-mode:vertical-rl;overflow:hidden;font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;padding-top:3px}
+.gscroll{flex:1;overflow-x:auto}
+.gbody{position:relative;display:flex;gap:6px;width:max-content;min-width:100%}
+.gcol{flex:0 0 auto;position:relative;background:
+  repeating-linear-gradient(to bottom,transparent 0,transparent 47px,var(--line-soft) 47px,var(--line-soft) 48px)}
+.gblock{position:absolute;overflow:hidden;background:var(--panel);border:1px solid var(--line-soft);border-left:3px solid var(--cat,#8b8e98);padding:3px 5px;font-size:11px;line-height:1.25;font-weight:500}
+.gblock i{display:block;font-style:normal;font-family:var(--mono);font-size:9px;color:var(--muted);font-variant-numeric:tabular-nums}
+.gblock.short{white-space:nowrap;text-overflow:ellipsis;padding:2px 5px;font-size:10.5px;line-height:1.35}
+.gblock.short i{display:inline;margin-right:4px}
+.gblock .gt{display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden}
+.gblock.ops{background:transparent;border-style:dashed;color:var(--muted)}
+.gblock b{font-weight:600}
+.gmeal{position:absolute;left:0;right:0;background:rgba(255,255,255,.045);border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);z-index:0}
+.gtr{position:absolute;left:0;right:0;border-top:2px dashed rgba(255,196,46,.5);z-index:1}
+.gridnow{position:absolute;left:0;right:0;border-top:2px solid var(--red);z-index:5}
+.gridnow[hidden]{display:none}
+.gridnow span{position:sticky;left:2px;display:inline-block;font-family:var(--mono);font-size:9px;font-weight:700;color:#fff;background:var(--red);padding:1px 4px;margin-left:2px}
+
+/* ── tabul +info ─────────────────────────── */
+.info-grid{display:grid;grid-template-columns:1fr;gap:26px;padding-top:8px}
+.iblock h3{font-weight:700;font-size:21px;margin:0 0 10px;letter-spacing:-.01em}
+.irow{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:8px 0;border-bottom:1px solid var(--line-soft);font-size:14px}
+.irow .ra{font-weight:500}
+.irow .ra small{display:block;color:var(--muted);font-weight:400;font-size:12px}
+.irow .rb{color:var(--muted);font-size:13px;flex:0 0 auto;font-variant-numeric:tabular-nums}
+.maplink{font-family:var(--mono);font-size:11px;color:var(--amber);text-decoration:none;flex:0 0 auto}
+.maplink:hover{text-decoration:underline}
+.bigpublic{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--red);color:#fff;text-decoration:none;padding:16px;font-weight:700;font-size:17px;margin-bottom:4px}
+.bigpublic small{display:block;font-weight:400;font-family:var(--mono);font-size:11px;opacity:.85;margin-top:2px}
+.inote{font-size:13px;color:var(--muted)}
+
+/* ── butonul "acum" ──────────────────────── */
+.fab{position:fixed;right:16px;bottom:16px;z-index:70;background:var(--red);color:#fff;font-weight:700;font-size:15px;padding:13px 18px;box-shadow:0 4px 18px rgba(0,0,0,.45)}
+.fab[hidden]{display:none}
+.fab small{display:block;font-family:var(--mono);font-size:9px;font-weight:400;opacity:.85;letter-spacing:.04em}
+
+footer{padding:30px 0 46px;font-family:var(--mono);font-size:11px;color:var(--muted)}
+footer a{color:var(--amber);text-decoration:none}
+
+@media (min-width:760px){
+  .eticheta img{height:88px}
+  .rail-inner{padding:10px 16px}
+  .daychip{min-width:58px}
+  .daychip .dn{font-size:24px}
+  .info-grid{grid-template-columns:1fr 1fr}
+  .iblock.wide{grid-column:1/-1}
+}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="eticheta"><img src="assets/eticheta-ideoideis.png" alt="festivalul ideo ideis"></div>
+    <h1>festivalul #21<br>program intern</h1>
+    <p class="header-meta"><strong>29 iulie · 5 august</strong> · Alexandria</p>
+    <p class="updated">last updated <span id="lastupd"></span></p>
+    <a class="public-link" href="https://ideoideis.ro/proiectele/festivalul/program/" target="_blank" rel="noopener">program public <span class="arr">↗</span></a>
+  </div>
+</header>
+
+<nav class="rail" aria-label="zilele festivalului"><div class="rail-inner" id="rail"></div></nav>
+
+<div class="wrap">
+  <div class="filters collapsed" id="filters">
+    <div class="viewtog" role="group" aria-label="mod de afișare">
+      <button class="vbtn" data-view="lista" aria-pressed="true">listă</button>
+      <button class="vbtn" data-view="loc" aria-pressed="false">pe locații</button>
+    </div>
+    <button class="fhead" id="fhead" aria-expanded="false"><span id="farrow">▸</span> filtre & căutare<span class="fcount" id="fcount"></span></button>
+    <div class="fbody">
+      <input class="search" id="q" type="search" placeholder="caută: eveniment, trupă, invitat…" aria-label="caută în program">
+      <div class="chiprow" id="catchips"></div>
+      <p class="legend-note">click pe una sau mai multe categorii ca să vezi doar acel tip de evenimente · atinge din nou pentru tot programul</p>
+    </div>
+  </div>
+  <main id="days"><noscript>Pagina are nevoie de JavaScript ca să afișeze programul.</noscript></main>
+  <footer>
+    CMT = Centrul Multifuncțional pentru Tineri · Piața = Piața Ideo Ideis (parc & pietonală) · Șc. 5 = Școala Gimnazială nr. 5 „Mihai Eminescu”
+  </footer>
+</div>
+
+<button class="fab" id="fab" hidden>acum<small id="fabt"></small></button>
+
+<script src="program.js"></script>
+<script>
+/* ── utilitare ──────────────────────────── */
+const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const mins = hm => { const [h,m]=hm.split(':').map(Number); let v=h*60+m; if(h<5)v+=1440; return v; };
+const smins = ev => mins(ev.ts || ev.t);
+const maps = q => 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(MAPQ[q]||q+' Alexandria');
+
+document.getElementById('lastupd').textContent=LAST_UPDATED;
+
+/* ora curentă în Europe/Bucharest; până în 05:00 aparține zilei de program precedente.
+   Pentru test: ?test=v31-19:32 */
+const TESTP=new URLSearchParams(location.search).get('test');
+function roNow(){
+  if(TESTP){
+    const i=TESTP.indexOf('-');
+    const d=TESTP.slice(0,i), hm=TESTP.slice(i+1);
+    return {day:d, mins:mins(hm), hm};
+  }
+  const fmt=o=>new Intl.DateTimeFormat('ro-RO',Object.assign({timeZone:'Europe/Bucharest'},o));
+  const parts=fmt({year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date());
+  const g=t=>parts.find(p=>p.type===t).value;
+  const h=+g('hour'), m=+g('minute');
+  let dateKey=`${g('day')}.${g('month')}.${g('year')}`;
+  if(h<5){
+    const pp=fmt({year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date(Date.now()-5*3600*1000));
+    const gg=t=>pp.find(p=>p.type===t).value;
+    dateKey=`${gg('day')}.${gg('month')}.${gg('year')}`;
+  }
+  return {day:DATEMAP[dateKey]||null, mins:h*60+m+(h<5?1440:0), hm:`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`};
+}
+
+/* ── banda de zile ──────────────────────── */
+const railEl=document.getElementById('rail');
+const daysEl=document.getElementById('days');
+DAYS.forEach(d=>{
+  const b=document.createElement('button');
+  b.className='daychip'; b.dataset.day=d.id; b.setAttribute('aria-selected','false');
+  b.innerHTML=`<span class="dw">${d.dw}</span><span class="dn">${d.dn}</span>`;
+  b.addEventListener('click',()=>selectDay(d.id,true));
+  railEl.appendChild(b);
+});
+const infoChip=document.createElement('button');
+infoChip.className='daychip info'; infoChip.dataset.day='info'; infoChip.setAttribute('aria-selected','false');
+infoChip.innerHTML='<span class="dw">+</span><span class="dn">info</span>';
+infoChip.addEventListener('click',()=>selectDay('info',true));
+railEl.appendChild(infoChip);
+
+/* ── vederea listă ──────────────────────── */
+function evHtml(ev,dayId){
+  const cat=CATS[ev.cat]||CATS.alt;
+  const search=[ev.title,ev.loc,ev.locd,(ev.sub||[]).join(' '),(ev.xlist||[]).flat().join(' ')].join(' ').toLowerCase();
+  let x='';
+  if(ev.xlist){
+    const rows=ev.xlist.map(r=>`<div class="xrow"><span class="xa">${r[1]}</span><span class="xb">${r[0]}</span></div>`).join('');
+    x=`<button class="xbtn" data-x>▸ ${ev.xlabel}</button><div class="xlist">${rows}</div>`;
+  }
+  const subs=(ev.sub||[]).map(s=>`<div class="sub">${s}</div>`).join('');
+  const locline=ev.loc?`<div class="locline"><b>${esc(ev.loc)}</b>${ev.locd?' · '+esc(ev.locd):''}</div>`:'';
+  return `<article class="ev${ev.c?' compact':''}" data-cat="${ev.cat||'alt'}"${ev.c?' data-tech="1"':''} data-s="${mins(ev.t)}"${ev.e?` data-e="${mins(ev.e)}"`:''} data-search="${esc(search)}" style="--cat:${cat.color}">
+    <div class="tcol"><div class="t1">${ev.t}</div>${ev.e?`<div class="t2">${ev.e}</div>`:''}</div>
+    <div>
+      <div class="title">${ev.title}<span class="nowtag" hidden>acum</span></div>
+      ${locline}${subs}${x}
+    </div>
+  </article>`;
+}
+const trHtml=ev=>`<div class="tr" data-s="${smins(ev)}" data-search="transport ${esc(ev.route.toLowerCase())} ${esc((ev.note||'').toLowerCase())}"><span class="tag">transport</span><span class="tt">${ev.t}</span><span class="route">${esc(ev.route)}</span>${ev.note?`<span class="note">${esc(ev.note)}</span>`:''}</div>`;
+const mealHtml=ev=>`<div class="meal" data-s="${smins(ev)}" data-search="masa ${ev.meal} ${esc((ev.loc||'').toLowerCase())} ${esc((ev.note||'').toLowerCase())}"><span class="tag">masă</span><span class="tt">${ev.t}–${ev.e}</span><span class="mt">${ev.meal} · ${esc(ev.loc)}</span>${ev.note?`<span class="note">${esc(ev.note)}</span>`:''}</div>`;
+const techHtml=ev=>`<div class="tech" data-s="${smins(ev)}" data-search="tehnic ${esc(ev.text.toLowerCase())}"><span class="tt">${ev.t}</span><span>@tehnic · ${esc(ev.text)}</span></div>`;
+
+/* ── vederea pe locații ─────────────────── */
+const MAINCOLS=[['cmt','CMT'],['mare','scena mare'],['mica','scena mică'],['kauf','Kaufland'],['sc5','Școala 5']];
+function colOf(ev){
+  if(ev.col)return ev.col;
+  const l=ev.loc||'';
+  if(l==='CMT')return 'cmt';
+  if(l==='Kaufland')return 'kauf';
+  if(l==='Școala 5')return 'sc5';
+  if(l==='Piața Ideo Ideis'){const d=(ev.locd||'').toLowerCase();return d.includes('mare')?'mare':(d.includes('mic')?'mica':'mare');}
+  return 'loc:'+(l||'de confirmat');
+}
+const PXM=48/60; /* 48px pe oră */
+function gridHtml(d){
+  const evs=d.events.filter(e=>e.k==='e');
+  if(!evs.length)return '';
+  const meals=d.events.filter(e=>e.k==='m');
+  const trs=d.events.filter(e=>e.k==='t');
+  const endOf=e=>e.e?mins(e.e):mins(e.t)+60;
+  let t0=Math.min(...d.events.filter(e=>e.k!=='x').map(smins));
+  let t1=Math.max(...evs.map(endOf),...meals.map(endOf),...trs.map(e=>smins(e)+15));
+  t0=Math.floor(t0/60)*60; t1=Math.ceil(t1/60)*60;
+  const H=(t1-t0)*PXM;
+  const keys=[...MAINCOLS.map(c=>c[0])];
+  evs.forEach(e=>{const k=colOf(e);if(!keys.includes(k))keys.push(k);});
+  const cols=[];
+  keys.forEach(c=>{
+    const list=evs.filter(e=>colOf(e)===c).sort((a,b)=>mins(a.t)-mins(b.t));
+    if(!list.length)return;
+    const lanes=[];
+    list.forEach(e=>{
+      let li=lanes.findIndex(end=>end<=mins(e.t));
+      if(li<0){li=lanes.length;lanes.push(0);}
+      lanes[li]=endOf(e); e._lane=li;
+    });
+    const main=MAINCOLS.find(m=>m[0]===c);
+    cols.push({c,label:main?main[1]:c.slice(4),list,n:lanes.length});
+  });
+  let hourLabels='';
+  for(let m=t0;m<=t1;m+=60) hourLabels+=`<div class="gtime" style="top:${(m-t0)*PXM}px">${String(Math.floor(m/60)%24).padStart(2,'0')}:00</div>`;
+  /* etichetele de transport și masă stau în banda de ore, nu peste blocuri */
+  const shortMeal=m=>m==='mic dejun'?'dejun':m;
+  const mealsH=meals.map(e=>`<div class="gmeal" style="top:${(mins(e.t)-t0)*PXM}px;height:${(endOf(e)-mins(e.t))*PXM}px"></div>`).join('');
+  const mealRail=meals.map(e=>`<div class="gmealt" style="top:${(mins(e.t)-t0)*PXM+2}px;height:${(endOf(e)-mins(e.t))*PXM-4}px">${shortMeal(e.meal)}</div>`).join('');
+  const trsH=trs.map(e=>`<div class="gtr" style="top:${(smins(e)-t0)*PXM}px"></div>`).join('');
+  const seenT=new Set();
+  const trRail=trs.filter(e=>!e.t.endsWith(':00')&&!seenT.has(e.t)&&seenT.add(e.t))
+    .map(e=>`<div class="gtrt" style="top:${(smins(e)-t0)*PXM}px">${e.t}</div>`).join('');
+  const colw=c=>Math.max(150,c.n*104);
+  const head=cols.map(c=>`<div class="gcolh" style="width:${colw(c)}px">${esc(c.label)}</div>`).join('');
+  const body=cols.map(c=>`<div class="gcol" style="width:${colw(c)}px;height:${H}px">${
+    c.list.map(e=>{
+      const cat=CATS[e.cat]||CATS.alt;
+      const top=(mins(e.t)-t0)*PXM, h=Math.max(20,(endOf(e)-mins(e.t))*PXM-2);
+      const w=100/c.n, l=e._lane*w;
+      const search=[e.title,e.loc,e.locd,(e.sub||[]).join(' ')].join(' ').toLowerCase();
+      /* blocurile scurte trec pe o singură linie; la restul, titlul se taie cu „…”
+         după exact câte rânduri întregi încap în bloc */
+      const short=h<34;
+      const lines=Math.max(1,Math.floor((h-19)/14));
+      const inner=short
+        ?`<i>${e.t}</i>${e.title}`
+        :`<i>${e.t}${e.e?'–'+e.e:''}</i><span class="gt" style="-webkit-line-clamp:${lines}">${e.title}</span>`;
+      return `<div class="gblock${e.c?' ops':''}${short?' short':''}" data-cat="${e.cat||'alt'}"${e.c?' data-tech="1"':''} data-search="${esc(search)}" style="top:${top}px;height:${h}px;left:${l}%;width:${w}%;--cat:${cat.color}">${inner}</div>`;
+    }).join('')
+  }</div>`).join('');
+  return `<div class="gridwrap">
+    <div class="gheadwrap"><div class="gheadspace"></div><div class="gheadclip"><div class="ghead">${head}</div></div></div>
+    <div class="gridrow">
+      <div class="gtimes" style="height:${H}px">${hourLabels}${trRail}${mealRail}</div>
+      <div class="gscroll"><div class="gbody" data-t0="${t0}" data-t1="${t1}" style="height:${H}px">${mealsH}${trsH}<div class="gridnow" data-gridnow hidden><span></span></div>${body}</div></div>
+    </div>
+  </div>`;
+}
+
+/* ── randăm zilele ──────────────────────── */
+DAYS.forEach(d=>{
+  const s=document.createElement('section');
+  s.className='day'; s.id='day-'+d.id;
+  let list='';
+  const evs=[...d.events].sort((a,b)=>smins(a)-smins(b));
+  evs.forEach(ev=>{
+    if(ev.k==='t')list+=trHtml(ev);
+    else if(ev.k==='m')list+=mealHtml(ev);
+    else if(ev.k==='x')list+=techHtml(ev);
+    else list+=evHtml(ev,d.id);
+  });
+  s.innerHTML=`<div class="dayhero"><h2>${d.h2}</h2><div class="dd"><b>${d.full}</b>festivalul #21</div></div>
+    <div class="viewlist">${list}</div>
+    <div class="viewgrid">${gridHtml(d)}</div>`;
+  daysEl.appendChild(s);
+});
+
+/* sincronizăm antetul grilei cu scrollul orizontal */
+document.querySelectorAll('.gridwrap').forEach(w=>{
+  const sc=w.querySelector('.gscroll'), gh=w.querySelector('.ghead');
+  sc.addEventListener('scroll',()=>{gh.style.transform=`translateX(${-sc.scrollLeft}px)`;},{passive:true});
+});
+
+/* comutatorul listă / pe locații */
+document.querySelectorAll('.vbtn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.vbtn').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
+  document.body.dataset.view=b.dataset.view;
+}));
+document.body.dataset.view='lista';
+
+/* ── tabul +info ────────────────────────── */
+const infoS=document.createElement('section');
+infoS.className='day'; infoS.id='day-info';
+infoS.innerHTML=`
+  <div class="dayhero"><h2>info extra</h2><div class="dd"><b>hărți · trupe · legături</b>festivalul #21</div></div>
+  <div class="info-grid">
+    <a class="bigpublic iblock wide" href="https://ideoideis.ro/proiectele/festivalul/program/" target="_blank" rel="noopener"><span>programul public #21<small>ideoideis.ro · pentru public & invitați</small></span><span>↗</span></a>
+    <div class="iblock">
+      <h3>locații & hărți</h3>
+      ${LOCS.map(l=>`<div class="irow"><span class="ra">${l[0]}${l[1]?`<small>${l[1]}</small>`:''}</span><a class="maplink" target="_blank" rel="noopener" href="${maps(l[0])}">hartă ↗</a></div>`).join('')}
+    </div>
+    <div class="iblock">
+      <h3>legendă</h3>
+      ${Object.values(CATS).map(c=>`<div class="irow"><span class="ra" style="display:flex;align-items:center;gap:8px"><span style="width:10px;height:10px;background:${c.color};flex:0 0 auto"></span>${c.label}</span></div>`).join('')}
+      <div class="irow"><span class="ra" style="display:flex;align-items:center;gap:8px"><span style="width:18px;border-top:2px dashed rgba(255,196,46,.7);flex:0 0 auto"></span>transport</span></div>
+      <div class="irow"><span class="ra" style="display:flex;align-items:center;gap:8px"><span style="width:18px;height:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);flex:0 0 auto"></span>mese</span></div>
+      <div class="irow"><span class="ra" style="font-family:var(--mono);font-size:12px;color:var(--amber-dim)">@tehnic · montări, repetiții, echipa tehnică</span></div>
+    </div>
+    <div class="iblock wide">
+      <h3>trupe & spectacolele lor</h3>
+      ${TRUPE.map(r=>`<div class="irow"><span class="ra">${r[0]}</span><span class="rb">${r[1]}</span></div>`).join('')}
+      <p class="inote" style="margin-top:10px">traineri, mentori și sălile de ateliere: se completează când e gata distribuția.</p>
+    </div>
+  </div>`;
+daysEl.appendChild(infoS);
+
+/* ── filtre: implicit e tot programul; atingi categorii ca să vezi doar acelea ── */
+const catchips=document.getElementById('catchips');
+const filtersBox=document.getElementById('filters');
+const selCats=new Set();
+function chipToggle(b,id){
+  const on=b.getAttribute('aria-pressed')==='true';
+  b.setAttribute('aria-pressed',String(!on));
+  on?selCats.delete(id):selCats.add(id);
+  filtersBox.classList.toggle('filtering',selCats.size>0);
+  applyFilters();
+}
+Object.entries(CATS).forEach(([id,c])=>{
+  const b=document.createElement('button');
+  b.className='fchip'; b.setAttribute('aria-pressed','false'); b.style.setProperty('--selc',c.color);
+  b.innerHTML=`<span class="sw" style="background:${c.color}"></span>${c.label}`;
+  b.addEventListener('click',()=>chipToggle(b,id));
+  catchips.appendChild(b);
+});
+/* transportul e și el filtrabil, ca o categorie */
+const trChip=document.createElement('button');
+trChip.className='fchip'; trChip.setAttribute('aria-pressed','false'); trChip.style.setProperty('--selc','#FFC42E');
+trChip.innerHTML='<span class="sw" style="background:#FFC42E"></span>transport';
+trChip.addEventListener('click',()=>chipToggle(trChip,'transport'));
+catchips.appendChild(trChip);
+/* @tehnic: comutator de sine stătător, implicit aprins.
+   Stins → dispar rândurile @tehnic ȘI montările/repetițiile (data-tech). */
+const techChip=document.createElement('button');
+techChip.className='fchip tech'; techChip.setAttribute('aria-pressed','true');
+techChip.textContent='@tehnic · montări & repetiții';
+techChip.addEventListener('click',()=>{
+  const on=techChip.getAttribute('aria-pressed')==='true';
+  techChip.setAttribute('aria-pressed',String(!on));
+  applyFilters();
+});
+catchips.appendChild(techChip);
+
+/* plierea zonei de filtre & căutare */
+const fhead=document.getElementById('fhead');
+fhead.addEventListener('click',()=>{
+  const c=filtersBox.classList.toggle('collapsed');
+  fhead.setAttribute('aria-expanded',String(!c));
+  document.getElementById('farrow').textContent=c?'▸':'▾';
+});
+
+const q=document.getElementById('q');
+q.addEventListener('input',applyFilters);
+function applyFilters(){
+  const term=q.value.trim().toLowerCase();
+  const filtering=selCats.size>0;
+  const techOn=techChip.getAttribute('aria-pressed')==='true';
+  const nActive=selCats.size+(techOn?0:1)+(term?1:0);
+  document.getElementById('fcount').textContent=nActive?` · ${nActive} active`:'';
+  /* doar conținutul zilelor; chipurile de filtre nu se ating niciodată */
+  daysEl.querySelectorAll('.ev,.tr,.meal,.tech,.gblock,.gtr,.gtrt').forEach(el=>{
+    let show=true;
+    if(el.classList.contains('tech')) show=techOn; /* independent de categorii */
+    else if(el.classList.contains('tr')||el.classList.contains('gtr')||el.classList.contains('gtrt')){
+      if(filtering) show=selCats.has('transport');
+    }
+    else{
+      if(filtering && el.dataset.cat) show=selCats.has(el.dataset.cat);
+      /* mesele rămân mereu vizibile: sunt scheletul zilei */
+      if(show && el.dataset.tech && !techOn) show=false;
+    }
+    if(show && term && el.dataset.search!==undefined && !el.dataset.search.includes(term)) show=false;
+    el.style.display=show?'':'none';
+  });
+}
+
+/* liste expandabile */
+daysEl.addEventListener('click',e=>{
+  const b=e.target.closest('[data-x]'); if(!b)return;
+  const l=b.nextElementSibling; const open=l.classList.toggle('open');
+  b.textContent=(open?'▾ ':'▸ ')+b.textContent.slice(2);
+});
+
+/* schimbarea zilei */
+function selectDay(id,scroll){
+  document.querySelectorAll('.daychip').forEach(c=>c.setAttribute('aria-selected',String(c.dataset.day===id)));
+  document.querySelectorAll('section.day').forEach(s=>s.classList.toggle('on',s.id==='day-'+id));
+  if(scroll){
+    const rail=document.querySelector('nav.rail');
+    const y=rail.offsetTop;
+    if(window.scrollY>y) window.scrollTo({top:y,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+  }
+  applyFilters();
+}
+
+/* ── "acum": marcaje pe ora reală ───────── */
+const fab=document.getElementById('fab');
+const fabT=document.getElementById('fabt');
+const nowlineEl=document.createElement('div');
+nowlineEl.className='nowline'; nowlineEl.innerHTML='<span></span>';
+function updateNow(){
+  const n=roNow();
+  document.querySelectorAll('.nowtag').forEach(x=>x.hidden=true);
+  document.querySelectorAll('.ev.now-active').forEach(x=>x.classList.remove('now-active'));
+  document.querySelectorAll('[data-gridnow]').forEach(x=>x.hidden=true);
+  if(nowlineEl.parentNode) nowlineEl.remove();
+  fab.hidden=!n.day;
+  if(!n.day) return;
+  fabT.textContent=n.hm;
+  const sec=document.getElementById('day-'+n.day);
+  if(!sec) return;
+  sec.querySelectorAll('.viewlist .ev').forEach(ev=>{
+    const s=+ev.dataset.s, e=+ev.dataset.e;
+    if(e && s<=n.mins && n.mins<e){
+      ev.classList.add('now-active');
+      const tag=ev.querySelector('.nowtag'); if(tag)tag.hidden=false;
+    }
+  });
+  nowlineEl.querySelector('span').textContent='acum · '+n.hm;
+  const listBox=sec.querySelector('.viewlist');
+  const nxt=[...sec.querySelectorAll('.viewlist [data-s]')].find(el=>+el.dataset.s>n.mins);
+  nxt?listBox.insertBefore(nowlineEl,nxt):listBox.appendChild(nowlineEl);
+  const gb=sec.querySelector('.gbody');
+  if(gb){
+    const t0=+gb.dataset.t0, t1=+gb.dataset.t1;
+    if(n.mins>=t0 && n.mins<=t1){
+      const gl=gb.querySelector('[data-gridnow]');
+      gl.hidden=false; gl.style.top=((n.mins-t0)*PXM)+'px';
+      gl.querySelector('span').textContent=n.hm;
+    }
+  }
+}
+fab.addEventListener('click',()=>{
+  const n=roNow(); if(!n.day)return;
+  selectDay(n.day,false);
+  const el=document.body.dataset.view==='loc'
+    ? document.querySelector('#day-'+n.day+' [data-gridnow]:not([hidden])')
+    : (document.querySelector('.ev.now-active')||nowlineEl);
+  if(el) el.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'});
+});
+
+/* antetul grilei stă lipit imediat sub banda de zile */
+const railH=document.querySelector('nav.rail').offsetHeight;
+document.documentElement.style.setProperty('--railh',railH+'px');
+
+/* pornim pe ziua curentă a festivalului (sau prima zi, în afara lui) */
+selectDay(roNow().day||'mi29',false);
+updateNow();
+setInterval(updateNow,30000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)updateNow();});
+</script>
+</body>
+</html>
