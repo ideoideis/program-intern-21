@@ -92,7 +92,7 @@ section.day.on{display:block}
 .dayhero .dd b{display:block;color:var(--fg);font-weight:600;font-size:16px}
 
 /* ── card eveniment (listă) ──────────────── */
-.ev{display:grid;grid-template-columns:62px 1fr;gap:0 12px;background:var(--panel);border:1px solid var(--line-soft);border-left:4px solid var(--cat,#8b8e98);padding:12px 14px 12px 10px;margin:0 0 8px}
+.ev{position:relative;display:grid;grid-template-columns:62px 1fr;gap:0 12px;background:var(--panel);border:1px solid var(--line-soft);border-left:4px solid var(--cat,#8b8e98);padding:12px 14px 12px 10px;margin:0 0 8px}
 .ev.compact{padding:7px 14px 7px 10px;background:transparent;border-color:transparent;border-left:4px solid var(--cat,#8b8e98)}
 .ev.compact .t1{font-size:13px}
 .ev.compact .title{font-size:13.5px;font-weight:500;color:var(--muted)}
@@ -208,13 +208,18 @@ footer a{color:var(--amber);text-decoration:none}
 .gblock.mine{border-left-width:6px}
 
 /* ── jurnal foto, anunțuri, feedback (live) ── */
-.jchip{display:inline-block;font-family:var(--mono);font-size:10px;color:var(--muted);border:none;padding:0 2px;margin-left:8px;vertical-align:1px;cursor:pointer}
-.jchip:hover{color:var(--amber)}
-.jday{display:block;margin-top:6px;margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--muted);border:1px dashed var(--line);padding:3px 7px}
-.jday:hover{color:var(--amber);border-color:var(--amber)}
-.jdaypanel{border:1px solid var(--line-soft);background:var(--panel);padding:10px;margin:0 0 12px}
-.jdaypanel select{width:100%;background:var(--panel-2);border:1px solid var(--line);color:var(--fg);padding:8px;font:inherit;font-size:13.5px;margin-bottom:8px}
+.jcorner{position:absolute;top:9px;right:10px;font-family:var(--mono);font-size:10px;color:var(--muted);opacity:.55;padding:1px 3px;background:var(--panel)}
+.jcorner.has{opacity:1;color:var(--amber-dim)}
+.jcorner:hover{opacity:1;color:var(--amber)}
 .jpanel{margin-top:8px;border-top:1px dashed var(--line);padding-top:8px}
+.anunt .ax{float:right;font-family:var(--mono);font-size:12px;color:var(--muted);padding:0 2px;margin-left:8px}
+.anunt .ax:hover{color:var(--fg)}
+.tscroll{overflow-x:auto}
+.ttable{width:100%;border-collapse:collapse;font-size:13px;min-width:560px}
+.ttable th{font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);text-align:left;font-weight:500;padding:4px 12px 6px 0;border-bottom:1px solid var(--line)}
+.ttable td{padding:8px 12px 8px 0;border-bottom:1px solid var(--line-soft);vertical-align:top}
+.ttable td b{font-weight:600}
+.ttable td small{color:var(--muted)}
 .jthumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:4px;margin-top:8px}
 .jthumbs img{width:100%;height:84px;object-fit:cover;display:block;background:var(--panel-2)}
 .jadd{display:inline-block;font-family:var(--mono);font-size:11px;color:var(--amber);border:1px solid rgba(255,196,46,.55);padding:4px 9px;cursor:pointer}
@@ -231,7 +236,7 @@ footer a{color:var(--amber);text-decoration:none}
 @media print{
   :root{color-scheme:light}
   body{background:#fff;color:#111}
-  nav.rail,.filters,.fab,.public-link,.greet,.egg,.viewgrid,.nowline,.updated,.nowtag,.minetag,.xbtn,.jchip,.jday,.jdaypanel,.jpanel,#anuntbar,[data-live]{display:none!important}
+  nav.rail,.filters,.fab,.public-link,.greet,.egg,.viewgrid,.nowline,.updated,.nowtag,.minetag,.xbtn,.jcorner,.jpanel,#anuntbar,[data-live]{display:none!important}
   .iblock.acc>*:not(h3){display:block!important}
   header.site{padding:0}
   .eticheta{padding:0;border:1px solid #ddd}
@@ -534,15 +539,21 @@ infoS.innerHTML=`
     </div>
     <div class="iblock wide acc">
       <h3>trupe · traineri · contacte</h3>
-      ${TRUPE.map(r=>{
-        const tel=(n,t)=>`${n||'de confirmat'}${t?` · <a class="tel" href="tel:${t.replace(/\s/g,'')}">${t}</a>`:''}`;
-        return `<div class="irow"><span class="ra">${r[0]}<small>trainer: ${r[1]} · Șc. 5</small><small>coordonator: ${tel(r[2],r[3])}</small><small>ghid: ${tel(r[4],r[5])}</small></span></div>`;
-      }).join('')}
-      <p class="inote" style="margin-top:10px">sălile de atelier sunt orientative · mentorii și telefoanele se completează.</p>
+      <div class="tscroll"><table class="ttable">
+        <tr><th>trupă</th><th>trainer · sală (Șc. 5)</th><th>coordonator</th><th>ghid</th></tr>
+        ${TRUPE.map(r=>{
+          const tel=(n,t)=>`${esc(n||'de confirmat')}${t?`<br><a class="tel" href="tel:${t.replace(/\s/g,'')}">${t}</a>`:''}`;
+          return `<tr><td><b>${r[0]}</b></td><td><small>${r[1]}</small></td><td>${tel(r[2],r[3])}</td><td>${tel(r[4],r[5])}</td></tr>`;
+        }).join('')}
+      </table></div>
+      <p class="inote" style="margin-top:10px">sălile de atelier sunt orientative · mentorii și ghizii se completează.</p>
     </div>
-    <div class="iblock acc">
+    <div class="iblock wide acc">
       <h3>arte alăturate · traineri & săli</h3>
-      ${ARTE_ALATURATE.map(r=>`<div class="irow"><span class="ra">${r[0]}<small>${r[1]}${r[4]?' · tehnic: '+r[4]:''}${r[5]?' · producție: '+r[5]:''}</small></span><span class="rb">${r[2]}</span></div>`).join('')}
+      <div class="tscroll"><table class="ttable">
+        <tr><th>atelier</th><th>trainer</th><th>sală</th><th>necesar</th></tr>
+        ${ARTE_ALATURATE.map(r=>`<tr><td><b>${r[0]}</b>${r[3]?`<br><small>${r[3]}</small>`:''}</td><td>${r[1]}</td><td><small>${r[2]}</small></td><td><small>${[r[4]?'tehnic: '+r[4]:'',r[5]?'producție: '+r[5]:''].filter(Boolean).join('<br>')||'·'}</small></td></tr>`).join('')}
+      </table></div>
     </div>
     <div class="iblock acc">
       <h3>formatori</h3>
