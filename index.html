@@ -79,6 +79,12 @@ body[data-view="loc"] .viewgrid{display:block}
 .fchip.tech{font-family:var(--mono);font-size:11px;color:var(--amber);border-color:rgba(255,196,46,.55)}
 .fchip.tech[aria-pressed="false"]{color:var(--muted);border-color:var(--line);border-style:dashed}
 .legend-note{margin-top:10px;font-size:12px;color:var(--muted)}
+#sres{border:1px solid var(--line);background:var(--panel);margin-top:6px;max-height:300px;overflow-y:auto}
+#sres[hidden]{display:none}
+.srow{display:block;width:100%;text-align:left;padding:9px 10px;border-bottom:1px solid var(--line-soft);font-size:14px}
+.srow small{display:block;font-family:var(--mono);font-size:10px;color:var(--amber-dim);margin-bottom:2px}
+.srow:hover{background:var(--panel-2)}
+.flash{outline:2px solid var(--amber);outline-offset:2px}
 
 /* ── secțiunea zilei ─────────────────────── */
 section.day{display:none;padding-bottom:90px}
@@ -668,6 +674,49 @@ fhead.addEventListener('click',()=>{
 
 const q=document.getElementById('q');
 q.addEventListener('input',applyFilters);
+
+/* căutarea vede tot programul, nu doar ziua curentă: rezultatele din
+   alte zile apar sub câmp, iar tap pe unul te mută în ziua lui */
+const sres=document.createElement('div');
+sres.id='sres'; sres.hidden=true;
+q.after(sres);
+const DAYSHORT=Object.fromEntries(DAYS.map(d=>[d.id,`${d.dw} ${d.dn} ${d.full.split(' ')[1]||''}`.trim()]));
+function globalSearch(){
+  const term=q.value.trim().toLowerCase();
+  if(term.length<2){sres.hidden=true;sres.innerHTML='';return;}
+  const hits=[];
+  document.querySelectorAll('section.day .viewlist .ev').forEach(ev=>{
+    if((ev.dataset.search||'').includes(term)){
+      const day=ev.closest('section.day').id.replace('day-','');
+      const c=ev.querySelector('.title').cloneNode(true);
+      c.querySelectorAll('.nowtag,.minetag').forEach(x=>x.remove());
+      hits.push({day,eid:ev.dataset.eid,t:(ev.querySelector('.t1')||{}).textContent||'',title:c.textContent.trim()});
+    }
+  });
+  if(!hits.length){
+    sres.innerHTML='<p class="jnote" style="padding:8px 10px">nimic găsit în tot programul</p>';
+    sres.hidden=false;return;
+  }
+  sres.innerHTML=hits.slice(0,12).map(h=>
+    `<button class="srow" data-day="${h.day}" data-eid="${h.eid}"><small>${DAYSHORT[h.day]||h.day} · ${h.t}</small>${esc(h.title).slice(0,64)}</button>`
+  ).join('')+(hits.length>12?`<p class="jnote" style="padding:6px 10px">…și încă ${hits.length-12} rezultate</p>`:'');
+  sres.hidden=false;
+}
+q.addEventListener('input',globalSearch);
+sres.addEventListener('click',e=>{
+  const b=e.target.closest('.srow'); if(!b)return;
+  sres.hidden=true;
+  /* rezultatul se deschide în vederea listă, în ziua lui */
+  document.body.dataset.view='lista';
+  document.querySelectorAll('.vbtn').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.view==='lista')));
+  selectDay(b.dataset.day,false);
+  const ev=document.querySelector(`#day-${CSS.escape(b.dataset.day)} .viewlist .ev[data-eid="${CSS.escape(b.dataset.eid)}"]`);
+  if(ev){
+    ev.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'});
+    ev.classList.add('flash');
+    setTimeout(()=>ev.classList.remove('flash'),2200);
+  }
+});
 function applyFilters(){
   const term=q.value.trim().toLowerCase();
   const filtering=selCats.size>0;
