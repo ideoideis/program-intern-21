@@ -51,7 +51,7 @@ async function shrink(file){
 }
 
 /* ── lightbox: pozele se deschid în pagină, cu descărcare & share ── */
-function lightbox(url){
+function lightbox(url,cap){
   let lb=document.getElementById('lbox');
   if(!lb){
     lb=document.createElement('div');
@@ -74,16 +74,20 @@ function lightbox(url){
       }catch(e){window.open(u,'_blank');}
     });
     lb.querySelector('[data-sh]').addEventListener('click',async()=>{
-      const u=lb.dataset.url;
+      const u=lb.dataset.url, msg=lb.dataset.msg||'vibe check · festivalul ideo ideis #21';
       try{
         const b=await grab(u);
         const f=new File([b],nameOf(u),{type:b.type});
-        if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f]});return;}
+        if(navigator.canShare&&navigator.canShare({files:[f]})){
+          await navigator.share({files:[f],text:msg});
+          return;
+        }
       }catch(e){}
-      window.open('https://wa.me/?text='+encodeURIComponent(u),'_blank');
+      window.open('https://wa.me/?text='+encodeURIComponent(msg+' '+u),'_blank');
     });
   }
   lb.dataset.url=url;
+  lb.dataset.msg=(cap?cap+' · ':'')+'vibe check · festivalul ideo ideis #21';
   lb.querySelector('img').src=url;
   lb.hidden=false;
 }
@@ -160,7 +164,7 @@ const isVideo=p=>/\.(mp4|mov|webm|m4v)$/i.test(p);
 const vitemHtml=r=>{
   const media=isVideo(r.path)
     ?`<video controls playsinline preload="metadata" src="${pubUrl(r.path)}"></video>`
-    :`<img loading="lazy" src="${pubUrl(r.path)}" alt="" data-lbx onerror="var f=this.closest('.vitem');if(f)f.remove()">`;
+    :`<img loading="lazy" src="${pubUrl(r.path)}" alt="" data-lbx data-cap="${esc(r.caption||'')}" onerror="var f=this.closest('.vitem');if(f)f.remove()">`;
   return `<figure class="vitem" data-id="${r.id}">
     ${media}
     <figcaption class="vmeta">${fmtT(r.created_at)}${r.caption?' · '+esc(r.caption):''}</figcaption>
@@ -208,7 +212,7 @@ async function feedLoad(reset){
 /* lightbox pe imaginile din feed */
 document.addEventListener('click',e=>{
   const img=e.target.closest('[data-lbx]');
-  if(img)lightbox(img.getAttribute('src'));
+  if(img)lightbox(img.getAttribute('src'),img.dataset.cap||'');
 });
 
 /* ── capturarea: cameră → preview → nume opțional → postează ── */
