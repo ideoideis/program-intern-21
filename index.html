@@ -736,19 +736,55 @@ fab.addEventListener('click',()=>{
 const railH=document.querySelector('nav.rail').offsetHeight;
 document.documentElement.style.setProperty('--railh',railH+'px');
 
-/* salut personalizat: pe linkul trupei, sau din GREETINGS (program.js),
-   scris ca la mașina de scris când se schimbă */
-let lastGreet='';
+/* salutul: sistemul editorial din program.js.
+   Sloturi: dimineață 06–12 · prânz 12–15:30 · după-amiază 15:30–19 ·
+   seară 19–22:30 · noapte 22:30–06. Rotație aleatoare la încărcare;
+   „somn ușor, ideo” în fiecare noapte după 02:00, mereu ultima. */
+let lastGreet='', greetKey='', greetPick='';
+function greetSlot(mins){
+  const m=((mins%1440)+1440)%1440;
+  if(m>=360&&m<720)return 'dimineata';
+  if(m>=720&&m<930)return 'pranz';
+  if(m>=930&&m<1140)return 'dupaamiaza';
+  if(m>=1140&&m<1350)return 'seara';
+  return 'noapte';
+}
+function roToday(){
+  const parts=new Intl.DateTimeFormat('ro-RO',{timeZone:'Europe/Bucharest',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
+  const g=t=>parts.find(x=>x.type===t).value;
+  return {key:`${g('day')}.${g('month')}.${g('year')}`, cmp:g('year')+g('month')+g('day')};
+}
+function isPreFestival(){
+  if(typeof PRE_FESTIVAL_UNTIL==='undefined')return false;
+  const lim=PRE_FESTIVAL_UNTIL.split('.').reverse().join('');
+  return roToday().cmp<=lim;
+}
 function updateGreet(n){
   const g=document.getElementById('greet');
   let txt;
   if(TRUPA) txt=`salut, ${TRUPE_IDS[TRUPA]} · programul vostru`;
   else{
-    const h=n&&n.hm?+n.hm.slice(0,2):new Date().getHours();
-    const slot=h<5?'noapte':h<10?'dimineata':h<18?'zi':'seara';
-    const pool=(typeof GREETINGS!=='undefined'&&GREETINGS[slot]&&GREETINGS[slot].length)?GREETINGS[slot]:['salut, ideo'];
-    const doy=Math.floor(Date.now()/86400000);
-    txt=pool[(doy+h)%pool.length];
+    const mins=(n&&typeof n.mins==='number')?n.mins:(()=>{const d=new Date();let m=d.getHours()*60+d.getMinutes();if(d.getHours()<5)m+=1440;return m;})();
+    const slot=greetSlot(mins);
+    const mm=((mins%1440)+1440)%1440;
+    if(slot==='noapte' && mm>=120 && mm<360){
+      txt=(typeof GREET_SIGNATURE!=='undefined')?GREET_SIGNATURE:'somn ușor, ideo';
+    }else{
+      let pool=null, key='';
+      if(n&&n.day&&typeof GREETINGS_ZILE!=='undefined'&&GREETINGS_ZILE[n.day]&&(GREETINGS_ZILE[n.day][slot]||[]).length){
+        pool=GREETINGS_ZILE[n.day][slot]; key=n.day+'·'+slot;
+      }else if(!(n&&n.day)&&typeof GREETINGS_PRE!=='undefined'&&isPreFestival()){
+        const night=(slot==='seara'||slot==='noapte');
+        pool=night?GREETINGS_PRE.noapte:GREETINGS_PRE.zi; key='pre·'+(night?'noapte':'zi');
+      }
+      if(!pool||!pool.length){
+        pool=(typeof GREET_POOL!=='undefined'&&GREET_POOL[slot])||['locul nostru e aici'];
+        key='pool·'+slot;
+      }
+      /* aceeași replică pe toată durata slotului, aleasă aleator la încărcare */
+      if(key!==greetKey){greetKey=key;greetPick=pool[Math.floor(Math.random()*pool.length)];}
+      txt=greetPick;
+    }
   }
   if(txt===lastGreet) return;
   lastGreet=txt;

@@ -23,7 +23,7 @@ const LAST_UPDATED = '16.07.2026';
 /* Demo pentru marcajul "acum" în afara zilelor de festival:
    'zi-oră' (de ex. 'v31-19:32') sau null ca să îl stingi.
    În timpul festivalului ora reală are mereu prioritate. */
-const DEMO_NOW = 'v31-19:32';
+const DEMO_NOW = null;
 
 /* data calendaristică -> ziua din program (pentru "acum") */
 const DATEMAP = {
@@ -277,41 +277,121 @@ const BIRTHDAYS = {};
 /* link către documentul de feedback în timp real (null = ascuns) */
 const FEEDBACK_URL = null;
 
-/* saluturile din header, pe momente ale zilei; se rotesc de la o zi
-   la alta si se scriu singure, ca la mașina de scris */
-const GREETINGS = {
-  dimineata: [
-    'prima cafea nu se discută, se respectă',
-    'actul I: deschide ochii',
-    'ștanga sus, și tu la fel',
-    'oboseala e filtru creativ, zic unii',
-    'bună dimineața · locul nostru e aici',
+/* ============================================================
+   SALUTURILE (bannerele de sus) · sistemul editorial #21
+   Sloturi orare: dimineață 06–12 · prânz 12–15:30 ·
+   după-amiază 15:30–19 · seară 19–22:30 · noapte 22:30–06.
+   Reguli:
+   - o replică e activă cât ține slotul ei, în ziua ei;
+   - slot cu 2+ replici: rotație aleatoare la fiecare încărcare;
+   - sloturile fără replici trag din GREET_POOL;
+   - semnătura: „somn ușor, ideo” în FIECARE noapte după 02:00,
+     mereu ultima replică a zilei.
+   ============================================================ */
+
+/* pre-festival: de la trimiterea programului până pe 27 iulie inclusiv */
+const GREETINGS_PRE = {
+  zi: [ /* 06:00–19:00 */
+    'citești programul în avans. ne placi deja.',
+    'mai e puțin. Alexandria se încălzește.',
+    'programul e gata. emoțiile sunt pe drum.',
+    'locul nostru e aici. al tău, din 28.',
+    'spoiler: o să fie bine.',
   ],
-  zi: [
-    'ai supraviețuit dimineții, bravo',
-    'azi nu e ziua ta? mâine poate',
-    'actul II: prânzul',
-    'totul e sub control (aproximativ)',
-    'improvizăm până iese',
-    'hidratarea nu e opțională, ca și teatrul',
-    'dacă te caută cineva, de azi ești în Piață',
-    'locul nostru e aici',
-  ],
-  seara: [
-    'dacă tremură scena, e de la emoții',
-    'cea mai frumoasă seară din an (iar)',
-    'luminile sus · locul nostru e aici',
-  ],
-  noapte: [
-    'culisele dorm, legendele nu',
-    'și insomniile sunt repetiții',
-    'cine citește asta: la culcare',
-    'nopți albe, inimi pline',
-    'somn ușor, ideo',
-    'mai e puțin până la mic dejun',
-    'visați papainoage',
+  noapte: [ /* 19:00–06:00 */
+    'Alexandria doarme liniștită. nu pentru mult timp.',
+    'dormiți acum. la festival nu se prea apucă.',
+    'mai dormi cât poți. e un sfat, nu o glumă.',
+    'un an am așteptat. mai putem câteva zile.',
+    'unii așteaptă vara. noi așteptăm partea asta din vară',
+    'Alexandria e un oraș obișnuit 357 de zile pe an',
+    'calendarul zice iulie. inima zice ideo.',
+    '#21: destul de mare să știe cine e, destul de tânăr să nu-i pese',
+    'în curând: cele mai lungi zile și cele mai scurte nopți din an',
   ],
 };
+
+/* replicile pinuite pe zile */
+const GREETINGS_ZILE = {
+  ma28: {
+    dimineata: ['ultima dimineață liniștită. savureaz-o.','orașul încă nu știe ce-l așteaptă','cafea în tihnă. ultima din seria asta.'],
+    pranz: ['mâine vine lumea. azi mai respirăm o dată.'],
+    dupaamiaza: ['ultimele pregătiri. emoțiile au ajuns primele.'],
+    seara: ['ne adunăm la Conciato, hai!'],
+    noapte: ['shhh. White House doarme. (nu doarme, dar shhh.)','ultima noapte de somn întreg. profită.'],
+  },
+  mi29: {
+    dimineata: ['prima cafea nu se discută, se respectă','actul I: deschide ochii'],
+    pranz: ['de azi, Alexandria are populație dublă','prânzul: singura ședință la care vine toată lumea'],
+    dupaamiaza: ['totul e sub control (aproximativ)','improvizăm până iese'],
+    seara: ['dacă tremură scena, e de la emoții','prima seară. de aici încolo, doar bine.','locul nostru e aici. de azi, și al tău.'],
+    noapte: ['opening party la Ștrand. mâine la 10 e atelier. matematica vă privește.','shhh. White House doarme. (nu doarme, dar shhh.)'],
+  },
+  j30: {
+    dimineata: ['shtanga sus, și tu la fel','la Alexandria, soarele răsare devreme. sau noi ne culcăm târziu.','voluntarii sunt deja în picioare. fii ca voluntarii.'],
+    pranz: ['deja nu mai știi ce zi e. bun.','actul II: prânzul','la 33 de grade, orice idee pare bună'],
+    dupaamiaza: ['azi nu e ziua ta? mâine poate','da, mesajul ăsta se schimbă la câteva ore. ca stările pe aici.'],
+    seara: ['dacă azi merge ceva, un voluntar n-a dormit'],
+    noapte: ['culisele dorm, legendele nu','cearcănele de mâine au scuză culturală.'],
+  },
+  v31: {
+    dimineata: ['locul nostru e aici. la 7 dimineața, aș fi preferat altundeva.','dacă te caută cineva, de azi ești în Piață'],
+    pranz: ['ai supraviețuit dimineții, bravo','hidratarea nu e opțională, ca și teatrul'],
+    dupaamiaza: ['de câte ori crezi că se aude beautiful ones săptămâna asta?'],
+    seara: ['aplauzele astea le-a montat cineva la 3 dimineața'],
+    noapte: ['noaptea, în Alexandria, se scriu cele mai bune idei și cele mai proaste mesaje','și insomniile sunt repetiții'],
+  },
+  s1: {
+    dimineata: ['oboseala e filtru creativ, zic unii'],
+    pranz: ['energie de actul II, buget de actul V','dacă citești asta, ai o pauză. bravo. meriți.'],
+    dupaamiaza: ['prieteniile de aici au altă unitate de măsură'],
+    seara: ['oamenii ne fac să continuăm','oameni pe care îi știi de 3 zile și parcă de 10 ani. matematică de festival.'],
+    noapte: ['visele sunt spectacole fără buget'],
+  },
+  d2: {
+    dimineata: ['azi nu e ziua ta? mâine poate'],
+    pranz: ['pauza face parte din spectacol'],
+    dupaamiaza: ['la ideo nu vii să vezi teatru. vii să te vezi.'],
+    seara: ['locul nostru e aici'],
+    noapte: ['nopți albe, inimi pline','cine citește asta: la culcare'],
+  },
+  l3: {
+    dimineata: ['nu ești obosit. ești în proces de creație.'],
+    pranz: ['energia nu vine de la cafea. bine, nu doar.'],
+    dupaamiaza: ['dacă vezi shtanga cărând, aplaudă. sau ajută. ideal ambele.'],
+    seara: ['ultima seară fără gală. odihniți-vă emoțiile.'],
+    noapte: ['ultimul care pleacă stinge reflectorul','mâine e ultima zi. nu, nu vorbim despre asta.'],
+  },
+  ma4: {
+    dimineata: ['pierdut: somn. găsitorului, recunoștință.'],
+    pranz: ['mâncați bine. diseară se aplaudă mult.'],
+    dupaamiaza: ['acest mesaj a fost scris de cineva foarte obosit și foarte fericit'],
+    seara: ['gală de închidere. plângem organizat, la final.','orașul ăsta crește oameni frumoși în fiecare vară'],
+    noapte: ['oamenii ne fac să continuăm. somn ușor, oameni.'],
+  },
+  mi5: {
+    dimineata: ['demontăm de la 8. inclusiv emoțional.'],
+    pranz: ['bagajele se fac greu când nu vrei să pleci','ultima masă împreună. mâncați încet.'],
+    dupaamiaza: ['15:00, ședința de închidere. se lasă cu îmbrățișări.'],
+    seara: ['oamenii ne fac să continuăm. voi ați fost oamenii.'],
+    noapte: ['e liniște în Alexandria. prea liniște.','somn ușor, ideo'],
+  },
+};
+
+/* rezerva, pentru sloturi fără replici (de ex. după festival) */
+const GREET_POOL = {
+  dimineata: ['bună dimineața · locul nostru e aici'],
+  pranz: ['actul II: prânzul'],
+  dupaamiaza: ['locul nostru e aici'],
+  seara: ['cea mai frumoasă seară din an (iar)'],
+  noapte: ['visați papainoage'],
+};
+
+/* semnătura festivalului: în fiecare noapte după 02:00, mereu ultima */
+const GREET_SIGNATURE = 'somn ușor, ideo';
+
+/* ultima zi de pre-festival (inclusiv) */
+const PRE_FESTIVAL_UNTIL = '27.07.2026';
 
 /* trupele #21: [nume, trainer · sala, coordonator, tel coordonator, ghid, tel ghid]
    telefoanele se scriu ca '07xx xxx xxx' și devin tap-to-call */
