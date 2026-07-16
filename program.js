@@ -20,6 +20,11 @@
 
 const LAST_UPDATED = '16.07.2026';
 
+/* Demo pentru marcajul "acum" în afara zilelor de festival:
+   'zi-oră' (de ex. 'v31-19:32') sau null ca să îl stingi.
+   În timpul festivalului ora reală are mereu prioritate. */
+const DEMO_NOW = 'v31-19:32';
+
 /* data calendaristică -> ziua din program (pentru "acum") */
 const DATEMAP = {
   '28.07.2026':'ma28', '29.07.2026':'mi29', '30.07.2026':'j30',

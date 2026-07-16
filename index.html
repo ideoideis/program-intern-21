@@ -247,12 +247,9 @@ document.getElementById('lastupd').textContent=LAST_UPDATED;
 /* ora curentă în Europe/Bucharest; până în 05:00 aparține zilei de program precedente.
    Pentru test: ?test=v31-19:32 */
 const TESTP=new URLSearchParams(location.search).get('test');
+const parseSim=s=>{const i=s.indexOf('-');return {day:s.slice(0,i), mins:mins(s.slice(i+1)), hm:s.slice(i+1), demo:true};};
 function roNow(){
-  if(TESTP){
-    const i=TESTP.indexOf('-');
-    const d=TESTP.slice(0,i), hm=TESTP.slice(i+1);
-    return {day:d, mins:mins(hm), hm};
-  }
+  if(TESTP) return parseSim(TESTP);
   const fmt=o=>new Intl.DateTimeFormat('ro-RO',Object.assign({timeZone:'Europe/Bucharest'},o));
   const parts=fmt({year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date());
   const g=t=>parts.find(p=>p.type===t).value;
@@ -263,7 +260,10 @@ function roNow(){
     const gg=t=>pp.find(p=>p.type===t).value;
     dateKey=`${gg('day')}.${gg('month')}.${gg('year')}`;
   }
-  return {day:DATEMAP[dateKey]||null, mins:h*60+m+(h<5?1440:0), hm:`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`};
+  const day=DATEMAP[dateKey]||null;
+  /* în afara festivalului, DEMO_NOW (din program.js) simulează marcajul "acum" */
+  if(!day && typeof DEMO_NOW==='string' && DEMO_NOW) return parseSim(DEMO_NOW);
+  return {day, mins:h*60+m+(h<5?1440:0), hm:`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`};
 }
 
 /* ── banda de zile ──────────────────────── */
@@ -537,7 +537,7 @@ function updateNow(){
   if(nowlineEl.parentNode) nowlineEl.remove();
   fab.hidden=!n.day;
   if(!n.day) return;
-  fabT.textContent=n.hm;
+  fabT.textContent=(n.demo?'demo · ':'')+n.hm;
   const sec=document.getElementById('day-'+n.day);
   if(!sec) return;
   sec.querySelectorAll('.viewlist .ev').forEach(ev=>{
