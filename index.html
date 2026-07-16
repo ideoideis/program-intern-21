@@ -45,9 +45,8 @@ h1{font-weight:700;font-size:clamp(2.5rem,10vw,4.2rem);line-height:.95;letter-sp
 .header-meta{margin-top:14px;font-size:15px;color:var(--muted)}
 .header-meta strong{color:var(--fg);font-weight:600}
 .updated{margin-top:10px;font-family:var(--mono);font-size:12px;color:var(--amber)}
-.public-link{display:inline-flex;align-items:center;gap:8px;margin-top:18px;border:1px solid var(--line);padding:10px 14px;font-weight:600;font-size:14px;text-decoration:none;transition:border-color .15s,color .15s}
-.public-link:hover{border-color:var(--red);color:var(--red)}
-.public-link span.arr{font-weight:400}
+.plink{color:var(--muted);text-decoration:none;font-weight:400}
+.plink:hover{color:var(--amber)}
 
 /* ── day rail ────────────────────────────── */
 nav.rail{position:sticky;top:0;z-index:60;background:var(--ground);border-bottom:1px solid var(--line);margin-top:22px}
@@ -236,7 +235,7 @@ footer a{color:var(--amber);text-decoration:none}
 @media print{
   :root{color-scheme:light}
   body{background:#fff;color:#111}
-  nav.rail,.filters,.fab,.public-link,.greet,.egg,.viewgrid,.nowline,.updated,.nowtag,.minetag,.xbtn,.jcorner,.jpanel,#anuntbar,[data-live]{display:none!important}
+  nav.rail,.filters,.fab,.plink,.greet,.egg,.viewgrid,.nowline,.updated,.nowtag,.minetag,.xbtn,.jcorner,.jpanel,#anuntbar,[data-live]{display:none!important}
   .iblock.acc>*:not(h3){display:block!important}
   header.site{padding:0}
   .eticheta{padding:0;border:1px solid #ddd}
@@ -277,8 +276,7 @@ footer a{color:var(--amber);text-decoration:none}
     <h1>festivalul #21<br>program intern</h1>
     <p class="greet" id="greet" hidden></p>
     <p class="header-meta"><strong>29 iulie · 5 august</strong> · Alexandria</p>
-    <p class="updated">last updated <span id="lastupd"></span></p>
-    <a class="public-link" href="https://ideoideis.ro/proiectele/festivalul/program/" target="_blank" rel="noopener">program public <span class="arr">↗</span></a>
+    <p class="updated">last updated <span id="lastupd"></span> · <a class="plink" href="https://ideoideis.ro/proiectele/festivalul/program/" target="_blank" rel="noopener">program public ↗</a></p>
   </div>
 </header>
 
