@@ -277,17 +277,66 @@ const BIRTHDAYS = {};
 /* link către documentul de feedback în timp real (null = ascuns) */
 const FEEDBACK_URL = null;
 
-/* trupele #21 și spectacolele lor (tabul +info) */
+/* trupele #21: trainer, sala de atelier (orientativ), spectacolul */
 const TRUPE = [
- ['Trupa Leira','joi 30 iulie · 18:00'],
- ['Atelierul de Teatru','joi 30 iulie · 20:30'],
- ['Artwork','vineri 31 iulie · 18:00'],
- ['Amprente','sâmbătă 1 august · 18:00'],
- ['Brainstorming','duminică 2 august · 18:00'],
- ['Alexandria','luni 3 august · 17:00'],
- ['ACT','luni 3 august · 19:30'],
- ['Protha','marți 4 august · 18:00'],
+ ['Trupa Leira','Adelin Tudorache · sala 10','joi 30 iulie · 18:00'],
+ ['Atelierul de Teatru','Mădălina Stoica · sala 7','joi 30 iulie · 20:30'],
+ ['Artwork','Oana Jipa · sala 6','vineri 31 iulie · 18:00'],
+ ['Amprente','Ioana Brumar · sala 9','sâmbătă 1 august · 18:00'],
+ ['Brainstorming','Cezara Petredeanu · sala 5','duminică 2 august · 18:00'],
+ ['Alexandria','trainer de confirmat · sala 12','luni 3 august · 17:00'],
+ ['ACT','Alexa Tofan · sala 8','luni 3 august · 19:30'],
+ ['Protha','Bogdan Tulbure · sala 11','marți 4 august · 18:00'],
 ];
+
+/* ── logistica atelierelor (din tabelul de logistică; sălile sunt
+      deocamdată ORIENTATIVE) ─────────────────────────────────── */
+
+/* ateliere teatru tânăr · Școala 5 · joi/vineri/sâmbătă 10:00-14:00 */
+const ATELIERE_TT = [
+ ['Trupa Leira','Adelin Tudorache','sala 10','14 part.'],
+ ['Atelierul de Teatru','Mădălina Stoica','sala 7','15 part.'],
+ ['Artwork','Oana Jipa','sala 6','14 part.'],
+ ['Amprente','Ioana Brumar','sala 9','11 part.'],
+ ['Brainstorming','Cezara Petredeanu','sala 5','14 part.'],
+ ['Alexandria','trainer de confirmat','sala 12',''],
+ ['ACT','Alexa Tofan','sala 8','14 part.'],
+ ['Protha','Bogdan Tulbure','sala 11','14 part.'],
+];
+const TT_NEEDS = 'câte o boxă portabilă + cutie standard: 1 eșarfă și 1 pix / participant, 5 mingi de tenis, 1 rolă scotch de hârtie, 5 cozi de mătură, 1 ghem sfoară, 1 top hârtie, 10 pahare carton, 1 tavă';
+
+/* ateliere arte alăturate · duminică/luni/marți 10:00-14:00 */
+const ARTE_ALATURATE = [
+ ['scriere dramatică','Alex Gorghe','Șc. 5 · sala 2','13 part.','','flipchart, markere, 14 pixuri, 1 top hârtie'],
+ ['dans 1','Eduard Chimac','Șc. 2 · sala de sport','20 part.','boxă bluetooth',''],
+ ['film','Tudor Platon','Șc. 5 · sala 5 (întunecoasă / jaluzele)','14 part.','tablă inteligentă funcțională (video & audio) cu ieșire HDMI, WiFi','1 set hârtie + cartuș pt. imprimanta foto Canon Selphy CP1300'],
+ ['actorie de film','Theodor Ioniță','Șc. 5 · sala 6 (întunecoasă / jaluzele)','15 part.','videoproiector, cablu HDMI, prelungitor, perete alb, telefon bun pe cameră, set lavaliere de telefon, boxă bluetooth',''],
+ ['dans 2','Teo Velescu','Șc. 3 · sala de sport','20 part.','boxă bluetooth',''],
+ ['costume','Șteff Chelaru','Șc. 5 · sala 7','14 part.','',''],
+];
+
+/* ateliere formatori (orientativ / de confirmat) */
+const FORMATORI = [
+ ['Train the Trainers','Conciato (sus?) · 15:00-16:00 · joi/vineri/sâmbătă'],
+ ['Train the Coordinators','Șc. 5 · sala 12 · 10:00-14:00 · joi/vineri/sâmbătă · 7 part.'],
+ ['Școala de vară MASCA','de confirmat'],
+];
+
+/* logistica Art&Play, cu cheia = titlul evenimentului din program */
+const LOGISTICS = {
+ 'Show Your Moves': {sala:'sala 2 (spațioasă)', n:'10', tehnic:'sonorizare'},
+ 'Stand Up împotriva hărțuirii stradale': {sala:'sala 1', n:'20', tehnic:'videoproiector + boxe'},
+ 'Se întâmplă între N-O-I': {sala:'sala 1', n:'15', prod:'coli, pixuri/creioane, carioci, flipchart & foi de flipchart'},
+ 'Pauza de la dezinformare': {sala:'sala 3', n:'15'},
+ 'De la pasiune la profesie: unde-i locul meu?': {sala:'sala 2', n:'15', tehnic:'videoproiector', prod:'coli, pixuri/creioane, carioci, flipchart & foi de flipchart'},
+ 'Mintea ta nu e a ta (în totalitate)': {sala:'sala 3', n:'15'},
+ 'Siguranța bebelușului': {sala:'sala 4', n:'20'},
+ 'Animalul care te locuiește': {sala:'sala 3', n:'15'},
+ 'Prim ajutor pediatric': {sala:'sala 4', n:'20'},
+ 'Alexandria la 50 de grade': {n:'30'},
+ 'Cetățenie activă: manual de utilizare': {sala:'sala 1', n:'15', tehnic:'videoproiector', prod:'coli, pixuri/creioane, carioci, foi de flipchart'},
+ 'Orașul e al tău · dacă știi cum': {sala:'sala 1', n:'15', tehnic:'videoproiector', prod:'coli, pixuri/creioane, carioci, foi de flipchart'},
+};
 
 /* locațiile din tabul +info */
 const LOCS = [
