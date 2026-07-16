@@ -1,7 +1,7 @@
 /* Service worker: programul funcționează și offline (semnal slab la festival).
    index.html și program.js se cer întâi de pe rețea (date proaspete) cu
    fallback la cache; fonturile și imaginile vin direct din cache. */
-const CACHE = 'pi21-1';
+const CACHE = 'pi21-2'; /* bump la orice schimbare de imagini/fonturi */
 const ASSETS = [
   './',
   'index.html',
