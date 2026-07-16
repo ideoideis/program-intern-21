@@ -3,6 +3,10 @@
    Complet decuplată de program: dacă Supabase nu răspunde (sau
    setup-21.sql nu a fost încă rulat), tot ce e aici se ascunde
    singur și programul merge normal, inclusiv offline.
+
+   Ca să nu aglomereze pagina: pe carduri apare doar un contor mic
+   „📷 N”, și numai la evenimentele care au deja poze; adăugarea se
+   face dintr-un singur buton pe zi, cu evenimentul curent preselectat.
    ============================================================ */
 (function(){
 'use strict';
@@ -37,25 +41,42 @@ async function shrink(file){
   return blob;
 }
 
-const dayOf=el=>{const s=el.closest('section.day');return s?s.id.replace('day-',''):'';};
+async function upload(day,eid,title,file,status){
+  if(!navigator.onLine){status.textContent='ești offline · încearcă mai târziu';return null;}
+  status.textContent='se încarcă…';
+  try{
+    const blob=await shrink(file);
+    if(!blob){status.textContent='formatul nu e suportat';return null;}
+    const ext=blob.type==='image/webp'?'webp':'jpg';
+    const path=`${day}/${eid}/${Date.now()}${Math.random().toString(36).slice(2,6)}.${ext}`;
+    const up=await sb(`/storage/v1/object/${BUCKET}/${path}`,{method:'POST',
+      headers:{'Content-Type':blob.type,'x-upsert':'false'},body:blob});
+    if(!up.ok)throw new Error('up');
+    await sbIns('jurnal_photos',{event_id:eid,day,title:String(title).slice(0,200),path});
+    status.textContent='gata ♥';
+    setTimeout(()=>{status.textContent='';},2500);
+    return path;
+  }catch(e){status.textContent='nu a mers · mai încearcă o dată';return null;}
+}
+
 const counts={}; /* day -> {eid: n} */
 const loadedDays=new Set();
 
-function jbtnLabel(b,n){b.textContent=n?`📷 jurnal · ${n}`:'📷 jurnal';}
-
-/* injectăm butonul de jurnal pe cardurile de evenimente (nu și pe compacte) */
-function injectButtons(){
-  document.querySelectorAll('.viewlist .ev:not(.compact)').forEach(ev=>{
-    if(ev.querySelector('.jbtn'))return;
-    const body=ev.children[1]; if(!body)return;
-    const b=document.createElement('button');
-    b.className='jbtn'; jbtnLabel(b,0); b.setAttribute('data-live','');
-    body.appendChild(b);
-    const panel=document.createElement('div');
-    panel.className='jpanel'; panel.hidden=true;
-    body.appendChild(panel);
-    b.addEventListener('click',()=>togglePanel(ev,b,panel));
-  });
+/* contorul mic pe card, doar unde există poze */
+function chipFor(ev){
+  let c=ev.querySelector('.jchip');
+  if(!c){
+    const t=ev.querySelector('.title'); if(!t)return null;
+    c=document.createElement('button');
+    c.className='jchip'; c.title='vezi pozele';
+    t.appendChild(c);
+    c.addEventListener('click',e=>{e.stopPropagation();toggleGallery(ev);});
+  }
+  return c;
+}
+function setChip(ev,n){
+  if(!n)return;
+  const c=chipFor(ev); if(c) c.textContent=`📷 ${n}`;
 }
 
 async function refreshCounts(day){
@@ -63,46 +84,68 @@ async function refreshCounts(day){
     const rows=await sbGet(`/jurnal_photos?day=eq.${encodeURIComponent(day)}&select=event_id`);
     const m={}; rows.forEach(r=>{m[r.event_id]=(m[r.event_id]||0)+1;});
     counts[day]=m;
-    document.querySelectorAll(`#day-${CSS.escape(day)} .viewlist .ev:not(.compact)`).forEach(ev=>{
-      const b=ev.querySelector('.jbtn'); if(b) jbtnLabel(b,m[ev.dataset.eid]||0);
+    document.querySelectorAll(`#day-${CSS.escape(day)} .viewlist .ev`).forEach(ev=>{
+      setChip(ev,m[ev.dataset.eid]||0);
     });
   }catch(e){}
 }
 
-async function togglePanel(ev,btn,panel){
-  if(!panel.hidden){panel.hidden=true;return;}
-  panel.hidden=false;
+async function toggleGallery(ev){
+  let panel=ev.querySelector('.jpanel');
+  if(panel){panel.hidden=!panel.hidden;return;}
+  panel=document.createElement('div');
+  panel.className='jpanel';
   panel.innerHTML='<p class="jnote">se încarcă…</p>';
-  const eid=ev.dataset.eid, day=dayOf(ev);
-  const title=(ev.querySelector('.title')||{}).textContent||'';
-  let rows=[];
-  try{rows=await sbGet(`/jurnal_photos?event_id=eq.${encodeURIComponent(eid)}&select=path,created_at&order=created_at.desc&limit=60`);}
-  catch(e){panel.innerHTML='<p class="jnote">jurnalul nu e disponibil acum</p>';return;}
-  panel.innerHTML=`
-    <label class="jadd">+ adaugă poză<input type="file" accept="image/*" hidden></label>
-    <span class="jnote jstatus"></span>
-    <div class="jthumbs">${rows.map(r=>`<a href="${pubUrl(r.path)}" target="_blank" rel="noopener"><img loading="lazy" src="${pubUrl(r.path)}" alt=""></a>`).join('')}</div>`;
-  const input=panel.querySelector('input');
-  const status=panel.querySelector('.jstatus');
+  (ev.children[1]||ev).appendChild(panel);
+  const eid=ev.dataset.eid;
+  try{
+    const rows=await sbGet(`/jurnal_photos?event_id=eq.${encodeURIComponent(eid)}&select=path&order=created_at.desc&limit=60`);
+    panel.innerHTML=`<div class="jthumbs">${rows.map(r=>`<a href="${pubUrl(r.path)}" target="_blank" rel="noopener"><img loading="lazy" src="${pubUrl(r.path)}" alt=""></a>`).join('')}</div>`;
+  }catch(e){panel.innerHTML='<p class="jnote">indisponibil</p>';}
+}
+
+/* un singur „adaugă” pe zi, cu evenimentul curent preselectat */
+function injectDayAdd(day){
+  const sec=document.getElementById('day-'+day); if(!sec)return;
+  if(sec.querySelector('.jday'))return;
+  const dd=sec.querySelector('.dayhero .dd'); if(!dd)return;
+  const b=document.createElement('button');
+  b.className='jday'; b.textContent='📷 adaugă poză';
+  dd.appendChild(b);
+  b.addEventListener('click',()=>toggleDayPanel(sec,day));
+}
+function toggleDayPanel(sec,day){
+  let p=sec.querySelector('.jdaypanel');
+  if(p){p.hidden=!p.hidden;return;}
+  const evs=[...sec.querySelectorAll('.viewlist .ev')].map(ev=>({
+    eid:ev.dataset.eid,
+    s:+ev.dataset.s,
+    label:`${(ev.querySelector('.t1')||{}).textContent||''} · ${((ev.querySelector('.title')||{}).textContent||'').replace(/📷.*$/,'').trim().slice(0,60)}`
+  }));
+  if(!evs.length)return;
+  /* preselectăm ce e „acum”: ultimul eveniment început */
+  const now=new Date(); let nowM=now.getHours()*60+now.getMinutes(); if(now.getHours()<5)nowM+=1440;
+  let pick=evs[0].eid;
+  evs.forEach(e=>{if(e.s<=nowM)pick=e.eid;});
+  p=document.createElement('div');
+  p.className='jdaypanel';
+  p.innerHTML=`<select>${evs.map(e=>`<option value="${e.eid}"${e.eid===pick?' selected':''}>${esc(e.label)}</option>`).join('')}</select>
+    <label class="jadd">alege poza<input type="file" accept="image/*" hidden></label>
+    <span class="jnote jstatus"></span>`;
+  sec.querySelector('.dayhero').after(p);
+  const input=p.querySelector('input'), status=p.querySelector('.jstatus'), sel=p.querySelector('select');
   input.addEventListener('change',async()=>{
     const f=input.files&&input.files[0]; if(!f)return;
-    if(!navigator.onLine){status.textContent='ești offline · încearcă mai târziu';return;}
-    status.textContent='se încarcă…';
-    try{
-      const blob=await shrink(f);
-      if(!blob){status.textContent='formatul nu e suportat';return;}
-      const ext=blob.type==='image/webp'?'webp':'jpg';
-      const path=`${day}/${eid}/${Date.now()}${Math.random().toString(36).slice(2,6)}.${ext}`;
-      const up=await sb(`/storage/v1/object/${BUCKET}/${path}`,{method:'POST',
-        headers:{'Content-Type':blob.type,'x-upsert':'false'},body:blob});
-      if(!up.ok)throw new Error('up');
-      await sbIns('jurnal_photos',{event_id:eid,day,title:title.slice(0,200),path});
-      status.textContent='gata ♥';
-      const th=panel.querySelector('.jthumbs');
-      th.insertAdjacentHTML('afterbegin',`<a href="${pubUrl(path)}" target="_blank" rel="noopener"><img src="${pubUrl(path)}" alt=""></a>`);
-      const m=counts[day]||(counts[day]={}); m[eid]=(m[eid]||0)+1; jbtnLabel(btn,m[eid]);
-      setTimeout(()=>{status.textContent='';},2500);
-    }catch(e){status.textContent='nu a mers · mai încearcă o dată';}
+    const eid=sel.value;
+    const title=(sel.selectedOptions[0]||{}).textContent||'';
+    const path=await upload(day,eid,title,f,status);
+    if(path){
+      const m=counts[day]||(counts[day]={}); m[eid]=(m[eid]||0)+1;
+      const ev=sec.querySelector(`.viewlist .ev[data-eid="${CSS.escape(eid)}"]`);
+      if(ev){setChip(ev,m[eid]);
+        const th=ev.querySelector('.jpanel .jthumbs');
+        if(th)th.insertAdjacentHTML('afterbegin',`<a href="${pubUrl(path)}" target="_blank" rel="noopener"><img src="${pubUrl(path)}" alt=""></a>`);}
+    }
     input.value='';
   });
 }
@@ -119,19 +162,18 @@ async function refreshAnunt(){
   }catch(e){}
 }
 
-/* ── blocurile live din +info ── */
+/* ── blocurile live din +info (acordeon, încărcate la deschidere) ── */
 let infoBuilt=false;
-async function buildInfo(){
+function buildInfo(){
   if(infoBuilt)return; infoBuilt=true;
   const grid=document.querySelector('#day-info .info-grid'); if(!grid)return;
 
-  /* anunțuri: ultimele + publicare */
   const an=document.createElement('div');
-  an.className='iblock'; an.setAttribute('data-live','');
+  an.className='iblock acc'; an.setAttribute('data-live','');
   an.innerHTML=`<h3>anunțuri</h3>
-    <div class="alist"><p class="jnote">se încarcă…</p></div>
+    <div class="alist"></div>
     <textarea class="fbox" rows="2" maxlength="300" placeholder="scrie un anunț pentru toată lumea…"></textarea>
-    <button class="fsend">publică anunțul</button><span class="jnote fstat"></span>`;
+    <div><button class="fsend">publică anunțul</button><span class="jnote fstat"></span></div>`;
   grid.appendChild(an);
   const renderAn=async()=>{
     try{
@@ -141,7 +183,7 @@ async function buildInfo(){
         :'<p class="jnote">niciun anunț încă</p>';
     }catch(e){an.querySelector('.alist').innerHTML='<p class="jnote">indisponibil</p>';}
   };
-  renderAn();
+  an.querySelector('h3').addEventListener('click',()=>{if(an.classList.contains('open'))renderAn();});
   an.querySelector('.fsend').addEventListener('click',async()=>{
     const t=an.querySelector('.fbox'), s=an.querySelector('.fstat');
     const v=t.value.trim(); if(!v)return;
@@ -150,14 +192,13 @@ async function buildInfo(){
     catch(e){s.textContent='nu a mers · mai încearcă';}
   });
 
-  /* feedback: idee / problemă */
   const fb=document.createElement('div');
-  fb.className='iblock'; fb.setAttribute('data-live','');
+  fb.className='iblock acc'; fb.setAttribute('data-live','');
   fb.innerHTML=`<h3>feedback în timp real</h3>
-    <p class="inote">idei și probleme, cât sunt calde; le strângem și le citim la sinteza de după festival.</p>
+    <p class="inote">idei și probleme, cât sunt calde; le citim la sinteza de după festival.</p>
     <div class="ftips"><button class="ftip" data-tip="idee" aria-pressed="true">idee</button><button class="ftip" data-tip="problemă" aria-pressed="false">problemă</button></div>
     <textarea class="fbox" rows="3" maxlength="2000" placeholder="scrie aici…"></textarea>
-    <button class="fsend">trimite</button><span class="jnote fstat"></span>`;
+    <div><button class="fsend">trimite</button><span class="jnote fstat"></span></div>`;
   grid.appendChild(fb);
   fb.querySelectorAll('.ftip').forEach(b=>b.addEventListener('click',()=>{
     fb.querySelectorAll('.ftip').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
@@ -171,32 +212,36 @@ async function buildInfo(){
     catch(e){s.textContent='nu a mers · mai încearcă';}
   });
 
-  /* jurnal: toate pozele */
   const ja=document.createElement('div');
-  ja.className='iblock wide'; ja.setAttribute('data-live','');
-  ja.innerHTML='<h3>jurnal foto · toate pozele</h3><div class="jall"><p class="jnote">se încarcă…</p></div>';
+  ja.className='iblock wide acc'; ja.setAttribute('data-live','');
+  ja.innerHTML='<h3>jurnal foto · toate pozele</h3><div class="jall"></div>';
   grid.appendChild(ja);
-  try{
-    const rows=await sbGet('/jurnal_photos?select=path,title,day,created_at&order=created_at.desc&limit=48');
-    ja.querySelector('.jall').innerHTML=rows.length
-      ?`<div class="jthumbs">${rows.map(r=>`<a href="${pubUrl(r.path)}" target="_blank" rel="noopener" title="${esc(r.title)}"><img loading="lazy" src="${pubUrl(r.path)}" alt="${esc(r.title)}"></a>`).join('')}</div>`
-      :'<p class="jnote">încă nicio poză · fii tu prima persoană care prinde momentul</p>';
-  }catch(e){ja.querySelector('.jall').innerHTML='<p class="jnote">indisponibil</p>';}
+  let jaLoaded=false;
+  ja.querySelector('h3').addEventListener('click',async()=>{
+    if(jaLoaded||!ja.classList.contains('open'))return; jaLoaded=true;
+    ja.querySelector('.jall').innerHTML='<p class="jnote">se încarcă…</p>';
+    try{
+      const rows=await sbGet('/jurnal_photos?select=path,title&order=created_at.desc&limit=48');
+      ja.querySelector('.jall').innerHTML=rows.length
+        ?`<div class="jthumbs">${rows.map(r=>`<a href="${pubUrl(r.path)}" target="_blank" rel="noopener" title="${esc(r.title)}"><img loading="lazy" src="${pubUrl(r.path)}" alt="${esc(r.title)}"></a>`).join('')}</div>`
+        :'<p class="jnote">încă nicio poză · fii tu prima persoană care prinde momentul</p>';
+    }catch(e){ja.querySelector('.jall').innerHTML='<p class="jnote">indisponibil</p>';}
+  });
 }
 
 /* ── pornire: o singură sondă; dacă nu răspunde, nu apare nimic ── */
 (async function init(){
   try{await sbGet('/anunturi_21?select=id&limit=1');}
   catch(e){return;} /* setup-21.sql nerulat sau fără net: stăm ascunși */
-  injectButtons();
   refreshAnunt();
   setInterval(refreshAnunt,180000);
-  const today=document.querySelector('.daychip[aria-selected="true"]');
-  if(today&&today.dataset.day&&today.dataset.day!=='info') refreshCounts(today.dataset.day);
-  document.addEventListener('daychange',e=>{
-    const d=e.detail;
+  const onDay=d=>{
     if(d==='info'){buildInfo();return;}
+    injectDayAdd(d);
     if(!loadedDays.has(d)){loadedDays.add(d);refreshCounts(d);}
-  });
+  };
+  const today=document.querySelector('.daychip[aria-selected="true"]');
+  if(today&&today.dataset.day) onDay(today.dataset.day);
+  document.addEventListener('daychange',e=>onDay(e.detail));
 })();
 })();
