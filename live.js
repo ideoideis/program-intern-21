@@ -19,6 +19,10 @@ const sb=(path,opt={})=>fetch(SUPA_URL+path,Object.assign({},opt,{
   headers:Object.assign({apikey:SUPA_KEY,Authorization:'Bearer '+SUPA_KEY},opt.headers||{})
 }));
 const sbGet=async p=>{const r=await sb('/rest/v1'+p);if(!r.ok)throw new Error('sb');return r.json();};
+const sbGetCount=async p=>{const r=await sb('/rest/v1'+p,{headers:{Prefer:'count=exact'}});
+  if(!r.ok)throw new Error('sb');
+  const total=+((r.headers.get('content-range')||'/0').split('/')[1])||0;
+  return {rows:await r.json(),total};};
 const sbIns=async(t,row)=>{const r=await sb('/rest/v1/'+t,{method:'POST',
   headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(row)});
   if(!r.ok)throw new Error('sb');};
@@ -102,12 +106,26 @@ async function toggleGallery(ev,btn){
   panel.innerHTML='<p class="jnote">se încarcă…</p>';
   (ev.children[1]||ev).appendChild(panel);
   const eid=ev.dataset.eid, day=dayOf(ev), title=cleanTitle(ev);
-  let rows=[];
-  try{rows=await sbGet(`/jurnal_photos?event_id=eq.${encodeURIComponent(eid)}&select=path&order=created_at.desc&limit=60`);}
+  const PAGE=12;
+  let rows=[], total=0;
+  try{({rows,total}=await sbGetCount(`/jurnal_photos?event_id=eq.${encodeURIComponent(eid)}&select=path&order=created_at.desc&limit=${PAGE}`));}
   catch(e){panel.innerHTML='<p class="jnote">indisponibil</p>';return;}
+  const thumb=path=>`<a href="${pubUrl(path)}" target="_blank" rel="noopener"><img loading="lazy" src="${pubUrl(path)}" alt=""></a>`;
   panel.innerHTML=`<label class="jadd">+ adaugă poză<input type="file" accept="image/*" hidden></label>
     <span class="jnote jstatus"></span>
-    <div class="jthumbs">${rows.map(r=>`<a href="${pubUrl(r.path)}" target="_blank" rel="noopener"><img loading="lazy" src="${pubUrl(r.path)}" alt=""></a>`).join('')}</div>`;
+    <div class="jthumbs">${rows.map(r=>thumb(r.path)).join('')}</div>
+    ${total>rows.length?`<button class="jmore">încă ${total-rows.length} poze</button>`:''}`;
+  let shown=rows.length;
+  const more=panel.querySelector('.jmore');
+  if(more)more.addEventListener('click',async()=>{
+    try{
+      const next=await sbGet(`/jurnal_photos?event_id=eq.${encodeURIComponent(eid)}&select=path&order=created_at.desc&limit=24&offset=${shown}`);
+      panel.querySelector('.jthumbs').insertAdjacentHTML('beforeend',next.map(r=>thumb(r.path)).join(''));
+      shown+=next.length;
+      if(shown>=total||!next.length)more.remove();
+      else more.textContent=`încă ${total-shown} poze`;
+    }catch(e){}
+  });
   const input=panel.querySelector('input'), status=panel.querySelector('.jstatus');
   input.addEventListener('change',async()=>{
     const f=input.files&&input.files[0]; if(!f)return;
@@ -226,7 +244,10 @@ function buildInfo(){
         :'<p class="jnote">niciun anunț încă</p>';
     }catch(e){an.querySelector('.alist').innerHTML='<p class="jnote">indisponibil</p>';}
   };
-  an.querySelector('h3').addEventListener('click',()=>{if(an.classList.contains('open'))renderAn();});
+  an.querySelector('h3').addEventListener('click',()=>{
+    /* la click starea .open încă nu e comutată de acordeon; anticipăm */
+    if(!an.classList.contains('open'))renderAn();
+  });
   an.querySelector('.fsend').addEventListener('click',async()=>{
     const t=an.querySelector('.fbox'), s=an.querySelector('.fstat');
     const v=t.value.trim(); if(!v)return;
@@ -240,16 +261,34 @@ function buildInfo(){
   ja.className='iblock wide acc'; ja.setAttribute('data-live','');
   ja.innerHTML='<h3>jurnal foto · toate pozele</h3><div class="jall"></div>';
   grid.appendChild(ja);
-  let jaLoaded=false;
-  ja.querySelector('h3').addEventListener('click',async()=>{
-    if(jaLoaded||!ja.classList.contains('open'))return; jaLoaded=true;
-    ja.querySelector('.jall').innerHTML='<p class="jnote">se încarcă…</p>';
+  let jaLoaded=false, jaShown=0, jaTotal=0, jaLastDay=null;
+  const DAYLBL=(typeof DAYS!=='undefined')?Object.fromEntries(DAYS.map(d=>[d.id,`${d.h2} ${d.full}`])):{};
+  const jaThumb=r=>`<a href="${pubUrl(r.path)}" target="_blank" rel="noopener" title="${esc(r.title)}"><img loading="lazy" src="${pubUrl(r.path)}" alt="${esc(r.title)}"></a>`;
+  async function jaLoad(){
+    const box=ja.querySelector('.jall');
     try{
-      const rows=await sbGet('/jurnal_photos?select=path,title&order=created_at.desc&limit=48');
-      ja.querySelector('.jall').innerHTML=rows.length
-        ?`<div class="jthumbs">${rows.map(r=>`<a href="${pubUrl(r.path)}" target="_blank" rel="noopener" title="${esc(r.title)}"><img loading="lazy" src="${pubUrl(r.path)}" alt="${esc(r.title)}"></a>`).join('')}</div>`
-        :'<p class="jnote">încă nicio poză · fii tu prima persoană care prinde momentul</p>';
-    }catch(e){ja.querySelector('.jall').innerHTML='<p class="jnote">indisponibil</p>';}
+      const {rows,total}=await sbGetCount(`/jurnal_photos?select=path,title,day&order=created_at.desc&limit=48&offset=${jaShown}`);
+      jaTotal=total;
+      if(!jaShown&&!rows.length){box.innerHTML='<p class="jnote">încă nicio poză · fii tu prima persoană care prinde momentul</p>';return;}
+      if(!jaShown)box.innerHTML='';
+      const old=box.querySelector('.jmore'); if(old)old.remove();
+      rows.forEach(r=>{
+        if(r.day!==jaLastDay){
+          jaLastDay=r.day;
+          box.insertAdjacentHTML('beforeend',`<p class="jday-h">${esc(DAYLBL[r.day]||r.day)}</p><div class="jthumbs"></div>`);
+        }
+        [...box.querySelectorAll('.jthumbs')].pop().insertAdjacentHTML('beforeend',jaThumb(r));
+      });
+      jaShown+=rows.length;
+      if(jaShown<jaTotal)box.insertAdjacentHTML('beforeend',`<button class="jmore">încă ${jaTotal-jaShown} poze</button>`);
+      const m=box.querySelector('.jmore'); if(m)m.addEventListener('click',jaLoad);
+    }catch(e){if(!jaShown)box.innerHTML='<p class="jnote">indisponibil</p>';}
+  }
+  ja.querySelector('h3').addEventListener('click',()=>{
+    const willOpen=!ja.classList.contains('open');
+    if(!willOpen||jaLoaded)return; jaLoaded=true;
+    ja.querySelector('.jall').innerHTML='<p class="jnote">se încarcă…</p>';
+    jaLoad();
   });
 }
 
