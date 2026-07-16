@@ -277,16 +277,46 @@ const BIRTHDAYS = {};
 /* link către documentul de feedback în timp real (null = ascuns) */
 const FEEDBACK_URL = null;
 
-/* trupele #21: trainer, sala de atelier (orientativ), spectacolul */
+/* saluturile din header, pe momente ale zilei; se rotesc de la o zi
+   la alta si se scriu singure, ca la mașina de scris */
+const GREETINGS = {
+  dimineata: [
+    'bună dimineața · locul nostru e aici',
+    'cafea, soare, papainoage',
+    's-a trezit festivalul',
+    'dimineața repetăm, seara strălucim',
+  ],
+  zi: [
+    'locul nostru e aici',
+    'Alexandria, centrul lumii (azi sigur)',
+    'între două repetiții, un zâmbet',
+    'ideo la lucru · locul nostru e aici',
+  ],
+  seara: [
+    'seara asta se joacă',
+    'luminile sus · locul nostru e aici',
+    'cea mai frumoasă seară din an (iar)',
+    'scena e caldă, hai',
+  ],
+  noapte: [
+    'somn ușor, ideo',
+    'nopți albe, inimi pline',
+    'mai e puțin până la mic dejun',
+    'visați papainoage',
+  ],
+};
+
+/* trupele #21: [nume, trainer · sala, coordonator, tel coordonator, ghid, tel ghid]
+   telefoanele se scriu ca '07xx xxx xxx' și devin tap-to-call */
 const TRUPE = [
- ['Trupa Leira','Adelin Tudorache · sala 10','joi 30 iulie · 18:00'],
- ['Atelierul de Teatru','Mădălina Stoica · sala 7','joi 30 iulie · 20:30'],
- ['Artwork','Oana Jipa · sala 6','vineri 31 iulie · 18:00'],
- ['Amprente','Ioana Brumar · sala 9','sâmbătă 1 august · 18:00'],
- ['Brainstorming','Cezara Petredeanu · sala 5','duminică 2 august · 18:00'],
- ['Alexandria','trainer de confirmat · sala 12','luni 3 august · 17:00'],
- ['ACT','Alexa Tofan · sala 8','luni 3 august · 19:30'],
- ['Protha','Bogdan Tulbure · sala 11','marți 4 august · 18:00'],
+ ['Trupa Leira','Adelin Tudorache · sala 10','de confirmat','','de confirmat',''],
+ ['Atelierul de Teatru','Mădălina Stoica · sala 7','de confirmat','','de confirmat',''],
+ ['Artwork','Oana Jipa · sala 6','de confirmat','','de confirmat',''],
+ ['Amprente','Ioana Brumar · sala 9','de confirmat','','de confirmat',''],
+ ['Brainstorming','Cezara Petredeanu · sala 5','de confirmat','','de confirmat',''],
+ ['Alexandria','trainer de confirmat · sala 12','de confirmat','','de confirmat',''],
+ ['ACT','Alexa Tofan · sala 8','de confirmat','','de confirmat',''],
+ ['Protha','Bogdan Tulbure · sala 11','de confirmat','','de confirmat',''],
 ];
 
 /* ── logistica atelierelor (din tabelul de logistică; sălile sunt

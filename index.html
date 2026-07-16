@@ -190,8 +190,12 @@ footer{padding:30px 0 46px;font-family:var(--mono);font-size:11px;color:var(--mu
 footer a{color:var(--amber);text-decoration:none}
 
 /* ── personalizări ───────────────────────── */
-.greet{margin:18px 0 0;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.03em}
+.greet{margin:18px 0 0;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.03em;min-height:1.2em}
 .greet[hidden]{display:none}
+.greet .gcursor{color:var(--red);animation:gblink 1s steps(1) infinite}
+@keyframes gblink{50%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.greet .gcursor{animation:none}}
+.tel{color:var(--amber);text-decoration:none}
 .minetag{display:inline-block;font-family:var(--mono);font-size:10px;border:1px solid var(--red);color:var(--red);padding:1px 5px;margin-left:8px;vertical-align:2px}
 .bday{margin:-6px 0 14px;font-size:14px;color:var(--amber)}
 .egg{position:fixed;left:16px;bottom:24px;z-index:69;font-family:var(--mono);font-size:12px;color:var(--red)}
@@ -487,7 +491,6 @@ infoS.className='day'; infoS.id='day-info';
 infoS.innerHTML=`
   <div class="dayhero"><h2>info extra</h2><div class="dd"><b>hărți · trupe · legături</b>festivalul #21</div></div>
   <div class="info-grid">
-    <a class="bigpublic iblock wide" href="https://ideoideis.ro/proiectele/festivalul/program/" target="_blank" rel="noopener"><span>programul public #21<small>ideoideis.ro · pentru public & invitați</small></span><span>↗</span></a>
     ${FEEDBACK_URL?`<a class="bigpublic iblock wide" style="background:var(--panel-2);color:var(--fg)" href="${FEEDBACK_URL}" target="_blank" rel="noopener"><span>feedback în timp real<small>idei & probleme, direct în doc</small></span><span>↗</span></a>`:''}
     <div class="iblock">
       <h3>locații & hărți</h3>
@@ -501,9 +504,12 @@ infoS.innerHTML=`
       <div class="irow"><span class="ra" style="font-family:var(--mono);font-size:12px;color:var(--amber-dim)">@tehnic · montări, repetiții, echipa tehnică</span></div>
     </div>
     <div class="iblock wide">
-      <h3>trupe · traineri · spectacole</h3>
-      ${TRUPE.map(r=>`<div class="irow"><span class="ra">${r[0]}<small>atelier: ${r[1]} · Șc. 5</small></span><span class="rb">${r[2]}</span></div>`).join('')}
-      <p class="inote" style="margin-top:10px">sălile de atelier sunt orientative · mentorii se completează când e gata distribuția.</p>
+      <h3>trupe · traineri · contacte</h3>
+      ${TRUPE.map(r=>{
+        const tel=(n,t)=>`${n||'de confirmat'}${t?` · <a class="tel" href="tel:${t.replace(/\s/g,'')}">${t}</a>`:''}`;
+        return `<div class="irow"><span class="ra">${r[0]}<small>trainer: ${r[1]} · Șc. 5</small><small>coordonator: ${tel(r[2],r[3])}</small><small>ghid: ${tel(r[4],r[5])}</small></span></div>`;
+      }).join('')}
+      <p class="inote" style="margin-top:10px">sălile de atelier sunt orientative · mentorii și telefoanele se completează.</p>
     </div>
     <div class="iblock">
       <h3>arte alăturate · traineri & săli</h3>
@@ -660,13 +666,28 @@ fab.addEventListener('click',()=>{
 const railH=document.querySelector('nav.rail').offsetHeight;
 document.documentElement.style.setProperty('--railh',railH+'px');
 
-/* salut personalizat: pe linkul trupei, sau după ora zilei */
+/* salut personalizat: pe linkul trupei, sau din GREETINGS (program.js),
+   scris ca la mașina de scris când se schimbă */
+let lastGreet='';
 function updateGreet(n){
   const g=document.getElementById('greet');
+  let txt;
+  if(TRUPA) txt=`salut, ${TRUPE_IDS[TRUPA]} · programul vostru`;
+  else{
+    const h=n&&n.hm?+n.hm.slice(0,2):new Date().getHours();
+    const slot=h<5?'noapte':h<10?'dimineata':h<18?'zi':'seara';
+    const pool=(typeof GREETINGS!=='undefined'&&GREETINGS[slot]&&GREETINGS[slot].length)?GREETINGS[slot]:['salut, ideo'];
+    const doy=Math.floor(Date.now()/86400000);
+    txt=pool[(doy+h)%pool.length];
+  }
+  if(txt===lastGreet) return;
+  lastGreet=txt;
   g.hidden=false;
-  if(TRUPA){g.textContent=`salut, ${TRUPE_IDS[TRUPA]} · programul vostru`;return;}
-  const h=n&&n.hm?+n.hm.slice(0,2):new Date().getHours();
-  g.textContent=h<5?'somn ușor, ideo':h<10?'bună dimineața, ideo':h<18?'salut, ideo':'seară faină, ideo';
+  clearInterval(g._tw);
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){g.textContent=txt;return;}
+  g.innerHTML='<span class="gtxt"></span><span class="gcursor">▌</span>';
+  const t=g.querySelector('.gtxt');let i=0;
+  g._tw=setInterval(()=>{t.textContent=txt.slice(0,++i);if(i>=txt.length)clearInterval(g._tw);},45);
 }
 
 /* pe linkul unei trupe, evenimentele ei primesc marcaj */
