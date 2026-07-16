@@ -442,6 +442,9 @@ function gridHtml(d){
   const keys=[...MAINCOLS.map(c=>c[0])];
   evs.forEach(e=>{const k=colOf(e);if(!keys.includes(k))keys.push(k);});
   const cols=[];
+  /* finalul vizual: un bloc nu poate fi mai scund de ~25 min, deci culoarul
+     lui e ocupat pana acolo; altfel blocul urmator s-ar desena peste el */
+  const vEnd=e=>Math.max(endOf(e),mins(e.t)+25);
   keys.forEach(c=>{
     const list=evs.filter(e=>colOf(e)===c).sort((a,b)=>mins(a.t)-mins(b.t));
     if(!list.length)return;
@@ -449,7 +452,7 @@ function gridHtml(d){
     list.forEach(e=>{
       let li=lanes.findIndex(end=>end<=mins(e.t));
       if(li<0){li=lanes.length;lanes.push(0);}
-      lanes[li]=endOf(e); e._lane=li;
+      lanes[li]=vEnd(e); e._lane=li;
     });
     const main=MAINCOLS.find(m=>m[0]===c);
     cols.push({c,label:main?main[1]:c.slice(4),list,n:lanes.length});
@@ -539,6 +542,7 @@ infoS.innerHTML=`
       ${Object.values(CATS).map(c=>`<div class="irow"><span class="ra" style="display:flex;align-items:center;gap:8px"><span style="width:10px;height:10px;background:${c.color};flex:0 0 auto"></span>${c.label}</span></div>`).join('')}
       <div class="irow"><span class="ra" style="display:flex;align-items:center;gap:8px"><span style="width:18px;border-top:2px dashed rgba(255,196,46,.7);flex:0 0 auto"></span>transport</span></div>
       <div class="irow"><span class="ra" style="display:flex;align-items:center;gap:8px"><span style="width:18px;height:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);flex:0 0 auto"></span>mese</span></div>
+      <div class="irow"><span class="ra" style="display:flex;align-items:center;gap:8px"><span style="width:18px;height:10px;border:1px dashed var(--muted);flex:0 0 auto"></span>montare / repetiție (contur punctat)</span></div>
       <div class="irow"><span class="ra" style="font-family:var(--mono);font-size:12px;color:var(--amber-dim)">@tehnic · montări, repetiții, echipa tehnică</span></div>
     </div>
     <div class="iblock wide acc">
@@ -679,6 +683,7 @@ function updateNow(){
   document.querySelectorAll('[data-gridnow]').forEach(x=>x.hidden=true);
   if(nowlineEl.parentNode) nowlineEl.remove();
   fab.hidden=!n.day;
+  window.CURRENT_DAY=n.day||null;
   document.getElementById('egg').hidden=!(n.day==='ma4'&&n.mins>=mins('22:30'));
   updateGreet(n);
   if(!n.day) return;

@@ -70,20 +70,27 @@ const counts={}; /* day -> {eid: n} */
 const loadedDays=new Set();
 const dayOf=el=>{const s=el.closest('section.day');return s?s.id.replace('day-',''):'';};
 
-/* camera din colțul cardului */
-function injectCorners(day){
-  document.querySelectorAll(`#day-${CSS.escape(day)} .viewlist .ev:not(.compact)`).forEach(ev=>{
-    if(ev.querySelector('.jcorner'))return;
-    const b=document.createElement('button');
+/* camera din colțul cardului: goală doar pe ziua curentă (pozele se fac
+   pe loc); pe celelalte zile apare doar contorul, unde există poze */
+function mkCorner(ev){
+  let b=ev.querySelector('.jcorner');
+  if(!b){
+    b=document.createElement('button');
     b.className='jcorner'; b.title='jurnal foto'; b.textContent='📷';
     ev.appendChild(b);
     b.addEventListener('click',e=>{e.stopPropagation();toggleGallery(ev,b);});
-  });
+  }
+  return b;
+}
+function injectCorners(day){
+  if(day!==window.CURRENT_DAY)return;
+  document.querySelectorAll(`#day-${CSS.escape(day)} .viewlist .ev:not(.compact)`).forEach(mkCorner);
 }
 function setCorner(ev,n){
-  const b=ev.querySelector('.jcorner'); if(!b)return;
-  b.textContent=n?`📷 ${n}`:'📷';
-  b.classList.toggle('has',!!n);
+  if(!n){const b=ev.querySelector('.jcorner');if(b){b.textContent='📷';b.classList.remove('has');}return;}
+  const b=mkCorner(ev);
+  b.textContent=`📷 ${n}`;
+  b.classList.add('has');
 }
 
 async function refreshCounts(day){
