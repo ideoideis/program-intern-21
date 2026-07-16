@@ -446,6 +446,24 @@ const FORMATORI = [
  ['Școala de vară MASCA','de confirmat'],
 ];
 
+/* ateliere comunitate (Art&Play): tabelul din +info
+   [atelier, participanți, sală, zile, necesar tehnic, necesar producție] */
+const ARTPLAY_INFO = [
+ ['Show Your Moves (dans · breaking)','10','Șc. 5 · sala 2 (spațioasă)','joi · vineri · sâmbătă','sonorizare',''],
+ ['Stand Up împotriva hărțuirii stradale (activism feminist)','20','Șc. 5 · sala 1','joi','videoproiector + boxe',''],
+ ['Se întâmplă între N-O-I (psihoeducație 10-13 ani)','15','Șc. 5 · sala 1','vineri · sâmbătă · duminică','','coli, pixuri/creioane, carioci, flipchart & foi'],
+ ['Se întâmplă între N-O-I (psihoeducație 14-18 ani)','15','Șc. 5 · sala 1','vineri · sâmbătă · duminică','','coli, pixuri/creioane, carioci, flipchart & foi'],
+ ['Pauza de la dezinformare (educație media, profesori)','15','Șc. 5 · sala 3','vineri','',''],
+ ['De la pasiune la profesie: unde-i locul meu? (orientare vocațională)','15','Șc. 5 · sala 2','vineri · sâmbătă · duminică','videoproiector','coli, pixuri/creioane, carioci, flipchart & foi'],
+ ['Mintea ta nu e a ta (în totalitate) · AI, biasuri (educație media, copii)','15','Șc. 5 · sala 3','vineri','',''],
+ ['Siguranța bebelușului (Asociația Moașelor)','20','Șc. 5 · sala 4','sâmbătă','',''],
+ ['Animalul care te locuiește (arte grafice)','15','Șc. 5 · sala 3','duminică · luni · marți','',''],
+ ['Prim Ajutor pediatric (Asociația Moașelor)','20','Șc. 5 · sala 4','duminică','',''],
+ ['Alexandria la 50 de grade (prospectivă)','30','Piața · scena mică','duminică','',''],
+ ['Cetățenie activă: manual de utilizare (educație civică 11-14)','15','Șc. 5 · sala 1','luni','videoproiector','coli, pixuri/creioane, carioci, foi de flipchart'],
+ ['Orașul e al tău · dacă știi cum (educație civică 15-19)','15','Șc. 5 · sala 1','luni','videoproiector','coli, pixuri/creioane, carioci, foi de flipchart'],
+];
+
 /* logistica Art&Play, cu cheia = titlul evenimentului din program */
 const LOGISTICS = {
  'Show Your Moves': {sala:'sala 2 (spațioasă)', n:'10', tehnic:'sonorizare'},
