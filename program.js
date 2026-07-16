@@ -106,7 +106,7 @@ const DAYS = [
    {k:'t', t:'00:15', route:'Piața Ideo Ideis → Cămin'},
  ]},
  {id:'v31', dw:'v', dn:'31', full:'31 iulie', h2:'vineri', events:[
-   {k:'t', t:'08:15', route:'Cămin → Alex Tell'},
+   {k:'t', t:'08:15', route:'Cămin → CMT'},
    {k:'m', t:'08:30', e:'09:45', meal:'mic dejun', loc:'Alex Tell'},
    {k:'e', t:'10:00', e:'14:00', cat:'ateliere', loc:'Școala 5', title:'ateliere teatru tânăr'},
    {k:'e', t:'10:00', e:'10:30', cat:'parada', loc:'Kaufland', locd:'în magazin', title:'paradă papainoage „Actori la înălțime”', sub:['UNATC']},
@@ -142,7 +142,7 @@ const DAYS = [
    {k:'t', t:'00:15', route:'Piața Ideo Ideis → Cămin'},
  ]},
  {id:'s1', dw:'s', dn:'1', full:'1 august', h2:'sâmbătă', events:[
-   {k:'t', t:'08:15', route:'Cămin → Alex Tell'},
+   {k:'t', t:'08:15', route:'Cămin → CMT'},
    {k:'m', t:'08:30', e:'09:45', meal:'mic dejun', loc:'Alex Tell'},
    {k:'e', t:'10:00', e:'14:00', cat:'ateliere', loc:'Școala 5', title:'ateliere teatru tânăr'},
    {k:'e', t:'10:00', e:'12:30', cat:'artplay', loc:'Școala 5', title:'Siguranța bebelușului', sub:['puericultură · pentru părinți']},
@@ -179,7 +179,7 @@ const DAYS = [
    {k:'t', t:'00:00', route:'Piața Ideo Ideis → Cămin'},
  ]},
  {id:'d2', dw:'d', dn:'2', full:'2 august', h2:'duminică', events:[
-   {k:'t', t:'08:15', route:'Cămin → Alex Tell'},
+   {k:'t', t:'08:15', route:'Cămin → CMT'},
    {k:'m', t:'08:30', e:'09:45', meal:'mic dejun', loc:'Alex Tell'},
    {k:'e', t:'09:30', e:'10:00', c:true, cat:'mica', loc:'Piața Ideo Ideis', locd:'scena mică', title:'repetiție · „Năzdrăvanii mărilor”'},
    {k:'e', t:'10:00', e:'14:00', cat:'ateliere', loc:'Școala 5', title:'ateliere arte alăturate', sub:['+ sălile de sport „Mihai Viteazul” & „Ștefan cel Mare”']},
@@ -195,7 +195,7 @@ const DAYS = [
    {k:'m', t:'14:00', e:'15:30', meal:'prânz', loc:'Alex Tell'},
    {k:'e', t:'14:30', e:'16:30', cat:'artplay', loc:'Școala 5', title:'Se întâmplă între N-O-I', sub:['psihoeducație · 14-18 ani']},
    {k:'e', t:'15:00', e:'18:00', cat:'artplay', loc:'Școala 5', title:'De la pasiune la profesie: unde-i locul meu?', sub:['orientare vocațională']},
-   {k:'t', t:'15:30', route:'Alex Tell → Cămin'},
+   {k:'t', t:'15:30', route:'CMT → Cămin'},
    {k:'e', t:'16:00', e:'18:00', cat:'artplay', loc:'Piața Ideo Ideis', locd:'lângă scena mică', title:'Alexandria la 50 de grade', sub:['atelier de prospectivă']},
    {k:'t', t:'16:30', route:'Cămin → CMT', trupa:'brainstorming', note:'Brainstorming'},
    {k:'e', t:'16:30', e:'17:30', c:true, cat:'tt', loc:'CMT', trupa:'brainstorming', title:'repetiție și montare · <b>Brainstorming</b>'},
@@ -218,7 +218,7 @@ const DAYS = [
  ]},
  {id:'l3', dw:'l', dn:'3', full:'3 august', h2:'luni', events:[
    {k:'x', t:'toată ziua', ts:'08:00', text:'demontare și strâns outdoor · Piața Ideo Ideis'},
-   {k:'t', t:'08:15', route:'Cămin → Alex Tell'},
+   {k:'t', t:'08:15', route:'Cămin → CMT'},
    {k:'m', t:'08:30', e:'09:45', meal:'mic dejun', loc:'Alex Tell'},
    {k:'e', t:'10:00', e:'14:00', cat:'ateliere', loc:'Școala 5', title:'ateliere arte alăturate', sub:['+ sălile de sport „Mihai Viteazul” & „Ștefan cel Mare”']},
    {k:'e', t:'10:00', e:'12:00', cat:'artplay', loc:'Școala 5', title:'Cetățenie activă: manual de utilizare', sub:['educație civică · 11-14 ani']},
@@ -239,7 +239,7 @@ const DAYS = [
    {k:'t', t:'22:45', route:'CMT → Cămin'},
  ]},
  {id:'ma4', dw:'ma', dn:'4', full:'4 august', h2:'marți', events:[
-   {k:'t', t:'08:15', route:'Cămin → Alex Tell'},
+   {k:'t', t:'08:15', route:'Cămin → CMT'},
    {k:'m', t:'08:30', e:'09:45', meal:'mic dejun', loc:'Alex Tell'},
    {k:'e', t:'10:00', e:'14:00', cat:'ateliere', loc:'Școala 5', title:'ateliere arte alăturate', sub:['+ sălile de sport „Mihai Viteazul” & „Ștefan cel Mare”']},
    {k:'e', t:'10:00', e:'12:00', cat:'artplay', loc:'Școala 5', title:'Animalul care te locuiește', sub:['atelier de arte grafice']},
