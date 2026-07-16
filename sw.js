@@ -6,6 +6,7 @@ const ASSETS = [
   './',
   'index.html',
   'program.js',
+  'live.js',
   'fonts/soehne-buch.woff2',
   'fonts/soehne-halbfett.woff2',
   'assets/eticheta-ideoideis.png',
@@ -28,7 +29,7 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   const req = e.request;
   if (req.method !== 'GET' || new URL(req.url).origin !== location.origin) return;
-  const fresh = req.mode === 'navigate' || req.url.includes('program.js');
+  const fresh = req.mode === 'navigate' || req.url.includes('program.js') || req.url.includes('live.js');
   if (fresh) {
     /* network-first: date proaspete când există net, cache când nu */
     e.respondWith(

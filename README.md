@@ -66,10 +66,28 @@ Id-uri: `leira`, `atelierul`, `artwork`, `amprente`, `brainstorming`,
 - `DEMO_NOW` — simulează marcajul „acum” în afara festivalului
   (`null` ca să îl stingi).
 
+## Partea live (jurnal foto · anunțuri · feedback)
+
+Rulează [`supabase/setup-21.sql`](supabase/setup-21.sql) O DATĂ în
+Supabase -> SQL Editor (proiectul comun). Până atunci, partea live stă
+ascunsă și pagina merge normal. După:
+
+- **jurnal foto**: buton „📷 jurnal” pe fiecare eveniment; oricine are
+  linkul poate adăuga poze (compresie automată pe telefon, ~1600px);
+  „toate pozele” în +info. Fișierele: bucketul `jurnal-21`; metadatele:
+  tabela `jurnal_photos`. Nimic nu se poate șterge din pagină.
+- **anunțuri**: banner sub banda de zile cu ultimul anunț (sub 24 h);
+  publicare din +info. Tabela `anunturi_21`.
+- **feedback**: idee / problemă, din +info. Tabela `feedback_21`.
+
+Totul e decuplat: dacă Supabase nu răspunde, programul nu e afectat.
+
 ## Structură
 
 - `index.html` — pagina (stil + logică, fără dependențe externe)
 - `program.js` — datele programului (singurul fișier de editat uzual)
+- `live.js` — jurnal foto, anunțuri, feedback (Supabase)
+- `supabase/setup-21.sql` — de rulat o dată în SQL Editor
 - `sw.js` — service worker (offline)
 - `fonts/` — Söhne (buch + halbfett)
 - `assets/` — eticheta ideo ideis, favicon

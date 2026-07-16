@@ -202,11 +202,27 @@ footer a{color:var(--amber);text-decoration:none}
 .egg[hidden]{display:none}
 .gblock.mine{border-left-width:6px}
 
+/* ── jurnal foto, anunțuri, feedback (live) ── */
+.jbtn{display:inline-block;margin-top:9px;font-family:var(--mono);font-size:11px;color:var(--muted);border:1px dashed var(--line);padding:3px 8px}
+.jbtn:hover{color:var(--amber);border-color:var(--amber)}
+.jpanel{margin-top:8px;border-top:1px dashed var(--line);padding-top:8px}
+.jthumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:4px;margin-top:8px}
+.jthumbs img{width:100%;height:84px;object-fit:cover;display:block;background:var(--panel-2)}
+.jadd{display:inline-block;font-family:var(--mono);font-size:11px;color:var(--amber);border:1px solid rgba(255,196,46,.55);padding:4px 9px;cursor:pointer}
+.jnote{font-family:var(--mono);font-size:11px;color:var(--muted);margin-left:8px}
+.anunt{border:1px solid rgba(255,196,46,.55);background:rgba(255,196,46,.08);color:var(--fg);padding:10px 12px;font-size:14px;margin-top:12px}
+.anunt small{font-family:var(--mono);color:var(--amber);margin-left:6px}
+.fbox{width:100%;background:var(--panel);border:1px solid var(--line);color:var(--fg);padding:9px 11px;font-size:14px;font-family:inherit;margin-top:10px}
+.fsend{margin-top:8px;background:var(--red);color:#fff;font-weight:600;font-size:13px;padding:8px 14px}
+.ftips{display:flex;gap:6px;margin-top:10px}
+.ftip{border:1px solid var(--line);padding:5px 10px;font-size:12px;color:var(--muted)}
+.ftip[aria-pressed="true"]{border-color:var(--red);color:var(--red);font-weight:600}
+
 /* ── print: foi pe pereți pentru backstage ── */
 @media print{
   :root{color-scheme:light}
   body{background:#fff;color:#111}
-  nav.rail,.filters,.fab,.public-link,.greet,.egg,.viewgrid,.nowline,.updated,.nowtag,.minetag,.xbtn{display:none!important}
+  nav.rail,.filters,.fab,.public-link,.greet,.egg,.viewgrid,.nowline,.updated,.nowtag,.minetag,.xbtn,.jbtn,.jpanel,#anuntbar,[data-live]{display:none!important}
   header.site{padding:0}
   .eticheta{padding:0;border:1px solid #ddd}
   h1{font-size:2rem;margin:12px 0 0}
@@ -254,6 +270,7 @@ footer a{color:var(--amber);text-decoration:none}
 <nav class="rail" aria-label="zilele festivalului"><div class="rail-inner" id="rail"></div></nav>
 
 <div class="wrap">
+  <div id="anuntbar"></div>
   <div class="filters collapsed" id="filters">
     <div class="viewtog" role="group" aria-label="mod de afișare">
       <button class="vbtn" data-view="lista" aria-pressed="true">listă</button>
@@ -354,8 +371,10 @@ function detailRows(ev){
   }
   return rows.length?{label:ev.xlabel||'detalii',rows}:null;
 }
+const slug=s=>s.toLowerCase().replace(/<[^>]*>/g,'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,28);
 function evHtml(ev,dayId){
   const cat=CATS[ev.cat]||CATS.alt;
+  const eid=`${dayId}-${ev.t.replace(':','')}-${slug(ev.title)}`;
   const lg=LOGISTICS[ev.title];
   const det=detailRows(ev);
   const search=[ev.title,ev.loc,ev.locd,(ev.sub||[]).join(' '),(det?det.rows.flat().join(' '):'')].join(' ').toLowerCase();
@@ -367,7 +386,7 @@ function evHtml(ev,dayId){
   const subs=(ev.sub||[]).map(s=>`<div class="sub">${s}</div>`).join('');
   const room=lg&&lg.sala?` · ${esc(lg.sala)} <span style="color:var(--muted)">· orientativ</span>`:'';
   const locline=ev.loc?`<div class="locline"><b>${esc(ev.loc)}</b>${ev.locd?' · '+esc(ev.locd):''}${room}</div>`:'';
-  return `<article class="ev${ev.c?' compact':''}" data-cat="${ev.cat||'alt'}"${ev.c?' data-tech="1"':''}${ev.trupa?` data-trupa="${ev.trupa}"`:''} data-s="${mins(ev.t)}"${ev.e?` data-e="${mins(ev.e)}"`:''} data-search="${esc(search)}" style="--cat:${cat.color}">
+  return `<article class="ev${ev.c?' compact':''}" data-eid="${eid}" data-cat="${ev.cat||'alt'}"${ev.c?' data-tech="1"':''}${ev.trupa?` data-trupa="${ev.trupa}"`:''} data-s="${mins(ev.t)}"${ev.e?` data-e="${mins(ev.e)}"`:''} data-search="${esc(search)}" style="--cat:${cat.color}">
     <div class="tcol"><div class="t1">${ev.t}</div>${ev.e?`<div class="t2">${ev.e}</div>`:''}</div>
     <div>
       <div class="title">${ev.title}<span class="nowtag" hidden>acum</span></div>
@@ -612,6 +631,7 @@ function selectDay(id,scroll){
     if(window.scrollY>y) window.scrollTo({top:y,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
   }
   applyFilters();
+  document.dispatchEvent(new CustomEvent('daychange',{detail:id}));
 }
 
 /* ── "acum": marcaje pe ora reală ───────── */
@@ -708,5 +728,6 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden)updateNow(
 /* offline: service worker cu cache local (vezi sw.js) */
 if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
+<script src="live.js" defer></script>
 </body>
 </html>
