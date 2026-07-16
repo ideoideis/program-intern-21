@@ -1,12 +1,12 @@
 -- ============================================================
--- vibe check · nume opțional pe poze + ștergerea propriei poze
+-- vibe check · descriere opțională pe postări + ștergerea propriei postări
 -- Rulează O DATĂ în Supabase -> SQL Editor (idempotent).
 -- Fără acest script, vibe-ul merge oricum, doar că pozele nu au
 -- nume de autor și nu pot fi șterse din pagină.
 -- ============================================================
 
 alter table public.jurnal_photos
-  add column if not exists author text check (char_length(author) <= 60);
+  add column if not exists caption text check (char_length(caption) <= 80);
 alter table public.jurnal_photos
   add column if not exists token text;
 

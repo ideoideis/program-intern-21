@@ -158,11 +158,15 @@ async function syncVibeDot(){
 }
 
 /* ── feed-ul ── */
+const isVideo=p=>/\.(mp4|mov|webm|m4v)$/i.test(p);
 const vitemHtml=r=>{
   const own=mine()[r.id];
+  const media=isVideo(r.path)
+    ?`<video controls playsinline preload="metadata" src="${pubUrl(r.path)}"></video>`
+    :`<img loading="lazy" src="${pubUrl(r.path)}" alt="" data-lbx>`;
   return `<figure class="vitem" data-id="${r.id}">
-    <img loading="lazy" src="${pubUrl(r.path)}" alt="" data-lbx>
-    <figcaption class="vmeta">${fmtT(r.created_at)} · ${esc(r.author||'—')}${own?' <button class="vdel" title="șterge poza ta">✕</button>':''}</figcaption>
+    ${media}
+    <figcaption class="vmeta">${fmtT(r.created_at)}${r.caption?' · '+esc(r.caption):''}${own?' <button class="vdel" title="șterge postarea ta">✕</button>':''}</figcaption>
   </figure>`;
 };
 const vsepHtml=day=>`<div class="vsep"><span>${esc(DAYLBL[day]||day)}</span></div>`;
@@ -173,7 +177,7 @@ async function feedLoad(reset){
     feedShown=0;feedLastDay=null;
     box.innerHTML='<div class="vskel" style="height:220px"></div><div class="vskel" style="height:140px"></div><div class="vskel" style="height:180px"></div>';
   }
-  const sel=hasAuthorCol?'id,path,day,created_at,author':'id,path,day,created_at';
+  const sel=hasAuthorCol?'id,path,day,created_at,caption':'id,path,day,created_at';
   let rows,total;
   try{
     ({rows,total}=await sbGetCount(`/jurnal_photos?select=${sel}&order=created_at.desc&limit=${PAGE}&offset=${feedShown}`));
@@ -226,7 +230,7 @@ document.addEventListener('click',async e=>{
 /* ── capturarea: cameră → preview → nume opțional → postează ── */
 function openCapture(){
   const input=document.createElement('input');
-  input.type='file'; input.accept='image/*'; input.setAttribute('capture','environment');
+  input.type='file'; input.accept='image/*,video/mp4,video/quicktime,video/webm';
   input.hidden=true; document.body.appendChild(input);
   input.addEventListener('change',()=>{
     const f=input.files&&input.files[0];
@@ -239,39 +243,47 @@ function openSheet(file){
   let sh=document.getElementById('vsheet'); if(sh)sh.remove();
   sh=document.createElement('div'); sh.id='vsheet';
   const url=URL.createObjectURL(file);
+  const vid=file.type.startsWith('video/');
   sh.innerHTML=`<button class="vx" title="renunță">✕</button>
-    <img src="${url}" alt="">
-    <input class="vname" type="text" maxlength="40" placeholder="numele tău (opțional)" value="${esc(localStorage.getItem('vibe-name')||'')}">
+    ${vid?`<video src="${url}" controls muted playsinline></video>`:`<img src="${url}" alt="">`}
+    <input class="vname" type="text" maxlength="80" placeholder="descriere (opțional)">
     <button class="vpost">postează</button>
     <p class="jnote verr" hidden></p>`;
   document.body.appendChild(sh);
   sh.querySelector('.vx').addEventListener('click',()=>{URL.revokeObjectURL(url);sh.remove();});
   sh.querySelector('.vpost').addEventListener('click',async()=>{
     const btn=sh.querySelector('.vpost'), err=sh.querySelector('.verr');
-    const author=sh.querySelector('.vname').value.trim().slice(0,40);
-    if(author)localStorage.setItem('vibe-name',author);
+    const caption=sh.querySelector('.vname').value.trim().slice(0,80);
     btn.disabled=true; btn.textContent='se încarcă…'; err.hidden=true;
     try{
       if(!navigator.onLine)throw new Error('ești offline · încearcă mai târziu');
-      const blob=await shrink(file);
-      if(!blob)throw new Error('formatul nu e suportat');
+      let blob, ctype, ext;
+      if(vid){
+        if(file.size>50*1024*1024)throw new Error('videoclipul e prea mare (max 50MB)');
+        blob=file; ctype=file.type||'video/mp4';
+        ext=ctype.includes('quicktime')?'mov':ctype.includes('webm')?'webm':'mp4';
+      }else{
+        blob=await shrink(file);
+        if(!blob)throw new Error('formatul nu e suportat');
+        ctype='image/jpeg'; ext='jpg';
+      }
       const day=window.CURRENT_DAY||'x';
-      const path=`${day}/${Date.now()}${Math.random().toString(36).slice(2,6)}.jpg`;
+      const path=`${day}/${Date.now()}${Math.random().toString(36).slice(2,6)}.${ext}`;
       const up=await sb(`/storage/v1/object/${BUCKET}/${path}`,{method:'POST',
-        headers:{'Content-Type':'image/jpeg','x-upsert':'false'},body:blob});
+        headers:{'Content-Type':ctype,'x-upsert':'false'},body:blob});
       if(!up.ok)throw new Error('nu a mers uploadul · mai încearcă');
       const token=(crypto.randomUUID?crypto.randomUUID():String(Math.random()).slice(2));
       let row=null;
       try{
-        row=await sbIns('jurnal_photos',{event_id:'vibe',day,title:'',path,author:author||null,token},true);
-      }catch(e2){ /* coloanele author/token nu există încă: postăm simplu */
+        row=await sbIns('jurnal_photos',{event_id:'vibe',day,title:'',path,caption:caption||null,token},true);
+      }catch(e2){ /* coloanele caption/token nu există încă: postăm simplu */
         row=await sbIns('jurnal_photos',{event_id:'vibe',day,title:'',path},true);
       }
       if(row&&row.id&&row.token)rememberMine(row.id,row.token);
-      /* optimist: poza intră în capul feed-ului */
+      /* optimist: postarea intră în capul feed-ului */
       const box=document.getElementById('vfeed');
       if(box&&vibeBuilt){
-        const fake={id:row?row.id:0,path,day,created_at:new Date().toISOString(),author:author||null};
+        const fake={id:row?row.id:0,path,day,created_at:new Date().toISOString(),caption:caption||null};
         const firstSep=box.querySelector('.vsep');
         if(firstSep&&firstSep.textContent.includes(DAYLBL[day]||day)){
           firstSep.insertAdjacentHTML('afterend',vitemHtml(fake));
