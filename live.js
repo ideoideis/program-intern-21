@@ -77,7 +77,7 @@ function mkCorner(ev){
   if(!b){
     b=document.createElement('button');
     b.className='jcorner'; b.title='jurnal foto'; b.textContent='📷';
-    ev.appendChild(b);
+    (ev.querySelector('.tcol')||ev).appendChild(b);
     b.addEventListener('click',e=>{e.stopPropagation();toggleGallery(ev,b);});
   }
   return b;
