@@ -99,8 +99,8 @@ let ACTIVE='';
 
 function ensureVibeUI(){
   if(vibeChip)return;
-  const rail=document.getElementById('rail'); if(!rail)return;
-  /* chipul din rail, ultimul, după +info */
+  const rail=document.getElementById('railpins')||document.getElementById('rail'); if(!rail)return;
+  /* chipul stă în zona fixă, după +info: mereu la vedere */
   vibeChip=document.createElement('button');
   vibeChip.className='daychip vibe'; vibeChip.dataset.day='vibe';
   vibeChip.setAttribute('aria-selected','false'); vibeChip.hidden=true;

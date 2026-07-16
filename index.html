@@ -48,8 +48,10 @@ h1{font-weight:700;font-size:clamp(2.5rem,10vw,4.2rem);line-height:.98;letter-sp
 
 /* ── day rail ────────────────────────────── */
 nav.rail{position:sticky;top:0;z-index:60;background:var(--ground);border-bottom:1px solid var(--line);margin-top:30px}
-.rail-inner{display:flex;gap:4px;overflow-x:auto;padding:10px 16px;max-width:680px;margin:0 auto;scrollbar-width:none}
-.rail-inner::-webkit-scrollbar{display:none}
+.rail-inner{display:flex;gap:6px;padding:10px 16px;max-width:680px;margin:0 auto}
+.rail-days{display:flex;gap:4px;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}
+.rail-days::-webkit-scrollbar{display:none}
+.rail-pins{display:flex;gap:4px;flex:0 0 auto;border-left:1px solid var(--line);padding-left:8px}
 .daychip{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;min-width:50px;padding:7px 9px 6px;border:1px solid transparent;color:var(--muted)}
 .daychip .dw{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase}
 .daychip .dn{font-weight:700;font-size:21px;line-height:1.1}
@@ -313,7 +315,7 @@ section.day.on{display:block}
   </div>
 </header>
 
-<nav class="rail" aria-label="zilele festivalului"><div class="rail-inner" id="rail"></div></nav>
+<nav class="rail" aria-label="zilele festivalului"><div class="rail-inner"><div class="rail-days" id="rail"></div><div class="rail-pins" id="railpins"></div></div></nav>
 
 <div class="wrap">
   <div id="anuntbar"></div>
@@ -394,7 +396,7 @@ const infoChip=document.createElement('button');
 infoChip.className='daychip info'; infoChip.dataset.day='info'; infoChip.setAttribute('aria-selected','false');
 infoChip.innerHTML='<span class="dw">+</span><span class="dn">info</span>';
 infoChip.addEventListener('click',()=>selectDay('info',true));
-railEl.appendChild(infoChip);
+document.getElementById('railpins').appendChild(infoChip);
 
 /* ── vederea listă ──────────────────────── */
 /* logistica pe două niveluri: sala + trainerul pe card,
@@ -752,6 +754,12 @@ daysEl.addEventListener('click',e=>{
 /* schimbarea zilei */
 function selectDay(id,scroll){
   document.querySelectorAll('.daychip').forEach(c=>c.setAttribute('aria-selected',String(c.dataset.day===id)));
+  const ac=document.querySelector(`.daychip[data-day="${id}"]`), rd=document.getElementById('rail');
+  if(ac&&rd&&rd.contains(ac)){
+    const l=ac.offsetLeft-rd.offsetLeft;
+    if(l<rd.scrollLeft) rd.scrollLeft=Math.max(0,l-8);
+    else if(l+ac.offsetWidth>rd.scrollLeft+rd.clientWidth) rd.scrollLeft=l+ac.offsetWidth-rd.clientWidth+8;
+  }
   document.querySelectorAll('section.day').forEach(s=>s.classList.toggle('on',s.id==='day-'+id));
   if(scroll){
     const rail=document.querySelector('nav.rail');
@@ -887,6 +895,11 @@ if(TRUPA){
 
 /* pornim pe ziua curentă a festivalului; în afara lui, pe cea mai apropiată */
 selectDay(roNow().day||nearestDay(),false);
+/* după încărcarea fontului, lățimile chipurilor se schimbă: readucem ziua activă în cadru */
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>setTimeout(()=>{
+  const cur=document.querySelector('.daychip[aria-selected="true"]');
+  if(cur)selectDay(cur.dataset.day,false);
+},80));
 updateNow();
 setInterval(updateNow,30000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)updateNow();});
@@ -894,6 +907,6 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden)updateNow(
 /* offline: service worker cu cache local (vezi sw.js) */
 if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
-<script src="live.js?v=5" defer></script>
+<script src="live.js?v=6" defer></script>
 </body>
 </html>
