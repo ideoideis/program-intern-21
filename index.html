@@ -224,8 +224,6 @@ section.day.on{display:block}
 .vitem video{display:block;width:100%;background:var(--panel)}
 #vsheet video{max-width:100%;max-height:56vh;background:var(--panel);margin-top:26px}
 .vmeta{margin-top:6px;font-family:var(--mono);font-size:11px;color:var(--muted)}
-.vdel{font-family:var(--mono);font-size:11px;color:var(--muted);margin-left:10px;padding:0 3px}
-.vdel:hover{color:var(--red)}
 .vskel{background:var(--panel);margin:0 0 14px}
 .vmore,.vretry{display:block;width:100%;margin:14px 0;border:1px dashed var(--line);color:var(--muted);font-family:var(--mono);font-size:12px;padding:10px}
 .vmore:hover,.vretry:hover{color:var(--amber);border-color:var(--amber)}
@@ -847,6 +845,6 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden)updateNow(
 /* offline: service worker cu cache local (vezi sw.js) */
 if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
-<script src="live.js?v=3" defer></script>
+<script src="live.js?v=4" defer></script>
 </body>
 </html>

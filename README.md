@@ -75,10 +75,10 @@ ascunsă și pagina merge normal. După:
 - **vibe check**: tabul „vibe” din rail (apare doar în zilele
   festivalului) e casa pozelor: feed invers cronologic, separat pe
   zile, upload din FAB-ul cameră (compresie pe telefon, 1280px JPEG),
-  nume opțional, ștergerea propriei poze. Fișiere: bucketul
-  `jurnal-21`; metadate: tabela `jurnal_photos`. Pentru nume + ștergere
-  proprie rulează și [`supabase/setup-vibe.sql`](supabase/setup-vibe.sql)
-  (fără el, vibe-ul merge, dar fără autor și fără ✕).
+  descriere opțională. Fișiere: bucketul `jurnal-21`; metadate:
+  tabela `jurnal_photos`. Pentru salvarea descrierilor rulează și
+  [`supabase/setup-vibe.sql`](supabase/setup-vibe.sql). Postările nu se
+  pot șterge din pagină; curățenia se face din dashboard.
 - **anunțuri**: banner sub banda de zile cu ultimul anunț (sub 24 h);
   publicare din +info. Tabela `anunturi_21`.
 - **feedback**: idee / problemă, din +info. Tabela `feedback_21`.

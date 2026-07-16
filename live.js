@@ -93,9 +93,6 @@ let vibeChip=null, vibeSec=null, camFab=null, vibeBuilt=false;
 let feedShown=0, feedTotal=0, feedLastDay=null, hasAuthorCol=true;
 let ACTIVE='';
 
-const mine=()=>{try{return JSON.parse(localStorage.getItem('vibe-mine')||'{}');}catch(e){return {};}};
-const rememberMine=(id,token)=>{const m=mine();m[id]=token;localStorage.setItem('vibe-mine',JSON.stringify(m));};
-
 function ensureVibeUI(){
   if(vibeChip)return;
   const rail=document.getElementById('rail'); if(!rail)return;
@@ -161,13 +158,12 @@ async function syncVibeDot(){
 /* ── feed-ul ── */
 const isVideo=p=>/\.(mp4|mov|webm|m4v)$/i.test(p);
 const vitemHtml=r=>{
-  const own=mine()[r.id];
   const media=isVideo(r.path)
     ?`<video controls playsinline preload="metadata" src="${pubUrl(r.path)}"></video>`
     :`<img loading="lazy" src="${pubUrl(r.path)}" alt="" data-lbx onerror="var f=this.closest('.vitem');if(f)f.remove()">`;
   return `<figure class="vitem" data-id="${r.id}">
     ${media}
-    <figcaption class="vmeta">${fmtT(r.created_at)}${r.caption?' · '+esc(r.caption):''}${own?' <button class="vdel" title="șterge postarea ta">✕</button>':''}</figcaption>
+    <figcaption class="vmeta">${fmtT(r.created_at)}${r.caption?' · '+esc(r.caption):''}</figcaption>
   </figure>`;
 };
 const vsepHtml=day=>`<div class="vsep"><span>${esc(DAYLBL[day]||day)}</span></div>`;
@@ -209,21 +205,8 @@ async function feedLoad(reset){
   }
 }
 
-/* ștergerea propriei poze (token în localStorage) + lightbox pe imagini */
-document.addEventListener('click',async e=>{
-  const del=e.target.closest('.vdel');
-  if(del){
-    const fig=del.closest('.vitem'), id=+fig.dataset.id, token=mine()[id];
-    del.disabled=true;
-    try{
-      const r=await sb('/rest/v1/rpc/vibe_delete',{method:'POST',
-        headers:{'Content-Type':'application/json'},body:JSON.stringify({p_id:id,p_token:token})});
-      if(!r.ok)throw 0;
-      fig.remove(); feedTotal=Math.max(0,feedTotal-1);
-      document.getElementById('vcount').textContent=`${feedTotal} ${feedTotal===1?'poză':'poze'} · festivalul #21`;
-    }catch(err){del.disabled=false;del.textContent='nu s-a putut';setTimeout(()=>{del.textContent='✕';},2000);}
-    return;
-  }
+/* lightbox pe imaginile din feed */
+document.addEventListener('click',e=>{
   const img=e.target.closest('[data-lbx]');
   if(img)lightbox(img.getAttribute('src'));
 });
@@ -280,14 +263,12 @@ function openSheet(file){
       const up=await sb(`/storage/v1/object/${BUCKET}/${path}`,{method:'POST',
         headers:{'Content-Type':ctype,'x-upsert':'false'},body:blob});
       if(!up.ok)throw new Error('nu a mers uploadul · mai încearcă');
-      const token=(crypto.randomUUID?crypto.randomUUID():String(Math.random()).slice(2));
       let row=null;
       try{
-        row=await sbIns('jurnal_photos',{event_id:'vibe',day,title:'',path,caption:caption||null,token},true);
-      }catch(e2){ /* coloanele caption/token nu există încă: postăm simplu */
+        row=await sbIns('jurnal_photos',{event_id:'vibe',day,title:'',path,caption:caption||null},true);
+      }catch(e2){ /* coloana caption nu există încă: postăm simplu */
         row=await sbIns('jurnal_photos',{event_id:'vibe',day,title:'',path},true);
       }
-      if(row&&row.id&&row.token)rememberMine(row.id,row.token);
       /* optimist: postarea intră în capul feed-ului */
       const box=document.getElementById('vfeed');
       if(box&&vibeBuilt){
