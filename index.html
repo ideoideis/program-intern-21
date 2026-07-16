@@ -331,7 +331,7 @@ section.day.on{display:block}
 <div class="egg" id="egg" hidden>ne vedem la #22 ♥</div>
 <button class="fab" id="fab" hidden>acum<small id="fabt"></small></button>
 
-<script src="program.js"></script>
+<script src="program.js?v=2"></script>
 <script>
 /* ── utilitare ──────────────────────────── */
 const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -549,10 +549,11 @@ document.body.dataset.view='lista';
 /* ── tabul +info ────────────────────────── */
 const infoS=document.createElement('section');
 infoS.className='day'; infoS.id='day-info';
+try{
 infoS.innerHTML=`
   <div class="dayhero"><h2>info extra</h2><div class="dd"><b>hărți · trupe · legături</b></div></div>
   <div class="info-grid">
-    <div class="iblock wide acc" id="cblock">
+    ${typeof CONTACTS==='undefined'?'':`<div class="iblock wide acc" id="cblock">
       <h3>contacte</h3>
       <input class="search" id="cq" type="search" placeholder="caută om, rol sau departament…" aria-label="caută în contacte">
       ${CONTACTS.map(([dep,people])=>{
@@ -561,7 +562,7 @@ infoS.innerHTML=`
         return `<div class="cdep"><p class="cdh">${dep}</p><div class="${plain?'cgrid':''}">${rows}</div></div>`;
       }).join('')}
       <p class="inote" style="margin-top:12px">în curând: telefoanele + voluntarii de permanență pe locații (08:00–00:00).</p>
-    </div>
+    </div>`}
     ${FEEDBACK_URL?`<a class="bigpublic iblock wide" style="background:var(--panel-2);color:var(--fg)" href="${FEEDBACK_URL}" target="_blank" rel="noopener"><span>feedback în timp real<small>idei & probleme, direct în doc</small></span><span>↗</span></a>`:''}
     <div class="iblock acc">
       <h3>locații & hărți</h3>
@@ -596,6 +597,11 @@ infoS.innerHTML=`
 
   </div>`;
 daysEl.appendChild(infoS);
+}catch(e){
+  /* date lipsă (de ex. program.js vechi în cache): secțiunea degradează, pagina trăiește */
+  infoS.innerHTML='<div class="dayhero"><h2>info extra</h2></div><p class="inote">secțiunea apare la următorul refresh.</p>';
+  daysEl.appendChild(infoS);
+}
 
 /* căutarea în contacte */
 infoS.addEventListener('input',e=>{
@@ -841,6 +847,6 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden)updateNow(
 /* offline: service worker cu cache local (vezi sw.js) */
 if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
-<script src="live.js" defer></script>
+<script src="live.js?v=2" defer></script>
 </body>
 </html>
