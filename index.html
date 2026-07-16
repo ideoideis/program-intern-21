@@ -42,9 +42,7 @@ header.site{padding:0 0 18px}
 .eticheta{display:inline-block;background:#fff;padding:10px}
 .eticheta img{display:block;height:76px;width:auto}
 h1{font-weight:700;font-size:clamp(2.5rem,10vw,4.2rem);line-height:.98;letter-spacing:-.015em;margin:36px 0 0}
-.header-meta{margin-top:20px;font-size:15px;color:var(--muted)}
-.header-meta strong{color:var(--fg);font-weight:600}
-.updated{margin-top:12px;font-family:var(--mono);font-size:12px;color:var(--amber)}
+.updated{margin-top:20px;font-family:var(--mono);font-size:12px;color:var(--amber)}
 .plink{color:var(--muted);text-decoration:none;font-weight:400}
 .plink:hover{color:var(--amber)}
 
@@ -250,7 +248,6 @@ footer a{color:var(--amber);text-decoration:none}
   header.site{padding:0}
   .eticheta{padding:0;border:1px solid #ddd}
   h1{font-size:2rem;margin:12px 0 0}
-  .header-meta{color:#333;margin-top:4px}
   section.day{padding-bottom:0}
   .dayhero .dd{color:#333}.dayhero .dd b{color:#000}
   .ev{background:#fff;border:1px solid #bbb;border-left:4px solid var(--cat,#888);break-inside:avoid}
@@ -285,7 +282,6 @@ footer a{color:var(--amber);text-decoration:none}
     <div class="eticheta"><img src="assets/eticheta-ideoideis.png" alt="festivalul ideo ideis"></div>
     <h1>festivalul #21<br>program intern</h1>
     <p class="greet" id="greet" hidden></p>
-    <p class="header-meta"><strong>29 iulie · 5 august</strong> · Alexandria</p>
     <p class="updated">last updated <span id="lastupd"></span> · <a class="plink" href="https://ideoideis.ro/proiectele/festivalul/program/" target="_blank" rel="noopener">program public ↗</a></p>
   </div>
 </header>
@@ -308,7 +304,7 @@ footer a{color:var(--amber);text-decoration:none}
   </div>
   <main id="days"><noscript>Pagina are nevoie de JavaScript ca să afișeze programul.</noscript></main>
   <footer>
-    CMT = Centrul Multifuncțional pentru Tineri
+    CMT = Centrul Multifuncțional pentru Tineri · * sală orientativă
   </footer>
 </div>
 
@@ -407,7 +403,7 @@ function evHtml(ev,dayId){
     x=`<button class="xbtn" data-x>▸ ${det.label}</button><div class="xlist">${rows}</div>`;
   }
   const subs=(ev.sub||[]).map(s=>`<div class="sub">${s}</div>`).join('');
-  const room=lg&&lg.sala?` · ${esc(lg.sala)} <span style="color:var(--muted)">· orientativ</span>`:'';
+  const room=lg&&lg.sala?` · ${esc(lg.sala)}<span style="color:var(--muted)">*</span>`:'';
   const locline=ev.loc?`<div class="locline"><b>${esc(ev.loc)}</b>${ev.locd?' · '+esc(ev.locd):''}${room}</div>`:'';
   return `<article class="ev${ev.c?' compact':''}" data-eid="${eid}" data-cat="${ev.cat||'alt'}"${ev.c?' data-tech="1"':''}${ev.trupa?` data-trupa="${ev.trupa}"`:''} data-s="${mins(ev.t)}"${ev.e?` data-e="${mins(ev.e)}"`:''} data-search="${esc(search)}" style="--cat:${cat.color}">
     <div class="tcol"><div class="t1">${ev.t}</div>${ev.e?`<div class="t2">${ev.e}</div>`:''}</div>
