@@ -248,12 +248,33 @@ function buildInfo(){
     /* la click starea .open încă nu e comutată de acordeon; anticipăm */
     if(!an.classList.contains('open'))renderAn();
   });
+  /* publicarea cere codul echipei (o dată pe dispozitiv), verificat pe
+     server prin post_anunt(); dacă funcția nu e instalată încă, merge direct */
+  async function postAnunt(text,s){
+    const rpc=c=>sb('/rest/v1/rpc/post_anunt',{method:'POST',
+      headers:{'Content-Type':'application/json'},body:JSON.stringify({p_text:text,p_parola:c})});
+    let cod=localStorage.getItem('echipa-cod');
+    if(!cod){
+      cod=(window.prompt('codul echipei (îl scrii o singură dată pe telefonul ăsta):')||'').trim();
+      if(!cod){s.textContent='';return false;}
+      localStorage.setItem('echipa-cod',cod);
+    }
+    const r=await rpc(cod);
+    if(r.status===404){ /* încă fără cod pe server */
+      try{await sbIns('anunturi_21',{text});return true;}catch(e){return false;}
+    }
+    if(r.ok)return true;
+    let msg='';try{msg=((await r.json())||{}).message||'';}catch(e){}
+    if(msg.includes('parola')){localStorage.removeItem('echipa-cod');s.textContent='cod greșit · apasă din nou publică';return false;}
+    return false;
+  }
   an.querySelector('.fsend').addEventListener('click',async()=>{
     const t=an.querySelector('.fbox'), s=an.querySelector('.fstat');
     const v=t.value.trim(); if(!v)return;
     s.textContent='se trimite…';
-    try{await sbIns('anunturi_21',{text:v}); t.value=''; s.textContent='publicat ✓'; renderAn(); refreshAnunt(); setTimeout(()=>s.textContent='',2500);}
-    catch(e){s.textContent='nu a mers · mai încearcă';}
+    const ok=await postAnunt(v,s);
+    if(ok){t.value=''; s.textContent='publicat ✓'; renderAn(); refreshAnunt(); setTimeout(()=>s.textContent='',2500);}
+    else if(!s.textContent||s.textContent==='se trimite…'){s.textContent='nu a mers · mai încearcă';}
   });
 
   /* jurnal, toate pozele: acordeon, încărcat la deschidere */
