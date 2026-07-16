@@ -1,11 +1,13 @@
 /* ============================================================
-   Partea "live" a paginii: jurnal foto, anunțuri, feedback.
-   Complet decuplată de program: dacă Supabase nu răspunde (sau
-   setup-21.sql nu a fost încă rulat), tot ce e aici se ascunde
-   singur și programul merge normal, inclusiv offline.
+   Partea "live" a paginii: vibe check (poze), anunțuri, feedback.
+   Complet decuplată de program: dacă Supabase nu răspunde, totul
+   de aici se ascunde singur și programul merge normal, offline.
 
-   Jurnalul: o cameră mică în colțul fiecărui card de eveniment;
-   tap = galeria evenimentului + „adaugă poză”, direct acolo.
+   Principiul vibe check: pozele trăiesc într-UN singur loc, tabul
+   „vibe” din rail (vizibil doar în zilele festivalului). Suprafața
+   programului rămâne neatinsă: fără camere, contoare sau galerii
+   pe carduri. Un singur FAB pe ecran: „acum” pe program, camera
+   pe vibe.
    ============================================================ */
 (function(){
 'use strict';
@@ -14,6 +16,7 @@ const SUPA_URL='https://waqyaewaldphstmiobjj.supabase.co';
 const SUPA_KEY='sb_publishable_XtarsOK52eqlRUmv1ElS4Q_RwrDK78G'; /* cheia publică */
 const BUCKET='jurnal-21';
 const ANUNT_TTL_H=12; /* câte ore stă un anunț în banner */
+const PAGE=30;        /* poze pe pagină în feed */
 
 const sb=(path,opt={})=>fetch(SUPA_URL+path,Object.assign({},opt,{
   headers:Object.assign({apikey:SUPA_KEY,Authorization:'Bearer '+SUPA_KEY},opt.headers||{})
@@ -23,132 +26,27 @@ const sbGetCount=async p=>{const r=await sb('/rest/v1'+p,{headers:{Prefer:'count
   if(!r.ok)throw new Error('sb');
   const total=+((r.headers.get('content-range')||'/0').split('/')[1])||0;
   return {rows:await r.json(),total};};
-const sbIns=async(t,row)=>{const r=await sb('/rest/v1/'+t,{method:'POST',
-  headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(row)});
-  if(!r.ok)throw new Error('sb');};
+const sbIns=async(t,row,ret)=>{const r=await sb('/rest/v1/'+t,{method:'POST',
+  headers:{'Content-Type':'application/json',Prefer:ret?'return=representation':'return=minimal'},
+  body:JSON.stringify(row)});
+  if(!r.ok)throw new Error('sb:'+r.status);
+  return ret?(await r.json())[0]:null;};
 const pubUrl=p=>`${SUPA_URL}/storage/v1/object/public/${BUCKET}/${p}`;
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const fmtT=iso=>{const d=new Date(iso);return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');};
-const cleanTitle=ev=>{const t=ev.querySelector('.title');if(!t)return'';
-  const c=t.cloneNode(true);c.querySelectorAll('.nowtag,.minetag').forEach(x=>x.remove());
-  return c.textContent.trim();};
+const DAYLBL=(typeof DAYS!=='undefined')?Object.fromEntries(DAYS.map(d=>[d.id,`${d.h2} ${d.full}`])):{};
 
-/* poza: micșorare pe telefon înainte de upload (~1600px, WebP) */
+/* compresie pe telefon: latura mare max 1280px, JPEG 0.8 */
 async function shrink(file){
   let bmp=null;
   try{bmp=await createImageBitmap(file);}catch(e){}
   if(!bmp) return null;
-  const M=1600, s=Math.min(1,M/Math.max(bmp.width,bmp.height));
+  const M=1280, s=Math.min(1,M/Math.max(bmp.width,bmp.height));
   const c=document.createElement('canvas');
   c.width=Math.max(1,Math.round(bmp.width*s));
   c.height=Math.max(1,Math.round(bmp.height*s));
   c.getContext('2d').drawImage(bmp,0,0,c.width,c.height);
-  let blob=await new Promise(r=>c.toBlob(r,'image/webp',.82));
-  if(!blob||!blob.size) blob=await new Promise(r=>c.toBlob(r,'image/jpeg',.85));
-  return blob;
-}
-
-async function upload(day,eid,title,file,status){
-  if(!navigator.onLine){status.textContent='ești offline · încearcă mai târziu';return null;}
-  status.textContent='se încarcă…';
-  try{
-    const blob=await shrink(file);
-    if(!blob){status.textContent='formatul nu e suportat';return null;}
-    const ext=blob.type==='image/webp'?'webp':'jpg';
-    const path=`${day}/${eid}/${Date.now()}${Math.random().toString(36).slice(2,6)}.${ext}`;
-    const up=await sb(`/storage/v1/object/${BUCKET}/${path}`,{method:'POST',
-      headers:{'Content-Type':blob.type,'x-upsert':'false'},body:blob});
-    if(!up.ok)throw new Error('up');
-    await sbIns('jurnal_photos',{event_id:eid,day,title:String(title).slice(0,200),path});
-    status.textContent='gata ♥';
-    setTimeout(()=>{status.textContent='';},2500);
-    return path;
-  }catch(e){status.textContent='nu a mers · mai încearcă o dată';return null;}
-}
-
-const counts={}; /* day -> {eid: n} */
-const loadedDays=new Set();
-const dayOf=el=>{const s=el.closest('section.day');return s?s.id.replace('day-',''):'';};
-
-/* camera din colțul cardului: goală doar pe ziua curentă (pozele se fac
-   pe loc); pe celelalte zile apare doar contorul, unde există poze */
-function mkCorner(ev){
-  let b=ev.querySelector('.jcorner');
-  if(!b){
-    b=document.createElement('button');
-    b.className='jcorner'; b.title='jurnal foto'; b.textContent='📷';
-    (ev.querySelector('.tcol')||ev).appendChild(b);
-    b.addEventListener('click',e=>{e.stopPropagation();toggleGallery(ev,b);});
-  }
-  return b;
-}
-/* pe carduri nu există camere goale: doar contoarele (conținut, nu decor);
-   adăugarea se face din butonul 📷 de lângă "acum" */
-function syncCameras(){
-  document.querySelectorAll('.jcorner:not(.has)').forEach(b=>b.remove());
-  const fc=document.getElementById('fabcam');
-  if(fc)fc.hidden=document.getElementById('fab').hidden;
-}
-document.addEventListener('nowchange',syncCameras);
-function setCorner(ev,n){
-  if(!n){const b=ev.querySelector('.jcorner');if(b){b.textContent='📷';b.classList.remove('has');}return;}
-  const b=mkCorner(ev);
-  b.textContent=`📷 ${n}`;
-  b.classList.add('has');
-}
-
-async function refreshCounts(day){
-  try{
-    const rows=await sbGet(`/jurnal_photos?day=eq.${encodeURIComponent(day)}&select=event_id`);
-    const m={}; rows.forEach(r=>{m[r.event_id]=(m[r.event_id]||0)+1;});
-    counts[day]=m;
-    document.querySelectorAll(`#day-${CSS.escape(day)} .viewlist .ev:not(.compact)`).forEach(ev=>{
-      setCorner(ev,m[ev.dataset.eid]||0);
-    });
-  }catch(e){}
-}
-
-/* galeria evenimentului + adăugare, în același panou */
-async function toggleGallery(ev,btn){
-  let panel=ev.querySelector('.jpanel');
-  if(panel){panel.hidden=!panel.hidden;return;}
-  panel=document.createElement('div');
-  panel.className='jpanel';
-  panel.innerHTML='<p class="jnote">se încarcă…</p>';
-  (ev.children[1]||ev).appendChild(panel);
-  const eid=ev.dataset.eid, day=dayOf(ev), title=cleanTitle(ev);
-  const PAGE=12;
-  let rows=[], total=0;
-  try{({rows,total}=await sbGetCount(`/jurnal_photos?event_id=eq.${encodeURIComponent(eid)}&select=path&order=created_at.desc&limit=${PAGE}`));}
-  catch(e){panel.innerHTML='<p class="jnote">indisponibil</p>';return;}
-  const thumb=path=>`<a href="${pubUrl(path)}" target="_blank" rel="noopener"><img loading="lazy" src="${pubUrl(path)}" alt=""></a>`;
-  panel.innerHTML=`<label class="jadd">+ adaugă poză<input type="file" accept="image/*" hidden></label>
-    <span class="jnote jstatus"></span>
-    <div class="jthumbs">${rows.map(r=>thumb(r.path)).join('')}</div>
-    ${total>rows.length?`<button class="jmore">încă ${total-rows.length} poze</button>`:''}`;
-  let shown=rows.length;
-  const more=panel.querySelector('.jmore');
-  if(more)more.addEventListener('click',async()=>{
-    try{
-      const next=await sbGet(`/jurnal_photos?event_id=eq.${encodeURIComponent(eid)}&select=path&order=created_at.desc&limit=24&offset=${shown}`);
-      panel.querySelector('.jthumbs').insertAdjacentHTML('beforeend',next.map(r=>thumb(r.path)).join(''));
-      shown+=next.length;
-      if(shown>=total||!next.length)more.remove();
-      else more.textContent=`încă ${total-shown} poze`;
-    }catch(e){}
-  });
-  const input=panel.querySelector('input'), status=panel.querySelector('.jstatus');
-  input.addEventListener('change',async()=>{
-    const f=input.files&&input.files[0]; if(!f)return;
-    const path=await upload(day,eid,title,f,status);
-    if(path){
-      panel.querySelector('.jthumbs').insertAdjacentHTML('afterbegin',
-        `<a href="${pubUrl(path)}" target="_blank" rel="noopener"><img src="${pubUrl(path)}" alt=""></a>`);
-      const m=counts[day]||(counts[day]={}); m[eid]=(m[eid]||0)+1;
-      setCorner(ev,m[eid]);
-    }
-    input.value='';
-  });
+  return await new Promise(r=>c.toBlob(r,'image/jpeg',.8));
 }
 
 /* ── lightbox: pozele se deschid în pagină, cu descărcare & share ── */
@@ -188,73 +86,211 @@ function lightbox(url){
   lb.querySelector('img').src=url;
   lb.hidden=false;
 }
-document.addEventListener('click',e=>{
-  const a=e.target.closest('.jthumbs a');
-  if(!a)return;
-  e.preventDefault();
-  lightbox(a.getAttribute('href'));
+
+/* ── vibe check ─────────────────────────── */
+let vibeChip=null, vibeSec=null, camFab=null, vibeBuilt=false;
+let feedShown=0, feedTotal=0, feedLastDay=null, hasAuthorCol=true;
+let ACTIVE='';
+
+const mine=()=>{try{return JSON.parse(localStorage.getItem('vibe-mine')||'{}');}catch(e){return {};}};
+const rememberMine=(id,token)=>{const m=mine();m[id]=token;localStorage.setItem('vibe-mine',JSON.stringify(m));};
+
+function ensureVibeUI(){
+  if(vibeChip)return;
+  const rail=document.getElementById('rail'); if(!rail)return;
+  /* chipul din rail, ultimul, după +info */
+  vibeChip=document.createElement('button');
+  vibeChip.className='daychip vibe'; vibeChip.dataset.day='vibe';
+  vibeChip.setAttribute('aria-selected','false'); vibeChip.hidden=true;
+  vibeChip.innerHTML='<span class="dw">📷</span><span class="dn">vibe</span><span class="vdot" hidden></span>';
+  vibeChip.addEventListener('click',()=>selectDay('vibe',true));
+  rail.appendChild(vibeChip);
+
+  /* secțiunea */
+  vibeSec=document.createElement('section');
+  vibeSec.className='day'; vibeSec.id='day-vibe';
+  vibeSec.innerHTML=`
+    <div class="dayhero"><h2>vibe check</h2><div class="dd"><b id="vcount"></b></div></div>
+    <div id="vfeed"></div>`;
+  document.getElementById('days').appendChild(vibeSec);
+
+  /* FAB-ul cameră: același slot și stil cu "acum" */
+  camFab=document.createElement('button');
+  camFab.className='fab'; camFab.id='camfab'; camFab.hidden=true;
+  camFab.setAttribute('aria-label','adaugă o poză');
+  camFab.textContent='📷';
+  document.body.appendChild(camFab);
+  camFab.addEventListener('click',openCapture);
+}
+
+/* chipul există doar în festival (roNow().day nenul, regula de 05:00 inclusă) */
+function syncVibeVisibility(){
+  ensureVibeUI();
+  if(!vibeChip)return;
+  const inFest=!!window.CURRENT_DAY;
+  vibeChip.hidden=!inFest;
+  if(!inFest&&ACTIVE==='vibe'){
+    const c=document.querySelector('.daychip:not(.vibe):not(.info)');
+    selectDay(c?c.dataset.day:'mi29',false);
+  }
+  syncFabs();
+}
+/* un singur FAB pe ecran: camera pe vibe, "acum" pe program */
+function syncFabs(){
+  const fab=document.getElementById('fab');
+  if(!fab||!camFab)return;
+  if(ACTIVE==='vibe'){fab.hidden=true;camFab.hidden=false;}
+  else{camFab.hidden=true;fab.hidden=!window.CURRENT_DAY;}
+  const filters=document.getElementById('filters');
+  if(filters)filters.hidden=(ACTIVE==='vibe');
+}
+
+/* punctul "poze noi" de pe chip */
+async function syncVibeDot(){
+  if(!vibeChip||vibeChip.hidden)return;
+  try{
+    const rows=await sbGet('/jurnal_photos?select=created_at&order=created_at.desc&limit=1');
+    const dot=vibeChip.querySelector('.vdot');
+    const latest=rows[0]&&rows[0].created_at;
+    const seen=localStorage.getItem('vibe-last-seen')||'';
+    dot.hidden=!(latest&&latest>seen&&ACTIVE!=='vibe');
+  }catch(e){}
+}
+
+/* ── feed-ul ── */
+const vitemHtml=r=>{
+  const own=mine()[r.id];
+  return `<figure class="vitem" data-id="${r.id}">
+    <img loading="lazy" src="${pubUrl(r.path)}" alt="" data-lbx>
+    <figcaption class="vmeta">${fmtT(r.created_at)} · ${esc(r.author||'—')}${own?' <button class="vdel" title="șterge poza ta">✕</button>':''}</figcaption>
+  </figure>`;
+};
+const vsepHtml=day=>`<div class="vsep"><span>${esc(DAYLBL[day]||day)}</span></div>`;
+
+async function feedLoad(reset){
+  const box=document.getElementById('vfeed');
+  if(reset){
+    feedShown=0;feedLastDay=null;
+    box.innerHTML='<div class="vskel" style="height:220px"></div><div class="vskel" style="height:140px"></div><div class="vskel" style="height:180px"></div>';
+  }
+  const sel=hasAuthorCol?'id,path,day,created_at,author':'id,path,day,created_at';
+  let rows,total;
+  try{
+    ({rows,total}=await sbGetCount(`/jurnal_photos?select=${sel}&order=created_at.desc&limit=${PAGE}&offset=${feedShown}`));
+  }catch(e){
+    if(hasAuthorCol){hasAuthorCol=false;return feedLoad(reset);} /* coloana author nu există încă */
+    box.innerHTML='<p class="jnote">nu s-a putut încărca</p><button class="vretry">încearcă din nou</button>';
+    box.querySelector('.vretry').addEventListener('click',()=>feedLoad(true));
+    return;
+  }
+  feedTotal=total;
+  document.getElementById('vcount').textContent=`${total} ${total===1?'poză':'poze'} · festivalul #21`;
+  if(reset)box.innerHTML='';
+  const old=box.querySelector('.vmore'); if(old)old.remove();
+  if(!total){
+    box.innerHTML=`<p class="jnote" style="margin:26px 0 14px">încă nicio poză</p>
+      <button class="vfirst">📷 fii primul care postează</button>`;
+    box.querySelector('.vfirst').addEventListener('click',openCapture);
+    return;
+  }
+  rows.forEach(r=>{
+    if(r.day!==feedLastDay){feedLastDay=r.day;box.insertAdjacentHTML('beforeend',vsepHtml(r.day));}
+    box.insertAdjacentHTML('beforeend',vitemHtml(r));
+  });
+  feedShown+=rows.length;
+  if(feedShown<feedTotal){
+    box.insertAdjacentHTML('beforeend','<button class="vmore">încarcă mai multe</button>');
+    box.querySelector('.vmore').addEventListener('click',()=>feedLoad(false));
+  }
+}
+
+/* ștergerea propriei poze (token în localStorage) + lightbox pe imagini */
+document.addEventListener('click',async e=>{
+  const del=e.target.closest('.vdel');
+  if(del){
+    const fig=del.closest('.vitem'), id=+fig.dataset.id, token=mine()[id];
+    del.disabled=true;
+    try{
+      const r=await sb('/rest/v1/rpc/vibe_delete',{method:'POST',
+        headers:{'Content-Type':'application/json'},body:JSON.stringify({p_id:id,p_token:token})});
+      if(!r.ok)throw 0;
+      fig.remove(); feedTotal=Math.max(0,feedTotal-1);
+      document.getElementById('vcount').textContent=`${feedTotal} ${feedTotal===1?'poză':'poze'} · festivalul #21`;
+    }catch(err){del.disabled=false;del.textContent='nu s-a putut';setTimeout(()=>{del.textContent='✕';},2000);}
+    return;
+  }
+  const img=e.target.closest('[data-lbx]');
+  if(img)lightbox(img.getAttribute('src'));
 });
 
-/* ── 📷 de lângă "acum": poza merge la evenimentul momentului ── */
-function nowMinsLocal(){
-  const n=new Date(); let m=n.getHours()*60+n.getMinutes();
-  if(n.getHours()<5)m+=1440; return m;
-}
-function photoCandidates(){
-  const day=window.CURRENT_DAY; if(!day)return [];
-  const sec=document.getElementById('day-'+day); if(!sec)return [];
-  const evs=[...sec.querySelectorAll('.viewlist .ev:not(.compact)')];
-  const act=evs.filter(e=>e.classList.contains('now-active'));
-  if(act.length)return act;
-  /* între evenimente: ultimul început și următorul */
-  const nm=nowMinsLocal(); const out=[];
-  const before=evs.filter(e=>+e.dataset.s<=nm).pop();
-  const after=evs.find(e=>+e.dataset.s>nm);
-  if(before)out.push(before); if(after)out.push(after);
-  return out;
-}
-function pickPhotoFor(ev){
+/* ── capturarea: cameră → preview → nume opțional → postează ── */
+function openCapture(){
   const input=document.createElement('input');
-  input.type='file'; input.accept='image/*'; input.hidden=true;
-  document.body.appendChild(input);
-  input.addEventListener('change',async()=>{
+  input.type='file'; input.accept='image/*'; input.setAttribute('capture','environment');
+  input.hidden=true; document.body.appendChild(input);
+  input.addEventListener('change',()=>{
     const f=input.files&&input.files[0];
-    if(f){
-      const day=dayOf(ev), eid=ev.dataset.eid;
-      const bar=document.getElementById('anuntbar');
-      const st=document.createElement('div');
-      st.className='anunt'; st.textContent='📷 se încarcă poza…';
-      bar.prepend(st);
-      const path=await upload(day,eid,cleanTitle(ev),f,{set textContent(v){st.textContent=v?'📷 '+v:'';}});
-      if(path){
-        const m=counts[day]||(counts[day]={}); m[eid]=(m[eid]||0)+1; setCorner(ev,m[eid]);
-        st.textContent='📷 gata, poza e în jurnal ♥';
-      }
-      setTimeout(()=>st.remove(),3000);
-    }
     input.remove();
+    if(f)openSheet(f);
   });
   input.click();
 }
-function openFabCam(){
-  const cand=photoCandidates();
-  if(!cand.length)return;
-  if(cand.length===1){pickPhotoFor(cand[0]);return;}
-  let pk=document.getElementById('jpick');
-  if(pk)pk.remove();
-  pk=document.createElement('div');
-  pk.id='jpick';
-  pk.innerHTML=`<div class="jpin"><h4>la ce eveniment e poza?</h4>${cand.map((e,i)=>
-    `<button class="jopt" data-i="${i}"><small>${(e.querySelector('.t1')||{}).textContent||''}</small>${esc(cleanTitle(e)).slice(0,60)}</button>`).join('')}</div>`;
-  document.body.appendChild(pk);
-  pk.addEventListener('click',ev2=>{
-    const b=ev2.target.closest('.jopt');
-    if(b){pk.hidden=true;pk.remove();pickPhotoFor(cand[+b.dataset.i]);return;}
-    if(ev2.target===pk){pk.remove();}
+function openSheet(file){
+  let sh=document.getElementById('vsheet'); if(sh)sh.remove();
+  sh=document.createElement('div'); sh.id='vsheet';
+  const url=URL.createObjectURL(file);
+  sh.innerHTML=`<button class="vx" title="renunță">✕</button>
+    <img src="${url}" alt="">
+    <input class="vname" type="text" maxlength="40" placeholder="numele tău (opțional)" value="${esc(localStorage.getItem('vibe-name')||'')}">
+    <button class="vpost">postează</button>
+    <p class="jnote verr" hidden></p>`;
+  document.body.appendChild(sh);
+  sh.querySelector('.vx').addEventListener('click',()=>{URL.revokeObjectURL(url);sh.remove();});
+  sh.querySelector('.vpost').addEventListener('click',async()=>{
+    const btn=sh.querySelector('.vpost'), err=sh.querySelector('.verr');
+    const author=sh.querySelector('.vname').value.trim().slice(0,40);
+    if(author)localStorage.setItem('vibe-name',author);
+    btn.disabled=true; btn.textContent='se încarcă…'; err.hidden=true;
+    try{
+      if(!navigator.onLine)throw new Error('ești offline · încearcă mai târziu');
+      const blob=await shrink(file);
+      if(!blob)throw new Error('formatul nu e suportat');
+      const day=window.CURRENT_DAY||'x';
+      const path=`${day}/${Date.now()}${Math.random().toString(36).slice(2,6)}.jpg`;
+      const up=await sb(`/storage/v1/object/${BUCKET}/${path}`,{method:'POST',
+        headers:{'Content-Type':'image/jpeg','x-upsert':'false'},body:blob});
+      if(!up.ok)throw new Error('nu a mers uploadul · mai încearcă');
+      const token=(crypto.randomUUID?crypto.randomUUID():String(Math.random()).slice(2));
+      let row=null;
+      try{
+        row=await sbIns('jurnal_photos',{event_id:'vibe',day,title:'',path,author:author||null,token},true);
+      }catch(e2){ /* coloanele author/token nu există încă: postăm simplu */
+        row=await sbIns('jurnal_photos',{event_id:'vibe',day,title:'',path},true);
+      }
+      if(row&&row.id&&row.token)rememberMine(row.id,row.token);
+      /* optimist: poza intră în capul feed-ului */
+      const box=document.getElementById('vfeed');
+      if(box&&vibeBuilt){
+        const fake={id:row?row.id:0,path,day,created_at:new Date().toISOString(),author:author||null};
+        const firstSep=box.querySelector('.vsep');
+        if(firstSep&&firstSep.textContent.includes(DAYLBL[day]||day)){
+          firstSep.insertAdjacentHTML('afterend',vitemHtml(fake));
+        }else{
+          box.insertAdjacentHTML('afterbegin',vsepHtml(day)+vitemHtml(fake));
+        }
+        const emptyBtn=box.querySelector('.vfirst');
+        if(emptyBtn){const note=emptyBtn.previousElementSibling;if(note)note.remove();emptyBtn.remove();}
+        feedTotal++;
+        document.getElementById('vcount').textContent=`${feedTotal} ${feedTotal===1?'poză':'poze'} · festivalul #21`;
+      }
+      localStorage.setItem('vibe-last-seen',new Date().toISOString());
+      URL.revokeObjectURL(url); sh.remove();
+    }catch(e){
+      err.textContent=(e.message&&e.message.length<60)?e.message:'nu a mers · mai încearcă o dată';
+      err.hidden=false; btn.disabled=false; btn.textContent='postează';
+    }
   });
 }
-const fabcamEl=document.getElementById('fabcam');
-if(fabcamEl)fabcamEl.addEventListener('click',openFabCam);
 
 /* ── anunțuri: bannerul de sub banda de zile ── */
 async function refreshAnunt(){
@@ -300,7 +336,7 @@ function buildInfo(){
     catch(e){s.textContent='nu a mers · mai încearcă';}
   });
 
-  /* anunțuri: acordeon */
+  /* anunțuri: acordeon; publicarea e deschisă oricui, alegere de echipă */
   const an=document.createElement('div');
   an.className='iblock acc'; an.setAttribute('data-live','');
   an.innerHTML=`<h3>anunțuri</h3>
@@ -317,52 +353,14 @@ function buildInfo(){
     }catch(e){an.querySelector('.alist').innerHTML='<p class="jnote">indisponibil</p>';}
   };
   an.querySelector('h3').addEventListener('click',()=>{
-    /* la click starea .open încă nu e comutată de acordeon; anticipăm */
     if(!an.classList.contains('open'))renderAn();
   });
-  /* publicarea e deschisă pentru oricine are pagina: e o alegere de
-     încredere a echipei; curățenia se face din dashboard, la nevoie */
   an.querySelector('.fsend').addEventListener('click',async()=>{
     const t=an.querySelector('.fbox'), s=an.querySelector('.fstat');
     const v=t.value.trim(); if(!v)return;
     s.textContent='se trimite…';
     try{await sbIns('anunturi_21',{text:v}); t.value=''; s.textContent='publicat ✓'; renderAn(); refreshAnunt(); setTimeout(()=>s.textContent='',2500);}
     catch(e){s.textContent='nu a mers · mai încearcă';}
-  });
-
-  /* jurnal, toate pozele: acordeon, încărcat la deschidere */
-  const ja=document.createElement('div');
-  ja.className='iblock wide acc'; ja.setAttribute('data-live','');
-  ja.innerHTML='<h3>jurnal foto · toate pozele</h3><div class="jall"></div>';
-  grid.appendChild(ja);
-  let jaLoaded=false, jaShown=0, jaTotal=0, jaLastDay=null;
-  const DAYLBL=(typeof DAYS!=='undefined')?Object.fromEntries(DAYS.map(d=>[d.id,`${d.h2} ${d.full}`])):{};
-  const jaThumb=r=>`<a href="${pubUrl(r.path)}" target="_blank" rel="noopener" title="${esc(r.title)}"><img loading="lazy" src="${pubUrl(r.path)}" alt="${esc(r.title)}"></a>`;
-  async function jaLoad(){
-    const box=ja.querySelector('.jall');
-    try{
-      const {rows,total}=await sbGetCount(`/jurnal_photos?select=path,title,day&order=created_at.desc&limit=48&offset=${jaShown}`);
-      jaTotal=total;
-      if(!jaShown&&!rows.length){box.innerHTML='<p class="jnote">încă nicio poză · fii tu prima persoană care prinde momentul</p>';return;}
-      if(!jaShown)box.innerHTML='';
-      const old=box.querySelector('.jmore'); if(old)old.remove();
-      rows.forEach(r=>{
-        if(r.day!==jaLastDay){
-          jaLastDay=r.day;
-          box.insertAdjacentHTML('beforeend',`<p class="jday-h">${esc(DAYLBL[r.day]||r.day)}</p><div class="jthumbs"></div>`);
-        }
-        [...box.querySelectorAll('.jthumbs')].pop().insertAdjacentHTML('beforeend',jaThumb(r));
-      });
-      jaShown+=rows.length;
-      if(jaShown<jaTotal)box.insertAdjacentHTML('beforeend',`<button class="jmore">încă ${jaTotal-jaShown} poze</button>`);
-      const m=box.querySelector('.jmore'); if(m)m.addEventListener('click',jaLoad);
-    }catch(e){if(!jaShown)box.innerHTML='<p class="jnote">indisponibil</p>';}
-  }
-  ja.querySelector('h3').addEventListener('click',()=>{
-    const willOpen=!ja.classList.contains('open');
-    if(!willOpen||jaLoaded)return; jaLoaded=true;
-    ja.querySelector('.jall').innerHTML='<p class="jnote">se încarcă…</p>';
-    jaLoad();
   });
 }
 
@@ -371,14 +369,19 @@ function buildInfo(){
   try{await sbGet('/anunturi_21?select=id&limit=1');}
   catch(e){return;} /* setup-21.sql nerulat sau fără net: stăm ascunși */
   refreshAnunt();
-  setInterval(refreshAnunt,180000);
-  const onDay=d=>{
-    if(d==='info'){buildInfo();return;}
-    syncCameras();
-    if(!loadedDays.has(d)){loadedDays.add(d);refreshCounts(d);}
-  };
-  const today=document.querySelector('.daychip[aria-selected="true"]');
-  if(today&&today.dataset.day) onDay(today.dataset.day);
-  document.addEventListener('daychange',e=>onDay(e.detail));
+  syncVibeVisibility();
+  syncVibeDot();
+  setInterval(()=>{refreshAnunt();syncVibeDot();},180000);
+  document.addEventListener('nowchange',syncVibeVisibility);
+  document.addEventListener('daychange',e=>{
+    ACTIVE=e.detail;
+    if(ACTIVE==='info')buildInfo();
+    if(ACTIVE==='vibe'){
+      localStorage.setItem('vibe-last-seen',new Date().toISOString());
+      if(vibeChip){const dot=vibeChip.querySelector('.vdot');if(dot)dot.hidden=true;}
+      if(!vibeBuilt){vibeBuilt=true;feedLoad(true);}
+    }
+    syncFabs();
+  });
 })();
 })();
