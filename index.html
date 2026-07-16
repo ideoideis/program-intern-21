@@ -152,15 +152,15 @@ section.day.on{display:block}
 .gbody{position:relative;display:flex;gap:6px;width:max-content;min-width:100%}
 .gcol{flex:0 0 auto;position:relative;background:
   repeating-linear-gradient(to bottom,transparent 0,transparent 47px,var(--line-soft) 47px,var(--line-soft) 48px)}
-.gblock{position:absolute;overflow:hidden;background:var(--panel);border:1px solid var(--line-soft);border-left:3px solid var(--cat,#8b8e98);padding:3px 5px;font-size:11px;line-height:1.25;font-weight:500}
-.gblock i{display:block;font-style:normal;font-family:var(--mono);font-size:9px;color:var(--muted);font-variant-numeric:tabular-nums}
+.gblock{position:absolute;z-index:2;overflow:hidden;background:var(--panel);border:1px solid var(--line-soft);border-left:3px solid var(--cat,#8b8e98);padding:3px 5px;font-size:10.5px;line-height:1.22;font-weight:500}
+.gblock i{display:block;font-style:normal;font-family:var(--mono);font-size:8.5px;color:var(--muted);font-variant-numeric:tabular-nums}
 .gblock.short{white-space:nowrap;text-overflow:ellipsis;padding:2px 5px;font-size:10.5px;line-height:1.35}
 .gblock.short i{display:inline;margin-right:4px}
 .gblock .gt{display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden}
 .gblock.ops{background:transparent;border-style:dashed;color:var(--muted)}
 .gblock b{font-weight:600}
 .gmeal{position:absolute;left:0;right:0;background:rgba(255,255,255,.045);border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);z-index:0}
-.gtr{position:absolute;left:0;right:0;border-top:2px dashed rgba(255,196,46,.5);z-index:1}
+.gtr{position:absolute;left:0;right:0;border-top:2px dashed rgba(255,196,46,.32);z-index:1}
 .gridnow{position:absolute;left:0;right:0;border-top:2px solid var(--red);z-index:5}
 .gridnow[hidden]{display:none}
 .gridnow span{position:sticky;left:2px;display:inline-block;font-family:var(--mono);font-size:9px;font-weight:700;color:#fff;background:var(--red);padding:1px 4px;margin-left:2px}
@@ -478,7 +478,7 @@ function gridHtml(d){
       /* blocurile scurte trec pe o singură linie; la restul, titlul se taie cu „…”
          după exact câte rânduri întregi încap în bloc */
       const short=h<34;
-      const lines=Math.max(1,Math.floor((h-19)/14));
+      const lines=Math.max(1,Math.floor((h-17)/13));
       const inner=short
         ?`<i>${e.t}</i>${e.title}`
         :`<i>${e.t}${e.e?'–'+e.e:''}</i><span class="gt" style="-webkit-line-clamp:${lines}">${e.title}</span>`;
@@ -710,6 +710,7 @@ function updateNow(){
       gl.querySelector('span').textContent=n.hm;
     }
   }
+  document.dispatchEvent(new CustomEvent('nowchange'));
 }
 fab.addEventListener('click',()=>{
   const n=roNow(); if(!n.day)return;

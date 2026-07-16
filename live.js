@@ -82,10 +82,15 @@ function mkCorner(ev){
   }
   return b;
 }
-function injectCorners(day){
-  if(day!==window.CURRENT_DAY)return;
-  document.querySelectorAll(`#day-${CSS.escape(day)} .viewlist .ev:not(.compact)`).forEach(mkCorner);
+/* camera goală există doar pe evenimentele în desfășurare chiar acum */
+function syncCameras(){
+  document.querySelectorAll('.jcorner:not(.has)').forEach(b=>{
+    const ev=b.closest('.ev');
+    if(!ev||!ev.classList.contains('now-active'))b.remove();
+  });
+  document.querySelectorAll('.ev.now-active:not(.compact)').forEach(ev=>mkCorner(ev));
 }
+document.addEventListener('nowchange',syncCameras);
 function setCorner(ev,n){
   if(!n){const b=ev.querySelector('.jcorner');if(b){b.textContent='📷';b.classList.remove('has');}return;}
   const b=mkCorner(ev);
@@ -309,7 +314,7 @@ function buildInfo(){
   setInterval(refreshAnunt,180000);
   const onDay=d=>{
     if(d==='info'){buildInfo();return;}
-    injectCorners(d);
+    syncCameras();
     if(!loadedDays.has(d)){loadedDays.add(d);refreshCounts(d);}
   };
   const today=document.querySelector('.daychip[aria-selected="true"]');
