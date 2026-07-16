@@ -82,13 +82,12 @@ function mkCorner(ev){
   }
   return b;
 }
-/* camera goală există doar pe evenimentele în desfășurare chiar acum */
+/* pe carduri nu există camere goale: doar contoarele (conținut, nu decor);
+   adăugarea se face din butonul 📷 de lângă "acum" */
 function syncCameras(){
-  document.querySelectorAll('.jcorner:not(.has)').forEach(b=>{
-    const ev=b.closest('.ev');
-    if(!ev||!ev.classList.contains('now-active'))b.remove();
-  });
-  document.querySelectorAll('.ev.now-active:not(.compact)').forEach(ev=>mkCorner(ev));
+  document.querySelectorAll('.jcorner:not(.has)').forEach(b=>b.remove());
+  const fc=document.getElementById('fabcam');
+  if(fc)fc.hidden=document.getElementById('fab').hidden;
 }
 document.addEventListener('nowchange',syncCameras);
 function setCorner(ev,n){
@@ -195,6 +194,67 @@ document.addEventListener('click',e=>{
   e.preventDefault();
   lightbox(a.getAttribute('href'));
 });
+
+/* ── 📷 de lângă "acum": poza merge la evenimentul momentului ── */
+function nowMinsLocal(){
+  const n=new Date(); let m=n.getHours()*60+n.getMinutes();
+  if(n.getHours()<5)m+=1440; return m;
+}
+function photoCandidates(){
+  const day=window.CURRENT_DAY; if(!day)return [];
+  const sec=document.getElementById('day-'+day); if(!sec)return [];
+  const evs=[...sec.querySelectorAll('.viewlist .ev:not(.compact)')];
+  const act=evs.filter(e=>e.classList.contains('now-active'));
+  if(act.length)return act;
+  /* între evenimente: ultimul început și următorul */
+  const nm=nowMinsLocal(); const out=[];
+  const before=evs.filter(e=>+e.dataset.s<=nm).pop();
+  const after=evs.find(e=>+e.dataset.s>nm);
+  if(before)out.push(before); if(after)out.push(after);
+  return out;
+}
+function pickPhotoFor(ev){
+  const input=document.createElement('input');
+  input.type='file'; input.accept='image/*'; input.hidden=true;
+  document.body.appendChild(input);
+  input.addEventListener('change',async()=>{
+    const f=input.files&&input.files[0];
+    if(f){
+      const day=dayOf(ev), eid=ev.dataset.eid;
+      const bar=document.getElementById('anuntbar');
+      const st=document.createElement('div');
+      st.className='anunt'; st.textContent='📷 se încarcă poza…';
+      bar.prepend(st);
+      const path=await upload(day,eid,cleanTitle(ev),f,{set textContent(v){st.textContent=v?'📷 '+v:'';}});
+      if(path){
+        const m=counts[day]||(counts[day]={}); m[eid]=(m[eid]||0)+1; setCorner(ev,m[eid]);
+        st.textContent='📷 gata, poza e în jurnal ♥';
+      }
+      setTimeout(()=>st.remove(),3000);
+    }
+    input.remove();
+  });
+  input.click();
+}
+function openFabCam(){
+  const cand=photoCandidates();
+  if(!cand.length)return;
+  if(cand.length===1){pickPhotoFor(cand[0]);return;}
+  let pk=document.getElementById('jpick');
+  if(pk)pk.remove();
+  pk=document.createElement('div');
+  pk.id='jpick';
+  pk.innerHTML=`<div class="jpin"><h4>la ce eveniment e poza?</h4>${cand.map((e,i)=>
+    `<button class="jopt" data-i="${i}"><small>${(e.querySelector('.t1')||{}).textContent||''}</small>${esc(cleanTitle(e)).slice(0,60)}</button>`).join('')}</div>`;
+  document.body.appendChild(pk);
+  pk.addEventListener('click',ev2=>{
+    const b=ev2.target.closest('.jopt');
+    if(b){pk.hidden=true;pk.remove();pickPhotoFor(cand[+b.dataset.i]);return;}
+    if(ev2.target===pk){pk.remove();}
+  });
+}
+const fabcamEl=document.getElementById('fabcam');
+if(fabcamEl)fabcamEl.addEventListener('click',openFabCam);
 
 /* ── anunțuri: bannerul de sub banda de zile ── */
 async function refreshAnunt(){
