@@ -182,6 +182,13 @@ section.day.on{display:block}
 .bigpublic{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--red);color:#fff;text-decoration:none;padding:16px;font-weight:700;font-size:17px;margin-bottom:4px}
 .bigpublic small{display:block;font-weight:400;font-family:var(--mono);font-size:11px;opacity:.85;margin-top:2px}
 .inote{font-size:13px;color:var(--muted)}
+.cdh{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--amber-dim);margin:16px 0 2px}
+.crow{display:flex;gap:10px;align-items:baseline;padding:6px 0;border-bottom:1px solid var(--line-soft);font-size:14px}
+.crow .cn{font-weight:500}
+.crow .cr{color:var(--muted);font-size:12.5px}
+.crow .tel{margin-left:auto;flex:0 0 auto}
+.cgrid{display:grid;grid-template-columns:1fr 1fr;column-gap:16px}
+.cgrid .crow{border-bottom:none;padding:3px 0;font-size:13px}
 
 /* ── butonul "acum" ──────────────────────── */
 .fab{position:fixed;right:16px;bottom:16px;z-index:70;background:var(--red);color:#fff;font-weight:700;font-size:15px;padding:13px 18px;box-shadow:0 4px 18px rgba(0,0,0,.45)}
@@ -545,6 +552,16 @@ infoS.className='day'; infoS.id='day-info';
 infoS.innerHTML=`
   <div class="dayhero"><h2>info extra</h2><div class="dd"><b>hărți · trupe · legături</b></div></div>
   <div class="info-grid">
+    <div class="iblock wide acc" id="cblock">
+      <h3>contacte</h3>
+      <input class="search" id="cq" type="search" placeholder="caută om, rol sau departament…" aria-label="caută în contacte">
+      ${CONTACTS.map(([dep,people])=>{
+        const plain=people.every(x=>!x[1]);
+        const rows=people.map(x=>`<div class="crow" data-s="${(dep+' '+x[0]+' '+(x[1]||'')).toLowerCase()}"><span class="cn">${x[0]}</span>${x[1]?`<span class="cr">${x[1]}</span>`:''}${x[2]?`<a class="tel" href="tel:${x[2].replace(/\s/g,'')}">${x[2]}</a>`:''}</div>`).join('');
+        return `<div class="cdep"><p class="cdh">${dep}</p><div class="${plain?'cgrid':''}">${rows}</div></div>`;
+      }).join('')}
+      <p class="inote" style="margin-top:12px">în curând: telefoanele + voluntarii de permanență pe locații (08:00–00:00).</p>
+    </div>
     ${FEEDBACK_URL?`<a class="bigpublic iblock wide" style="background:var(--panel-2);color:var(--fg)" href="${FEEDBACK_URL}" target="_blank" rel="noopener"><span>feedback în timp real<small>idei & probleme, direct în doc</small></span><span>↗</span></a>`:''}
     <div class="iblock acc">
       <h3>locații & hărți</h3>
@@ -576,14 +593,22 @@ infoS.innerHTML=`
         ${ARTE_ALATURATE.map(r=>`<tr><td><b>${r[0]}</b>${r[3]?`<br><small>${r[3]}</small>`:''}</td><td>${r[1]}</td><td><small>${r[2]}</small></td><td><small>${[r[4]?'tehnic: '+r[4]:'',r[5]?'producție: '+r[5]:''].filter(Boolean).join('<br>')||'·'}</small></td></tr>`).join('')}
       </table></div>
     </div>
-    <div class="iblock acc">
-      <h3>formatori</h3>
-      ${FORMATORI.map(r=>`<div class="irow"><span class="ra">${r[0]}</span><span class="rb" style="text-align:right">${r[1]}</span></div>`).join('')}
-      <h3 style="margin-top:22px">necesar ateliere teatru tânăr</h3>
-      <p class="inote">${TT_NEEDS}.</p>
-    </div>
+
   </div>`;
 daysEl.appendChild(infoS);
+
+/* căutarea în contacte */
+infoS.addEventListener('input',e=>{
+  if(e.target.id!=='cq')return;
+  const term=e.target.value.trim().toLowerCase();
+  infoS.querySelectorAll('#cblock .crow').forEach(r=>{
+    r.style.display=(!term||r.dataset.s.includes(term))?'':'none';
+  });
+  infoS.querySelectorAll('#cblock .cdep').forEach(d=>{
+    const any=[...d.querySelectorAll('.crow')].some(r=>r.style.display!=='none');
+    d.style.display=any?'':'none';
+  });
+});
 
 /* acordeonul din +info: se deschide doar ce te interesează */
 infoS.addEventListener('click',e=>{

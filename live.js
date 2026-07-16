@@ -16,7 +16,7 @@ const SUPA_URL='https://waqyaewaldphstmiobjj.supabase.co';
 const SUPA_KEY='sb_publishable_XtarsOK52eqlRUmv1ElS4Q_RwrDK78G'; /* cheia publică */
 const BUCKET='jurnal-21';
 const ANUNT_TTL_H=12; /* câte ore stă un anunț în banner */
-const PAGE=30;        /* poze pe pagină în feed */
+const PAGE=60;        /* postări pe pagină în feed */
 
 const sb=(path,opt={})=>fetch(SUPA_URL+path,Object.assign({},opt,{
   headers:Object.assign({apikey:SUPA_KEY,Authorization:'Bearer '+SUPA_KEY},opt.headers||{})
@@ -259,7 +259,7 @@ function openSheet(file){
       if(!navigator.onLine)throw new Error('ești offline · încearcă mai târziu');
       let blob, ctype, ext;
       if(vid){
-        if(file.size>50*1024*1024)throw new Error('videoclipul e prea mare (max 50MB)');
+        if(file.size>25*1024*1024)throw new Error('videoclipul e prea mare (max 25MB)');
         blob=file; ctype=file.type||'video/mp4';
         ext=ctype.includes('quicktime')?'mov':ctype.includes('webm')?'webm':'mp4';
       }else{
@@ -335,7 +335,7 @@ function buildInfo(){
     <div class="ftips"><button class="ftip" data-tip="idee" aria-pressed="true">idee</button><button class="ftip" data-tip="problemă" aria-pressed="false">problemă</button></div>
     <textarea class="fbox" rows="3" maxlength="2000" placeholder="scrie aici…"></textarea>
     <div><button class="fsend">trimite</button><span class="jnote fstat"></span></div>`;
-  grid.appendChild(fb);
+  grid.prepend(fb);
   fb.querySelectorAll('.ftip').forEach(b=>b.addEventListener('click',()=>{
     fb.querySelectorAll('.ftip').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
   }));
@@ -348,32 +348,6 @@ function buildInfo(){
     catch(e){s.textContent='nu a mers · mai încearcă';}
   });
 
-  /* anunțuri: acordeon; publicarea e deschisă oricui, alegere de echipă */
-  const an=document.createElement('div');
-  an.className='iblock acc'; an.setAttribute('data-live','');
-  an.innerHTML=`<h3>anunțuri</h3>
-    <div class="alist"></div>
-    <textarea class="fbox" rows="2" maxlength="300" placeholder="scrie un anunț pentru toată lumea…"></textarea>
-    <div><button class="fsend">publică anunțul</button><span class="jnote fstat"></span></div>`;
-  grid.appendChild(an);
-  const renderAn=async()=>{
-    try{
-      const rows=await sbGet('/anunturi_21?select=text,created_at&order=created_at.desc&limit=10');
-      an.querySelector('.alist').innerHTML=rows.length
-        ?rows.map(r=>`<div class="irow"><span class="ra">${esc(r.text)}</span><span class="rb">${fmtT(r.created_at)}</span></div>`).join('')
-        :'<p class="jnote">niciun anunț încă</p>';
-    }catch(e){an.querySelector('.alist').innerHTML='<p class="jnote">indisponibil</p>';}
-  };
-  an.querySelector('h3').addEventListener('click',()=>{
-    if(!an.classList.contains('open'))renderAn();
-  });
-  an.querySelector('.fsend').addEventListener('click',async()=>{
-    const t=an.querySelector('.fbox'), s=an.querySelector('.fstat');
-    const v=t.value.trim(); if(!v)return;
-    s.textContent='se trimite…';
-    try{await sbIns('anunturi_21',{text:v}); t.value=''; s.textContent='publicat ✓'; renderAn(); refreshAnunt(); setTimeout(()=>s.textContent='',2500);}
-    catch(e){s.textContent='nu a mers · mai încearcă';}
-  });
 }
 
 /* ── pornire: o singură sondă; dacă nu răspunde, nu apare nimic ── */
