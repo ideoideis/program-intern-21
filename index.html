@@ -38,19 +38,19 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;pad
 .wrap{max-width:680px;margin:0 auto;padding:0 16px}
 
 /* ── header ──────────────────────────────── */
-header.site{padding:0 0 8px}
+header.site{padding:0 0 18px}
 .eticheta{display:inline-block;background:#fff;padding:10px}
 .eticheta img{display:block;height:76px;width:auto}
-h1{font-weight:700;font-size:clamp(2.5rem,10vw,4.2rem);line-height:.95;letter-spacing:-.015em;margin:26px 0 0}
-.header-meta{margin-top:14px;font-size:15px;color:var(--muted)}
+h1{font-weight:700;font-size:clamp(2.5rem,10vw,4.2rem);line-height:.98;letter-spacing:-.015em;margin:36px 0 0}
+.header-meta{margin-top:20px;font-size:15px;color:var(--muted)}
 .header-meta strong{color:var(--fg);font-weight:600}
-.updated{margin-top:10px;font-family:var(--mono);font-size:12px;color:var(--amber)}
+.updated{margin-top:12px;font-family:var(--mono);font-size:12px;color:var(--amber)}
 .plink{color:var(--muted);text-decoration:none;font-weight:400}
 .plink:hover{color:var(--amber)}
 
 /* ── day rail ────────────────────────────── */
-nav.rail{position:sticky;top:0;z-index:60;background:var(--ground);border-bottom:1px solid var(--line);margin-top:22px}
-.rail-inner{display:flex;gap:2px;overflow-x:auto;padding:8px 16px;max-width:680px;margin:0 auto;scrollbar-width:none}
+nav.rail{position:sticky;top:0;z-index:60;background:var(--ground);border-bottom:1px solid var(--line);margin-top:30px}
+.rail-inner{display:flex;gap:4px;overflow-x:auto;padding:10px 16px;max-width:680px;margin:0 auto;scrollbar-width:none}
 .rail-inner::-webkit-scrollbar{display:none}
 .daychip{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;min-width:50px;padding:7px 9px 6px;border:1px solid transparent;color:var(--muted)}
 .daychip .dw{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase}
@@ -60,15 +60,15 @@ nav.rail{position:sticky;top:0;z-index:60;background:var(--ground);border-bottom
 .daychip.info .dn{font-size:17px;padding-top:3px}
 
 /* ── comutator vedere + filtre ───────────── */
-.filters{padding:14px 0 4px;border-bottom:1px solid var(--line-soft)}
-.viewtog{display:flex;gap:0;margin-bottom:10px}
+.filters{padding:20px 0 10px;border-bottom:1px solid var(--line-soft)}
+.viewtog{display:flex;gap:0;margin-bottom:14px}
 .vbtn{flex:1;border:1px solid var(--line);padding:9px 10px;font-weight:600;font-size:13.5px;color:var(--muted)}
 .vbtn+.vbtn{border-left:none}
 .vbtn[aria-pressed="true"]{background:var(--red);border-color:var(--red);color:#fff}
 body[data-view="loc"] .viewlist{display:none}
 .viewgrid{display:none}
 body[data-view="loc"] .viewgrid{display:block}
-.fhead{display:flex;align-items:center;gap:8px;width:100%;font-family:var(--mono);font-size:12px;color:var(--muted);padding:4px 0;text-align:left}
+.fhead{display:flex;align-items:center;gap:8px;width:100%;font-family:var(--mono);font-size:12px;color:var(--muted);padding:6px 0;text-align:left}
 .fhead .fcount{color:var(--amber)}
 .filters.collapsed .fbody{display:none}
 .search{width:100%;background:var(--panel);border:1px solid var(--line);color:var(--fg);padding:10px 12px;font-size:15px;font-family:inherit;margin-top:8px}
@@ -85,13 +85,13 @@ body[data-view="loc"] .viewgrid{display:block}
 /* ── secțiunea zilei ─────────────────────── */
 section.day{display:none;padding-bottom:90px}
 section.day.on{display:block}
-.dayhero{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:26px 0 4px;margin-bottom:14px}
+.dayhero{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:36px 0 6px;margin-bottom:18px}
 .dayhero h2{font-weight:700;font-size:clamp(2rem,8vw,3rem);line-height:1;margin:0;letter-spacing:-.01em}
 .dayhero .dd{text-align:right;color:var(--muted);font-size:14px;line-height:1.3}
 .dayhero .dd b{display:block;color:var(--fg);font-weight:600;font-size:16px}
 
 /* ── card eveniment (listă) ──────────────── */
-.ev{position:relative;display:grid;grid-template-columns:62px 1fr;gap:0 12px;background:var(--panel);border:1px solid var(--line-soft);border-left:4px solid var(--cat,#8b8e98);padding:12px 14px 12px 10px;margin:0 0 8px}
+.ev{position:relative;display:grid;grid-template-columns:62px 1fr;gap:0 12px;background:var(--panel);border:1px solid var(--line-soft);border-left:4px solid var(--cat,#8b8e98);padding:14px 14px 14px 10px;margin:0 0 10px}
 .ev.compact{padding:7px 14px 7px 10px;background:transparent;border-color:transparent;border-left:4px solid var(--cat,#8b8e98)}
 .ev.compact .t1{font-size:13px}
 .ev.compact .title{font-size:13.5px;font-weight:500;color:var(--muted)}
@@ -194,7 +194,7 @@ footer{padding:30px 0 46px;font-family:var(--mono);font-size:11px;color:var(--mu
 footer a{color:var(--amber);text-decoration:none}
 
 /* ── personalizări ───────────────────────── */
-.greet{margin:18px 0 0;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.03em;min-height:1.2em}
+.greet{margin:22px 0 0;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.03em;min-height:1.2em}
 .greet[hidden]{display:none}
 .greet .gcursor{color:var(--red);animation:gblink 1s steps(1) infinite}
 @keyframes gblink{50%{opacity:0}}
@@ -233,7 +233,7 @@ footer a{color:var(--amber);text-decoration:none}
 .jnote{font-family:var(--mono);font-size:11px;color:var(--muted);margin-left:8px}
 .jmore{display:block;margin-top:10px;font-family:var(--mono);font-size:11px;color:var(--amber);border:1px dashed rgba(255,196,46,.5);padding:6px 10px}
 .jday-h{font-family:var(--mono);font-size:11px;color:var(--muted);text-transform:lowercase;letter-spacing:.05em;margin:14px 0 2px}
-.anunt{border:1px solid rgba(255,196,46,.55);background:rgba(255,196,46,.08);color:var(--fg);padding:10px 12px;font-size:14px;margin-top:12px}
+.anunt{border:1px solid rgba(255,196,46,.55);background:rgba(255,196,46,.08);color:var(--fg);padding:12px 14px;font-size:14px;margin-top:18px}
 .anunt small{font-family:var(--mono);color:var(--amber);margin-left:6px}
 .fbox{width:100%;background:var(--panel);border:1px solid var(--line);color:var(--fg);padding:9px 11px;font-size:14px;font-family:inherit;margin-top:10px}
 .fsend{margin-top:8px;background:var(--red);color:#fff;font-weight:600;font-size:13px;padding:8px 14px}
