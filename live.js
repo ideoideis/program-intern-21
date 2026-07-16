@@ -122,6 +122,50 @@ async function toggleGallery(ev,btn){
   });
 }
 
+/* ── lightbox: pozele se deschid în pagină, cu descărcare & share ── */
+function lightbox(url){
+  let lb=document.getElementById('lbox');
+  if(!lb){
+    lb=document.createElement('div');
+    lb.id='lbox';
+    lb.innerHTML=`<button class="lx" title="închide">✕</button>
+      <img alt="">
+      <div class="lbar"><button class="lbtn" data-dl>descarcă</button><button class="lbtn" data-sh>trimite</button></div>`;
+    document.body.appendChild(lb);
+    lb.addEventListener('click',e=>{if(e.target===lb||e.target.classList.contains('lx'))lb.hidden=true;});
+    document.addEventListener('keydown',e=>{if(e.key==='Escape')lb.hidden=true;});
+    const grab=async u=>{const r=await fetch(u);if(!r.ok)throw 0;return r.blob();};
+    const nameOf=u=>('ideo-'+(u.split('/').pop()||'poza')).replace(/[?#].*$/,'');
+    lb.querySelector('[data-dl]').addEventListener('click',async()=>{
+      const u=lb.dataset.url;
+      try{
+        const b=await grab(u), o=URL.createObjectURL(b);
+        const a=document.createElement('a');a.href=o;a.download=nameOf(u);
+        document.body.appendChild(a);a.click();a.remove();
+        setTimeout(()=>URL.revokeObjectURL(o),4000);
+      }catch(e){window.open(u,'_blank');}
+    });
+    lb.querySelector('[data-sh]').addEventListener('click',async()=>{
+      const u=lb.dataset.url;
+      try{
+        const b=await grab(u);
+        const f=new File([b],nameOf(u),{type:b.type});
+        if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f]});return;}
+      }catch(e){}
+      window.open('https://wa.me/?text='+encodeURIComponent(u),'_blank');
+    });
+  }
+  lb.dataset.url=url;
+  lb.querySelector('img').src=url;
+  lb.hidden=false;
+}
+document.addEventListener('click',e=>{
+  const a=e.target.closest('.jthumbs a');
+  if(!a)return;
+  e.preventDefault();
+  lightbox(a.getAttribute('href'));
+});
+
 /* ── anunțuri: bannerul de sub banda de zile ── */
 async function refreshAnunt(){
   const bar=document.getElementById('anuntbar'); if(!bar)return;

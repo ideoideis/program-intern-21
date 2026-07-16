@@ -211,6 +211,14 @@ footer a{color:var(--amber);text-decoration:none}
 .jcorner.has{opacity:1;color:var(--amber-dim)}
 .jcorner:hover{opacity:1;color:var(--amber)}
 .jpanel{margin-top:8px;border-top:1px dashed var(--line);padding-top:8px}
+#lbox{position:fixed;inset:0;z-index:120;background:rgba(10,10,12,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:16px}
+#lbox[hidden]{display:none}
+#lbox img{max-width:94vw;max-height:74vh;object-fit:contain;background:var(--panel-2)}
+#lbox .lx{position:absolute;top:12px;right:14px;font-family:var(--mono);font-size:18px;color:var(--muted);padding:6px}
+#lbox .lx:hover{color:var(--fg)}
+#lbox .lbar{display:flex;gap:8px}
+#lbox .lbtn{border:1px solid var(--line);padding:9px 16px;font-weight:600;font-size:13.5px;color:var(--fg)}
+#lbox .lbtn:hover{border-color:var(--amber);color:var(--amber)}
 .anunt .ax{float:right;font-family:var(--mono);font-size:12px;color:var(--muted);padding:0 2px;margin-left:8px}
 .anunt .ax:hover{color:var(--fg)}
 .tscroll{overflow-x:auto}
