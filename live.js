@@ -99,6 +99,10 @@ let likesOn=true; /* devine false dacă tabela vibe_likes nu există încă */
 let ACTIVE='';
 const likedMap=()=>{try{return JSON.parse(localStorage.getItem('vibe-liked')||'{}');}catch(e){return {};}};
 const markLiked=id=>{const m=likedMap();m[id]=1;localStorage.setItem('vibe-liked',JSON.stringify(m));};
+const unmarkLiked=id=>{const m=likedMap();delete m[id];localStorage.setItem('vibe-liked',JSON.stringify(m));};
+const DEV=(()=>{let t=localStorage.getItem('vibe-dev');
+  if(!t){t=(crypto.randomUUID?crypto.randomUUID():String(Math.random()).slice(2)+Date.now());localStorage.setItem('vibe-dev',t);}
+  return t;})();
 
 function ensureVibeUI(){
   if(vibeChip)return;
@@ -234,13 +238,33 @@ document.addEventListener('click',async e=>{
   const like=e.target.closest('.vlike');
   if(!like)return;
   const id=+like.closest('.vitem').dataset.id;
-  if(likedMap()[id])return; /* o inimă per dispozitiv */
-  markLiked(id);
-  like.classList.add('on');
   const n=like.querySelector('.vln');
-  n.textContent=' '+((parseInt(n.textContent)||0)+1);
-  like.firstChild.textContent='♥';
-  try{await sbIns('vibe_likes',{photo_id:id});}catch(err){}
+  const count=()=>parseInt(n.textContent)||0;
+  if(!likedMap()[id]){
+    /* dai inima */
+    markLiked(id);
+    like.classList.add('on'); like.firstChild.textContent='♥';
+    n.textContent=(count()+1)?' '+(count()+1):'';
+    try{
+      try{await sbIns('vibe_likes',{photo_id:id,token:DEV});}
+      catch(e1){await sbIns('vibe_likes',{photo_id:id});} /* fără coloana token încă */
+    }catch(err){}
+  }else{
+    /* o iei înapoi */
+    unmarkLiked(id);
+    like.classList.remove('on'); like.firstChild.textContent='♡';
+    n.textContent=count()-1>0?' '+(count()-1):'';
+    try{
+      const r=await sb('/rest/v1/rpc/vibe_unlike',{method:'POST',
+        headers:{'Content-Type':'application/json'},body:JSON.stringify({p_photo:id,p_token:DEV})});
+      if(!r.ok)throw 0;
+    }catch(err){
+      /* serverul n-a putut retrage (funcția lipsește sau inima e veche, fără token): revenim */
+      markLiked(id);
+      like.classList.add('on'); like.firstChild.textContent='♥';
+      n.textContent=' '+(count()+1);
+    }
+  }
 });
 
 /* lightbox pe imaginile din feed */
