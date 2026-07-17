@@ -95,7 +95,10 @@ function lightbox(url,cap){
 /* ── vibe check ─────────────────────────── */
 let vibeChip=null, vibeSec=null, camFab=null, vibeBuilt=false;
 let feedShown=0, feedTotal=0, feedLastDay=null, hasAuthorCol=true;
+let likesOn=true; /* devine false dacă tabela vibe_likes nu există încă */
 let ACTIVE='';
+const likedMap=()=>{try{return JSON.parse(localStorage.getItem('vibe-liked')||'{}');}catch(e){return {};}};
+const markLiked=id=>{const m=likedMap();m[id]=1;localStorage.setItem('vibe-liked',JSON.stringify(m));};
 
 function ensureVibeUI(){
   if(vibeChip)return;
@@ -165,9 +168,11 @@ const vitemHtml=r=>{
   const media=isVideo(r.path)
     ?`<video controls playsinline preload="metadata" src="${pubUrl(r.path)}"></video>`
     :`<img loading="lazy" src="${pubUrl(r.path)}" alt="" data-lbx data-cap="${esc(r.caption||'')}" onerror="var f=this.closest('.vitem');if(f)f.remove()">`;
+  const liked=likedMap()[r.id];
+  const heart=likesOn?`<button class="vlike${liked?' on':''}" data-id="${r.id}">${liked?'♥':'♡'}<span class="vln"></span></button>`:'';
   return `<figure class="vitem" data-id="${r.id}">
     ${media}
-    <figcaption class="vmeta">${fmtT(r.created_at)}${r.caption?' · '+esc(r.caption):''}</figcaption>
+    <figcaption class="vmeta"><span>${fmtT(r.created_at)}${r.caption?' · '+esc(r.caption):''}</span>${heart}</figcaption>
   </figure>`;
 };
 const vsepHtml=day=>`<div class="vsep"><span>${esc(DAYLBL[day]||day)}</span></div>`;
@@ -202,12 +207,41 @@ async function feedLoad(reset){
     if(r.day!==feedLastDay){feedLastDay=r.day;box.insertAdjacentHTML('beforeend',vsepHtml(r.day));}
     box.insertAdjacentHTML('beforeend',vitemHtml(r));
   });
+  loadLikes(rows.map(r=>r.id));
   feedShown+=rows.length;
   if(feedShown<feedTotal){
     box.insertAdjacentHTML('beforeend','<button class="vmore">încarcă mai multe</button>');
     box.querySelector('.vmore').addEventListener('click',()=>feedLoad(false));
   }
 }
+
+/* inimioarele: numărăm și apreciem, decuplat de restul */
+async function loadLikes(ids){
+  if(!likesOn||!ids.length)return;
+  try{
+    const rows=await sbGet(`/vibe_likes?photo_id=in.(${ids.join(',')})&select=photo_id`);
+    const m={}; rows.forEach(r=>{m[r.photo_id]=(m[r.photo_id]||0)+1;});
+    ids.forEach(id=>{
+      const b=document.querySelector(`.vitem[data-id="${id}"] .vln`);
+      if(b)b.textContent=m[id]?' '+m[id]:'';
+    });
+  }catch(e){
+    likesOn=false;
+    document.querySelectorAll('.vlike').forEach(b=>b.remove());
+  }
+}
+document.addEventListener('click',async e=>{
+  const like=e.target.closest('.vlike');
+  if(!like)return;
+  const id=+like.closest('.vitem').dataset.id;
+  if(likedMap()[id])return; /* o inimă per dispozitiv */
+  markLiked(id);
+  like.classList.add('on');
+  const n=like.querySelector('.vln');
+  n.textContent=' '+((parseInt(n.textContent)||0)+1);
+  like.firstChild.textContent='♥';
+  try{await sbIns('vibe_likes',{photo_id:id});}catch(err){}
+});
 
 /* lightbox pe imaginile din feed */
 document.addEventListener('click',e=>{
