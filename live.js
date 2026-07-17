@@ -399,6 +399,45 @@ function buildInfo(){
     catch(e){s.textContent='nu a mers · mai încearcă';}
   });
 
+  /* statistici: citibile de oricine, din vederile agregate */
+  const st=document.createElement('div');
+  st.className='iblock wide acc'; st.setAttribute('data-live','');
+  st.innerHTML='<h3>statistici</h3><div class="stbox"></div>';
+  grid.appendChild(st);
+  let stLoaded=false;
+  st.querySelector('h3').addEventListener('click',async()=>{
+    const willOpen=!st.classList.contains('open');
+    if(!willOpen||stLoaded)return; stLoaded=true;
+    const box=st.querySelector('.stbox');
+    box.innerHTML='<p class="jnote">se încarcă…</p>';
+    const lbl=d=>d==='info'?'+info':d==='vibe'?'vibe':(DAYLBL[d]||d);
+    try{
+      const [zile,taburi,moduri,filtre,cautari]=await Promise.all([
+        sbGet('/stats_pe_zi?limit=10'),
+        sbGet('/stats_taburi?limit=15'),
+        sbGet('/stats_moduri'),
+        sbGet('/stats_filtre'),
+        sbGet('/stats_cautari'),
+      ]);
+      const tbl=(title,head,rows)=>rows.length?`<p class="cdh">${title}</p><div class="tscroll"><table class="ttable" style="min-width:0">
+        <tr>${head.map(h=>`<th>${h}</th>`).join('')}</tr>
+        ${rows.join('')}</table></div>`:'';
+      box.innerHTML=(
+        tbl('pe zile · sesiuni = max una pe oră per dispozitiv',['zi','persoane','sesiuni'],
+          zile.map(r=>`<tr><td>${r.zi}</td><td>${r.persoane}</td><td>${r.sesiuni}</td></tr>`))+
+        tbl('unde se uită lumea',['tab / zi','persoane','vizite'],
+          taburi.map(r=>`<tr><td><b>${esc(lbl(r.detail))}</b></td><td>${r.persoane}</td><td>${r.vizite}</td></tr>`))+
+        tbl('listă vs pe locații',['mod','comutări','persoane'],
+          moduri.map(r=>`<tr><td><b>${esc(r.detail)}</b></td><td>${r.comutari}</td><td>${r.persoane}</td></tr>`))+
+        tbl('filtre folosite',['filtre','folosiri'],
+          filtre.map(r=>`<tr><td>${esc(r.detail)}</td><td>${r.folosiri}</td></tr>`))+
+        tbl('căutări',['termen','căutări'],
+          cautari.map(r=>`<tr><td>${esc(r.detail)}</td><td>${r.cautari}</td></tr>`))
+      )||'<p class="jnote">încă nimic de arătat</p>';
+    }catch(e){
+      box.innerHTML='<p class="jnote">rulează întâi setup-analytics.sql (vederile stats_*)</p>';
+    }
+  });
 }
 
 /* ── statistici anonime: cine (dispozitiv), când, pe ce se uită ── */
@@ -420,9 +459,28 @@ function track(kind,detail){
   refreshAnunt();
   syncVibeVisibility();
   syncVibeDot();
-  track('open',(location.search||'').slice(0,40));
+  if(Date.now()-(+localStorage.getItem('ii-open-ts')||0)>3600e3){
+    track('open',(location.search||'').slice(0,40));
+    localStorage.setItem('ii-open-ts',String(Date.now()));
+  }
   document.addEventListener('daychange',e=>{
     if(e.detail!==lastView){lastView=e.detail;track('view',e.detail);}
+  });
+  document.addEventListener('click',e=>{
+    const vb=e.target.closest('.vbtn');
+    if(vb){track('mode',vb.dataset.view);return;}
+    const fc=e.target.closest('.fchip');
+    if(fc)setTimeout(()=>{
+      const on=[...document.querySelectorAll('.fchip[aria-pressed="true"]')]
+        .map(b=>b.textContent.trim().split('·')[0].trim().slice(0,14));
+      track('filter',on.length?on.join('+').slice(0,60):'reset');
+    },60);
+  });
+  const qEl=document.getElementById('q');
+  let qT;
+  if(qEl)qEl.addEventListener('input',()=>{
+    clearTimeout(qT);
+    qT=setTimeout(()=>{const v=qEl.value.trim();if(v.length>=3)track('search',v.toLowerCase().slice(0,40));},900);
   });
   setInterval(()=>{refreshAnunt();syncVibeDot();},180000);
   document.addEventListener('nowchange',syncVibeVisibility);
