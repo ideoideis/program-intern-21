@@ -401,6 +401,18 @@ function buildInfo(){
 
 }
 
+/* ── statistici anonime: cine (dispozitiv), când, pe ce se uită ── */
+const UA=/Mobi|Android/i.test(navigator.userAgent)?'mobil':'desktop';
+let lastView='';
+function track(kind,detail){
+  try{
+    sb('/rest/v1/analytics_21',{method:'POST',
+      headers:{'Content-Type':'application/json',Prefer:'return=minimal'},
+      body:JSON.stringify({device:DEV,kind,detail:String(detail||'').slice(0,60),ua:UA})
+    }).catch(()=>{});
+  }catch(e){}
+}
+
 /* ── pornire: o singură sondă; dacă nu răspunde, nu apare nimic ── */
 (async function init(){
   try{await sbGet('/anunturi_21?select=id&limit=1');}
@@ -408,6 +420,10 @@ function buildInfo(){
   refreshAnunt();
   syncVibeVisibility();
   syncVibeDot();
+  track('open',(location.search||'').slice(0,40));
+  document.addEventListener('daychange',e=>{
+    if(e.detail!==lastView){lastView=e.detail;track('view',e.detail);}
+  });
   setInterval(()=>{refreshAnunt();syncVibeDot();},180000);
   document.addEventListener('nowchange',syncVibeVisibility);
   document.addEventListener('daychange',e=>{
