@@ -466,6 +466,9 @@ function track(kind,detail){
   document.addEventListener('daychange',e=>{
     if(e.detail!==lastView){lastView=e.detail;track('view',e.detail);}
   });
+  /* ziua pe care aterizezi contează și ea ca vizită, nu doar schimbările */
+  const cur=document.querySelector('.daychip[aria-selected="true"]');
+  if(cur&&cur.dataset.day){lastView=cur.dataset.day;track('view',cur.dataset.day);}
   document.addEventListener('click',e=>{
     const vb=e.target.closest('.vbtn');
     if(vb){track('mode',vb.dataset.view);return;}
