@@ -1,7 +1,7 @@
 /* Service worker: programul funcționează și offline (semnal slab la festival).
    index.html și program.js se cer întâi de pe rețea (date proaspete) cu
    fallback la cache; fonturile și imaginile vin direct din cache. */
-const CACHE = 'pi21-2'; /* bump la orice schimbare de imagini/fonturi */
+const CACHE = 'pi21-3'; /* bump la orice schimbare de imagini/fonturi */
 const ASSETS = [
   './',
   'index.html',
@@ -31,9 +31,10 @@ self.addEventListener('fetch', e => {
   if (req.method !== 'GET' || new URL(req.url).origin !== location.origin) return;
   const fresh = req.mode === 'navigate' || req.url.includes('program.js') || req.url.includes('live.js');
   if (fresh) {
-    /* network-first: date proaspete când există net, cache când nu */
+    /* network-first, ocolind cache-ul HTTP (revalidare cu ETag):
+       schimbările de program se văd imediat, nu după 10 minute */
     e.respondWith(
-      fetch(req).then(r => {
+      fetch(req, { cache: 'no-cache' }).then(r => {
         const cp = r.clone();
         caches.open(CACHE).then(c => c.put(req, cp));
         return r;
