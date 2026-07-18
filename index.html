@@ -570,6 +570,11 @@ try{
 infoS.innerHTML=`
   <div class="dayhero"><h2>info extra</h2><div class="dd"><b>hărți · trupe · legături</b></div></div>
   <div class="info-grid">
+    <div class="iblock wide" id="teamviews">
+      <h3>vederi pe echipe</h3>
+      <div class="irow"><span class="ra">program formatori<small>traineri · mentori · trupe · fără Art&Play</small></span><a class="maplink" target="_blank" rel="noopener" href="https://ideoideis.github.io/program-intern-formatori/">deschide ↗</a></div>
+      <div class="irow"><span class="ra">program formatori Art&Play<small>ateliere comunitate & evenimente mari</small></span><a class="maplink" target="_blank" rel="noopener" href="https://ideoideis.github.io/program-intern-formatori/artplay/">deschide ↗</a></div>
+    </div>
     ${typeof CONTACTS==='undefined'?'':`<div class="iblock wide acc" id="cblock">
       <h3>contacte</h3>
       <input class="search" id="cq" type="search" placeholder="caută om, rol sau departament…" aria-label="caută în contacte">
@@ -773,6 +778,8 @@ daysEl.addEventListener('click',e=>{
 /* schimbarea zilei */
 function selectDay(id,scroll){
   document.querySelectorAll('.daychip').forEach(c=>c.setAttribute('aria-selected',String(c.dataset.day===id)));
+  /* pe +info nu au ce căuta filtrele (pe vibe le ascunde live.js) */
+  document.getElementById('filters').style.display=(id==='info')?'none':'';
   const ac=document.querySelector(`.daychip[data-day="${id}"]`), rd=document.getElementById('rail');
   if(ac&&rd&&rd.contains(ac)){
     const l=ac.offsetLeft-rd.offsetLeft;
