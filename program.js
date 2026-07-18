@@ -18,7 +18,7 @@
      xlabel/xlist  listă expandabilă (de ex. sesiuni masterclass)
    ============================================================ */
 
-const LAST_UPDATED = '16.07.2026';
+const LAST_UPDATED = '18.07.2026';
 
 /* Demo pentru marcajul "acum" în afara zilelor de festival:
    'zi-oră' (de ex. 'v31-19:32') sau null ca să îl stingi.
@@ -403,14 +403,14 @@ const PRE_FESTIVAL_UNTIL = '27.07.2026';
 /* trupele #21: [nume, trainer · sala, coordonator, tel coordonator, ghid, tel ghid]
    telefoanele se scriu ca '07xx xxx xxx' și devin tap-to-call */
 const TRUPE = [
- ['Trupa Leira','Adelin Tudorache · sala 10','de confirmat','','de confirmat',''],
- ['Atelierul de Teatru','Mădălina Stoica · sala 7','de confirmat','','de confirmat',''],
- ['Artwork','Oana Jipa · sala 6','de confirmat','','de confirmat',''],
- ['Amprente','Ioana Brumar · sala 9','de confirmat','','de confirmat',''],
- ['Brainstorming','Cezara Petredeanu · sala 5','de confirmat','','de confirmat',''],
- ['Alexandria','trainer de confirmat · sala 12','de confirmat','','de confirmat',''],
- ['ACT','Alexa Tofan · sala 8','de confirmat','','de confirmat',''],
- ['Protha','Bogdan Tulbure · sala 11','de confirmat','','de confirmat',''],
+ ['Trupa Leira','Adelin Tudorache · sala 10','Nicolae Cătălin','0723 682 361','de confirmat',''],
+ ['Atelierul de Teatru','Mădălina Stoica · sala 7','Lenuș Moraru','0745 658 769','de confirmat',''],
+ ['Artwork','Oana Jipa · sala 6','Diana Roman','0740 127 623','de confirmat',''],
+ ['Amprente','Ioana Brumar · sala 9','Anca Maria Băcanu','0721 916 009','de confirmat',''],
+ ['Brainstorming','Cezara Petredeanu · sala 5','Ruxandra Stoica','0770 346 780','de confirmat',''],
+ ['Alexandria','trainer de confirmat · sala 12','Eric Alexandru','','de confirmat',''],
+ ['ACT','Alexa Tofan · sala 8','Andi Andriucă','0784 246 202','de confirmat',''],
+ ['Protha','Bogdan Tulbure · sala 11','Alexandru Stan','0744 871 882','de confirmat',''],
 ];
 
 /* ── logistica atelierelor (din tabelul de logistică; sălile sunt
