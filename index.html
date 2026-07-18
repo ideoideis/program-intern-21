@@ -570,11 +570,6 @@ try{
 infoS.innerHTML=`
   <div class="dayhero"><h2>info extra</h2><div class="dd"><b>hărți · trupe · legături</b></div></div>
   <div class="info-grid">
-    <div class="iblock wide" id="teamviews">
-      <h3>vederi pe echipe</h3>
-      <div class="irow"><span class="ra">program formatori<small>traineri · mentori · trupe · fără Art&Play</small></span><a class="maplink" target="_blank" rel="noopener" href="https://ideoideis.github.io/program-intern-formatori/">deschide ↗</a></div>
-      <div class="irow"><span class="ra">program formatori Art&Play<small>ateliere comunitate & evenimente mari</small></span><a class="maplink" target="_blank" rel="noopener" href="https://ideoideis.github.io/program-intern-formatori/artplay/">deschide ↗</a></div>
-    </div>
     ${typeof CONTACTS==='undefined'?'':`<div class="iblock wide acc" id="cblock">
       <h3>contacte</h3>
       <input class="search" id="cq" type="search" placeholder="caută om, rol sau departament…" aria-label="caută în contacte">
@@ -623,6 +618,11 @@ infoS.innerHTML=`
         <tr><th>atelier</th><th>trainer</th><th>sală</th><th>necesar</th></tr>
         ${ARTE_ALATURATE.map(r=>`<tr><td><b>${r[0]}</b>${r[3]?`<br><small>${r[3]}</small>`:''}</td><td>${r[1]}</td><td><small>${r[2]}</small></td><td><small>${[r[4]?'tehnic: '+r[4]:'',r[5]?'producție: '+r[5]:''].filter(Boolean).join('<br>')||'·'}</small></td></tr>`).join('')}
       </table></div>
+    </div>
+    <div class="iblock wide" id="teamviews">
+      <h3>programe interne</h3>
+      <div class="irow"><span class="ra">program formatori<small>traineri · mentori · trupe · fără Art&Play</small></span><a class="maplink" target="_blank" rel="noopener" href="https://ideoideis.github.io/program-intern-formatori/">deschide ↗</a></div>
+      <div class="irow"><span class="ra">program formatori Art&Play<small>ateliere comunitate & evenimente mari</small></span><a class="maplink" target="_blank" rel="noopener" href="https://ideoideis.github.io/program-intern-formatori/artplay/">deschide ↗</a></div>
     </div>
 
   </div>`;
@@ -933,6 +933,6 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden)updateNow(
 /* offline: service worker cu cache local (vezi sw.js) */
 if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
-<script src="live.js?v=11" defer></script>
+<script src="live.js?v=12" defer></script>
 </body>
 </html>
