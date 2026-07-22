@@ -130,6 +130,13 @@ section.day.on{display:block}
 .xrow{display:flex;justify-content:space-between;gap:12px;font-size:13px;padding:3px 0}
 .xrow .xa{color:var(--fg);font-weight:500}
 .xrow .xb{color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+.xrow.volrow{flex-direction:column;align-items:stretch;gap:6px}
+.vchips{display:flex;flex-wrap:wrap;gap:5px}
+.vchip{display:inline-block;font-size:12px;padding:4px 9px;border:1px solid var(--line);color:#c7c9cf;text-decoration:none;white-space:nowrap}
+a.vchip{border-color:rgba(31,163,95,.5);color:#7bd6a2}
+a.vchip:hover{border-color:#1FA35F;color:#9be8bd}
+.vchip.nolink{opacity:.6}
+.vchip.ghid{border-color:rgba(255,196,46,.5);color:var(--amber)}
 
 /* ── benzi transport & masă (listă) ──────── */
 .tr{display:flex;align-items:baseline;gap:10px;border-top:1px dashed rgba(255,196,46,.45);border-bottom:1px dashed rgba(255,196,46,.45);padding:9px 2px;margin:14px 0;flex-wrap:wrap}
@@ -357,7 +364,7 @@ section.day.on{display:block}
 <div class="egg" id="egg" hidden>ne vedem la #22 ♥</div>
 <button class="fab" id="fab" hidden>acum<small id="fabt"></small></button>
 
-<script src="program.js?v=17"></script>
+<script src="program.js?v=19"></script>
 <script>
 /* ── utilitare ──────────────────────────── */
 const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -422,6 +429,35 @@ document.getElementById('railpins').appendChild(infoChip);
 /* logistica pe două niveluri: sala + trainerul pe card,
    participanți / necesar tehnic / producție după "▸ detalii" */
 const norm=s=>String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/<[^>]*>/g,'');
+const normKey=s=>norm(s).split(/[^a-z0-9]+/).filter(Boolean).sort().join(' ');
+const TEL_LIST=(()=>{const a=[];
+  if(typeof CONTACTS!=='undefined')CONTACTS.forEach(([dep,ppl])=>ppl.forEach(x=>{
+    if(x[2]&&/\d/.test(x[2]))a.push({t:new Set(norm(x[0]).split(/[^a-z0-9]+/).filter(Boolean)),ph:x[2]});
+  })); return a;})();
+function resolvePhone(name){
+  const t=new Set(norm(name).split(/[^a-z0-9]+/).filter(Boolean));
+  let exact=TEL_LIST.find(e=>e.t.size===t.size&&[...t].every(x=>e.t.has(x)));
+  if(exact)return exact.ph;
+  // subset: toti tokenii celui mai scurt in cel mai lung, minim 2 comuni
+  let best=null;
+  for(const e of TEL_LIST){
+    const shared=[...t].filter(x=>e.t.has(x)).length;
+    if(shared>=2 && (shared===t.size || shared===e.t.size)){best=e;break;}
+  }
+  return best?best.ph:null;
+}
+/* voluntarii unui eveniment -> chipuri mici, fiecare sună direct */
+function volChips(str){
+  return String(str).split(/\s*\+\s*|,\s*/).map(part=>{
+    part=part.trim(); if(!part)return '';
+    const lab=part.replace(/\s*\(ghid\)/i,'').trim();
+    const isGhid=/\(ghid\)/i.test(part);
+    const tel=resolvePhone(lab);
+    const cls='vchip'+(isGhid?' ghid':'')+(tel?'':' nolink');
+    return tel?`<a class="${cls}" href="tel:${tel.replace(/\s/g,'')}">${esc(lab)}${isGhid?' ·ghid':''}</a>`
+              :`<span class="${cls}">${esc(lab)}${isGhid?' ·ghid':''}</span>`;
+  }).join('');
+}
 function volFor(ev,dayId){
   if(typeof VOL_EV==='undefined')return null;
   const nt=norm(ev.title);
@@ -442,7 +478,7 @@ function detailRows(ev,dayId){
     if(lg.prod)rows.push(['necesar producție',lg.prod]);
   }
   const v=volFor(ev,dayId);
-  if(v)rows.push(['voluntari',v]);
+  if(v)rows.push(['voluntari',volChips(v)]);
   return rows.length?{label,rows}:null;
 }
 const slug=s=>s.toLowerCase().replace(/<[^>]*>/g,'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,28);
@@ -454,7 +490,7 @@ function evHtml(ev,dayId){
   const search=[ev.title,ev.loc,ev.locd,(ev.sub||[]).join(' '),(det?det.rows.flat().join(' '):'')].join(' ').toLowerCase();
   let x='';
   if(det){
-    const rows=det.rows.map(r=>`<div class="xrow"><span class="xa">${r[0]}</span><span class="xb">${r[1]}</span></div>`).join('');
+    const rows=det.rows.map(r=>r[0]==='voluntari'?`<div class="xrow volrow"><span class="xa">voluntari · sună direct</span><div class="vchips">${r[1]}</div></div>`:`<div class="xrow"><span class="xa">${r[0]}</span><span class="xb">${r[1]}</span></div>`).join('');
     x=`<button class="xbtn" data-x>▸ ${det.label}</button><div class="xlist">${rows}</div>`;
   }
   const subs=(ev.sub||[]).map(s=>`<div class="sub">${s}</div>`).join('');
