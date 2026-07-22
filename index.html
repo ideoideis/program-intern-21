@@ -144,8 +144,12 @@ section.day.on{display:block}
 .meal .note{font-size:12px;color:var(--muted)}
 
 /* ── rând @tehnic ────────────────────────── */
-.tech{display:flex;gap:10px;align-items:baseline;font-family:var(--mono);font-size:12px;color:var(--amber-dim);border-left:2px dashed rgba(255,196,46,.5);padding:4px 0 4px 10px;margin:6px 0}
-.tech .tt{font-weight:600;font-variant-numeric:tabular-nums;flex:0 0 auto}
+.tech{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:baseline;border-left:2px dashed rgba(255,196,46,.5);padding:5px 0 5px 10px;margin:6px 0}
+.tech .tkind{flex:0 0 auto;font-family:var(--mono);font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--amber);border:1px solid rgba(255,196,46,.45);padding:1px 5px}
+.tech .tt{flex:0 0 auto;font-family:var(--mono);font-size:12px;font-weight:600;color:var(--amber-dim);font-variant-numeric:tabular-nums}
+.tech .tmain{font-size:13px;color:#c7c9cf;font-weight:500}
+.tech .tx{color:var(--muted);font-size:12px;margin-left:10px;position:relative}
+.tech .tx::before{content:"";position:absolute;left:-6px;top:.15em;bottom:.15em;border-left:1px solid var(--line)}
 
 /* ── linia "acum" (listă) ────────────────── */
 .nowline{display:flex;align-items:center;gap:10px;margin:16px 0;color:var(--red)}
@@ -348,7 +352,7 @@ section.day.on{display:block}
 <div class="egg" id="egg" hidden>ne vedem la #22 ♥</div>
 <button class="fab" id="fab" hidden>acum<small id="fabt"></small></button>
 
-<script src="program.js?v=10"></script>
+<script src="program.js?v=11"></script>
 <script>
 /* ── utilitare ──────────────────────────── */
 const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -452,7 +456,12 @@ function evHtml(ev,dayId){
 }
 const trHtml=ev=>`<div class="tr"${ev.trupa?` data-trupa="${ev.trupa}"`:''} data-s="${smins(ev)}" data-search="transport ${esc(ev.route.toLowerCase())} ${esc((ev.note||'').toLowerCase())}"><span class="tag">transport</span><span class="tt">${ev.t}</span><span class="route">${esc(ev.route)}</span>${ev.note?`<span class="note">${esc(ev.note)}</span>`:''}</div>`;
 const mealHtml=ev=>`<div class="meal"${ev.trupa?` data-trupa="${ev.trupa}"`:''} data-s="${smins(ev)}" data-search="masa ${ev.meal} ${esc((ev.loc||'').toLowerCase())} ${esc((ev.note||'').toLowerCase())}"><span class="tag">masă</span><span class="tt">${ev.t}–${ev.e}</span><span class="mt">${ev.meal} · ${esc(ev.loc)}</span>${ev.note?`<span class="note">${esc(ev.note)}</span>`:''}</div>`;
-const techHtml=ev=>`<div class="tech" data-s="${smins(ev)}" data-search="tehnic ${esc(ev.text.toLowerCase())}"><span class="tt">${ev.t}</span><span>@tehnic · ${esc(ev.text)}</span></div>`;
+const techHtml=ev=>{
+  const parts=esc(ev.text).split(' · ');
+  const main=parts.shift()||'';
+  const rest=parts.map(x=>`<span class="tx">${x}</span>`).join('');
+  return `<div class="tech" data-s="${smins(ev)}" data-search="${ev.tr?'transport':'tehnic'} ${esc(ev.text.toLowerCase())}"><span class="tkind">${ev.tr?'transport':'@tehnic'}</span><span class="tt">${ev.t}</span><span class="tmain">${main}</span>${rest}</div>`;
+};
 
 /* ── vederea pe locații ─────────────────── */
 const MAINCOLS=[['cmt','CMT'],['mare','scena mare'],['mica','scena mică'],['kauf','Kaufland'],['sc5','Școala 5']];
