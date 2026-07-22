@@ -357,7 +357,7 @@ section.day.on{display:block}
 <div class="egg" id="egg" hidden>ne vedem la #22 ♥</div>
 <button class="fab" id="fab" hidden>acum<small id="fabt"></small></button>
 
-<script src="program.js?v=15"></script>
+<script src="program.js?v=16"></script>
 <script>
 /* ── utilitare ──────────────────────────── */
 const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -591,7 +591,7 @@ const infoS=document.createElement('section');
 infoS.className='day'; infoS.id='day-info';
 try{
 infoS.innerHTML=`
-  <div class="dayhero"><h2>info extra</h2><div class="dd"><b>hărți · trupe · legături</b></div></div>
+  <div class="dayhero"><h2>info extra</h2></div>
   <div class="info-grid">
     ${typeof CONTACTS==='undefined'?'':`<div class="iblock wide acc" id="cblock">
       <h3>contacte</h3>
