@@ -88,10 +88,6 @@ const DAYS = [
    {k:'t', t:'01:00', route:'Ștrand → Cămin'},
  ]},
  {id:'j30', dw:'j', dn:'30', full:'30 iulie', h2:'joi', events:[
-   {k:'x', t:'08:00', ts:'08:00', text:'preluare decor „Party” · Teatrul Metropolis → CMT · Duba mare Autocora · Vlad Moszojanu 0733 304 923'},
-   {k:'x', t:'oră TBC', ts:'08:31', text:'preluare decor Zestrea · UNATC · Bianca Geantă 0770 829 611'},
-   {k:'x', t:'oră TBC', ts:'08:32', text:'preluare · CIAA · monociclu Vlad Benescu + decor spațiu copii · Ștefan Craiu 0730 485 374'},
-   {k:'x', t:'oră TBC', ts:'08:33', text:'preluare · Covor Plante Poezie · covor 4 × 2,5 m · Ana Maria Pop 0748 611 488'},
    {k:'x', t:'oră TBC', ts:'08:34', text:'preluare · Intimisfera & Facultatea de Arhitectură · băncuțe (TBC)'},
    {k:'e', t:'10:00', e:'13:00', cat:'alt', loc:'CMT', locd:'sală de conf. / ceainărie (de confirmat)', title:'Bootcamp MASCA', sub:['școala de vară']},
    {k:'t', t:'08:15', route:'Cămin → CMT'},
@@ -122,6 +118,8 @@ const DAYS = [
    {k:'t', t:'00:15', route:'Piața Ideo Ideis → Cămin'},
  ]},
  {id:'v31', dw:'v', dn:'31', full:'31 iulie', h2:'vineri', events:[
+   {k:'x', t:'oră TBC', ts:'09:30', text:'decor spațiu copii (CIAA) · monociclu Vlad Benescu, șezlonguri, mese & scaune copii, hamace · transportat pe 30 iul · Ștefan Craiu 0730 485 374'},
+   {k:'x', t:'oră TBC', ts:'18:20', text:'decor „Covor, plante, poezie” · covor 4 × 2,5 m · transportat pe 30 iul · Ana Maria Pop 0748 611 488'},
    {k:'e', t:'10:00', e:'13:00', cat:'alt', loc:'CMT', locd:'sală de conf. / ceainărie (de confirmat)', title:'Bootcamp MASCA', sub:['școala de vară']},
    {k:'t', t:'08:15', route:'Cămin → CMT'},
    {k:'m', t:'08:30', e:'09:45', meal:'mic dejun', loc:'Alex Tell'},
@@ -163,6 +161,7 @@ const DAYS = [
    {k:'t', t:'00:15', route:'Piața Ideo Ideis → Cămin'},
  ]},
  {id:'s1', dw:'s', dn:'1', full:'1 august', h2:'sâmbătă', events:[
+   {k:'x', t:'oră TBC', ts:'09:50', text:'decor „Party” · de la Teatrul Metropolis · transportat pe 30 iul · Duba mare Autocora · Vlad Moszojanu 0733 304 923'},
    {k:'t', t:'08:15', route:'Cămin → CMT'},
    {k:'m', t:'08:30', e:'09:45', meal:'mic dejun', loc:'Alex Tell'},
    {k:'e', t:'10:00', e:'14:00', cat:'ateliere', loc:'Școala 5', title:'ateliere teatru tânăr'},
@@ -204,6 +203,7 @@ const DAYS = [
    {k:'t', t:'00:00', route:'Piața Ideo Ideis → Cămin'},
  ]},
  {id:'d2', dw:'d', dn:'2', full:'2 august', h2:'duminică', events:[
+   {k:'x', t:'oră TBC', ts:'10:50', text:'decor „Zestrea” · de la UNATC · transportat pe 30 iul · Bianca Geantă 0770 829 611'},
    {k:'x', t:'oră TBC', ts:'08:30', text:'retur decor · UNATC · scena UNATC · microbuz Excelsior'},
    {k:'t', t:'08:15', route:'Cămin → CMT'},
    {k:'m', t:'08:30', e:'09:45', meal:'mic dejun', loc:'Alex Tell'},
