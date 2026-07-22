@@ -357,7 +357,7 @@ section.day.on{display:block}
 <div class="egg" id="egg" hidden>ne vedem la #22 ♥</div>
 <button class="fab" id="fab" hidden>acum<small id="fabt"></small></button>
 
-<script src="program.js?v=14"></script>
+<script src="program.js?v=15"></script>
 <script>
 /* ── utilitare ──────────────────────────── */
 const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -432,9 +432,9 @@ function detailRows(ev,dayId){
   let rows=[], label=ev.xlabel||'detalii';
   if(ev.xlist) rows=ev.xlist.map(r=>[r[1],r[0]]);
   else if(ev.title==='ateliere teatru tânăr')
-    rows=ATELIERE_TT.map(r=>[`${r[0]} · ${r[1]}`, r[2]+(r[3]?' · '+r[3]:'')]);
+    rows=ATELIERE_TT.map(r=>[`${r[0]} · ${r[1]}`, r[2]+(r[3]?' · '+r[3]:'')+(r[4]?' · voluntari: '+r[4]:'')]);
   else if(ev.title==='ateliere arte alăturate')
-    rows=ARTE_ALATURATE.map(r=>[`${r[0]} · ${r[1]}`, r[2]]);
+    rows=ARTE_ALATURATE.map(r=>[`${r[0]} · ${r[1]}`, r[2]+(r[6]?' · voluntari: '+r[6]:'')]);
   const lg=LOGISTICS[ev.title];
   if(lg){
     if(lg.n)rows.push(['participanți',lg.n]);
@@ -638,8 +638,8 @@ infoS.innerHTML=`
     <div class="iblock wide acc">
       <h3>arte alăturate</h3>
       <div class="tscroll"><table class="ttable">
-        <tr><th>atelier</th><th>trainer</th><th>sală</th><th>necesar</th></tr>
-        ${ARTE_ALATURATE.map(r=>`<tr><td><b>${r[0]}</b>${r[3]?`<br><small>${r[3]}</small>`:''}</td><td>${r[1]}</td><td><small>${r[2]}</small></td><td><small>${[r[4]?'tehnic: '+r[4]:'',r[5]?'producție: '+r[5]:''].filter(Boolean).join('<br>')||'·'}</small></td></tr>`).join('')}
+        <tr><th>atelier</th><th>trainer</th><th>sală</th><th>voluntari</th><th>necesar</th></tr>
+        ${ARTE_ALATURATE.map(r=>`<tr><td><b>${r[0]}</b>${r[3]?`<br><small>${r[3]}</small>`:''}</td><td>${r[1]}</td><td><small>${r[2]}</small></td><td><small>${r[6]||'·'}</small></td><td><small>${[r[4]?'tehnic: '+r[4]:'',r[5]?'producție: '+r[5]:''].filter(Boolean).join('<br>')||'·'}</small></td></tr>`).join('')}
       </table></div>
     </div>
     ${typeof MURALE==='undefined'?'':`<div class="iblock wide acc">

@@ -444,14 +444,14 @@ const PRE_FESTIVAL_UNTIL = '27.07.2026';
 /* trupele #21: [nume, trainer · sala, coordonator, tel coordonator, ghid, tel ghid]
    telefoanele se scriu ca '07xx xxx xxx' și devin tap-to-call */
 const TRUPE = [
- ['Trupa Leira','Adelin Tudorache · sala 10','Nicolae Cătălin','0723 682 361','de confirmat',''],
- ['Atelierul de Teatru','Mădălina Stoica · sala 7','Lenuș Moraru','0745 658 769','de confirmat',''],
- ['Artwork','Oana Jipa · sala 6','Diana Roman','0740 127 623','de confirmat',''],
- ['Amprente','Ioana Brumar · sala 9','Anca Maria Băcanu','0721 916 009','de confirmat',''],
- ['Brainstorming','Cezara Petredeanu · sala 5','Ruxandra Stoica','0770 346 780','de confirmat',''],
+ ['Trupa Leira','Adelin Tudorache · sala 10','Nicolae Cătălin','0723 682 361','Ana Maria Georgescu','0771582928'],
+ ['Atelierul de Teatru','Mădălina Stoica · sala 7','Lenuș Moraru','0745 658 769','Dragomir Maria-Cătălina','0773780320'],
+ ['Artwork','Oana Jipa · sala 6','Diana Roman','0740 127 623','Horvath Valentin','0760111213'],
+ ['Amprente','Ioana Brumar · sala 9','Anca Maria Băcanu','0721 916 009','Ariana Mișu',''],
+ ['Brainstorming','Cezara Petredeanu · sala 5','Ruxandra Stoica','0770 346 780','Dide Noemi','0770597515'],
  ['Alexandria','trainer de confirmat · sala 12','Eric Alexandru','','de confirmat',''],
- ['ACT','Alexa Tofan · sala 8','Andi Andriucă','0784 246 202','de confirmat',''],
- ['Protha','Bogdan Tulbure · sala 11','Alexandru Stan','0744 871 882','de confirmat',''],
+ ['ACT','Alexa Tofan · sala 8','Andi Andriucă','0784 246 202','Sebe Cristina','0756557105'],
+ ['Protha','Bogdan Tulbure · sala 11','Alexandru Stan','0744 871 882','Dinu Andrei','0722112111'],
 ];
 
 /* ── spectacolele trupelor: fișa fiecărui spectacol (afișată pe
@@ -534,27 +534,27 @@ const TRUPE_INFO = {
 
 /* ateliere teatru tânăr · Școala 5 · joi/vineri/sâmbătă 10:00-14:00 */
 const ATELIERE_TT = [
- ['Trupa Leira','Adelin Tudorache','sala 10','14 part.'],
- ['Atelierul de Teatru','Mădălina Stoica','sala 7','15 part.'],
- ['Artwork','Oana Jipa','sala 6','14 part.'],
- ['Amprente','Ioana Brumar','sala 9','11 part.'],
- ['Brainstorming','Cezara Petredeanu','sala 5','14 part.'],
- ['Alexandria','trainer de confirmat','sala 12',''],
- ['ACT','Alexa Tofan','sala 8','14 part.'],
- ['Protha','Bogdan Tulbure','sala 11','14 part.'],
- ['Train the Coordinators','mentori & coordonatori','sala 13','7 part.'],
+ ['Trupa Leira','Adelin Tudorache','sala 10','14 part.','Ana Maria Georgescu (ghid) + Bianca Poață'],
+ ['Atelierul de Teatru','Mădălina Stoica','sala 7','15 part.','Dragomir Maria-Cătălina (ghid) + Anastasia Corradi'],
+ ['Artwork','Oana Jipa','sala 6','14 part.','Horvath Valentin (ghid) + Ana Tănăsescu'],
+ ['Amprente','Ioana Brumar','sala 9','11 part.','Ariana Mișu (ghid) + Delia Mocioi'],
+ ['Brainstorming','Cezara Petredeanu','sala 5','14 part.','Dide Noemi (ghid) + Isabel Zlotea'],
+ ['Alexandria','trainer de confirmat','sala 12','',''],
+ ['ACT','Alexa Tofan','sala 8','14 part.','Sebe Cristina (ghid) + Anda Pavel'],
+ ['Protha','Bogdan Tulbure','sala 11','14 part.','Dinu Andrei (ghid) + Ariana Trandafir'],
+ ['Train the Coordinators','mentori & coordonatori','sala 13','7 part.',''],
 ];
 const TT_NEEDS = 'câte o boxă portabilă + cutie standard: 1 eșarfă și 1 pix / participant, 5 mingi de tenis, 1 rolă scotch de hârtie, 5 cozi de mătură, 1 ghem sfoară, 1 top hârtie, 10 pahare carton, 1 tavă';
 
 /* ateliere arte alăturate · duminică/luni/marți 10:00-14:00 */
 const ARTE_ALATURATE = [
- ['scriere dramatică','Alex Gorghe','Șc. 5 · sala 2','13 part.','','flipchart, markere, 14 pixuri, 1 top hârtie'],
- ['dans 1','Eduard Chimac','Șc. 2 · sala de sport','20 part.','boxă bluetooth',''],
- ['film','Tudor Platon','Șc. 5 · sala 5 (întunecoasă / jaluzele)','14 part.','tablă inteligentă funcțională (video & audio) cu ieșire HDMI, WiFi','1 set hârtie + cartuș pt. imprimanta foto Canon Selphy CP1300'],
- ['actorie de film','Theodor Ioniță','Șc. 5 · sala 6 (întunecoasă / jaluzele)','15 part.','videoproiector, cablu HDMI, prelungitor, perete alb, telefon bun pe cameră, set lavaliere de telefon, boxă bluetooth',''],
- ['dans 2','Teo Velescu','Șc. 3 · sala de sport','20 part.','boxă bluetooth',''],
- ['costume','Șteff Chelaru','Șc. 5 · sala 7','14 part.','',''],
- ['Train the Coordinators','mentori & coordonatori','Șc. 5 · sala 13','7 part.','videoproiector, cablu HDMI, prelungitor',''],
+ ['scriere dramatică','Alex Gorghe','Șc. 5 · sala 2','13 part.','','flipchart, markere, 14 pixuri, 1 top hârtie','Anastasia Corradi + Sorina Irimia'],
+ ['dans 1','Eduard Chimac','Șc. 2 · sala de sport','20 part.','boxă bluetooth','','Andreea Ștefania Dragomir + Bianca Poață'],
+ ['film','Tudor Platon','Șc. 5 · sala 5 (întunecoasă / jaluzele)','14 part.','tablă inteligentă funcțională (video & audio) cu ieșire HDMI, WiFi','1 set hârtie + cartuș pt. imprimanta foto Canon Selphy CP1300','Alisia Mocanu + Eliza Dinu'],
+ ['actorie de film','Theodor Ioniță','Șc. 5 · sala 6 (întunecoasă / jaluzele)','15 part.','videoproiector, cablu HDMI, prelungitor, perete alb, telefon bun pe cameră, set lavaliere de telefon, boxă bluetooth','','Alexandra Botorogeanu + Bianca Milcu'],
+ ['dans 2','Teo Velescu','Șc. 3 · sala de sport','20 part.','boxă bluetooth','','Anda Pavel + Iulia Fusea'],
+ ['costume','Șteff Chelaru','Șc. 5 · sala 7','14 part.','','','Andreea Marinescu + Elena-Alexandra Gheorghe'],
+ ['Train the Coordinators','mentori & coordonatori','Șc. 5 · sala 13','7 part.','videoproiector, cablu HDMI, prelungitor','',''],
 ];
 
 /* ateliere formatori (orientativ / de confirmat) */
