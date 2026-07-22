@@ -62,9 +62,13 @@ const MAPQ = {
 
 const DAYS = [
  {id:'ma28', dw:'ma', dn:'28', full:'28 iulie', h2:'marți', events:[
+   {k:'x', t:'oră TBC', ts:'09:00', text:'preluare decor · UNATC → CMT · echipamente + costume & picioroange · Duba Autocora'},
+   {k:'x', t:'oră TBC', ts:'09:05', text:'preluare · Teatrul Național București · videoproiector & case'},
+   {k:'x', t:'oră TBC', ts:'09:10', text:'preluare · Teatrul Național Craiova · echipamente sonorizare'},
    {k:'e', t:'19:00', e:'21:00', cat:'alt', loc:'Conciato', title:'quiz civic pentru voluntari', sub:['cu FORUM APULUM']},
  ]},
  {id:'mi29', dw:'mi', dn:'29', full:'29 iulie', h2:'miercuri', events:[
+   {k:'x', t:'oră TBC', ts:'09:00', text:'preluare decor · UNATC → CMT · scena UNATC · microbuz Excelsior'},
    {k:'e', t:'10:00', e:'13:00', cat:'alt', loc:'CMT', locd:'sală de conf. / ceainărie (de confirmat)', title:'Bootcamp MASCA', sub:['școala de vară']},
    {k:'e', t:'08:30', e:'13:00', cat:'alt', loc:'Cămin', title:'sosiri trupe'},
    {k:'t', t:'13:00', route:'Cămin → CMT', note:'curse la 13:00 și 13:15'},
@@ -84,6 +88,11 @@ const DAYS = [
    {k:'t', t:'01:00', route:'Ștrand → Cămin'},
  ]},
  {id:'j30', dw:'j', dn:'30', full:'30 iulie', h2:'joi', events:[
+   {k:'x', t:'08:00', ts:'08:00', text:'preluare decor „Party” · Teatrul Metropolis → CMT · Duba mare Autocora · Vlad Moszojanu 0733 304 923'},
+   {k:'x', t:'oră TBC', ts:'08:31', text:'preluare decor Zestrea · UNATC · Bianca Geantă 0770 829 611'},
+   {k:'x', t:'oră TBC', ts:'08:32', text:'preluare · CIAA · monociclu Vlad Benescu + decor spațiu copii · Ștefan Craiu 0730 485 374'},
+   {k:'x', t:'oră TBC', ts:'08:33', text:'preluare · Covor Plante Poezie · covor 4 × 2,5 m · Ana Maria Pop 0748 611 488'},
+   {k:'x', t:'oră TBC', ts:'08:34', text:'preluare · Intimisfera & Facultatea de Arhitectură · băncuțe (TBC)'},
    {k:'e', t:'10:00', e:'13:00', cat:'alt', loc:'CMT', locd:'sală de conf. / ceainărie (de confirmat)', title:'Bootcamp MASCA', sub:['școala de vară']},
    {k:'t', t:'08:15', route:'Cămin → CMT'},
    {k:'m', t:'08:30', e:'09:45', meal:'mic dejun', loc:'Alex Tell'},
@@ -195,6 +204,7 @@ const DAYS = [
    {k:'t', t:'00:00', route:'Piața Ideo Ideis → Cămin'},
  ]},
  {id:'d2', dw:'d', dn:'2', full:'2 august', h2:'duminică', events:[
+   {k:'x', t:'oră TBC', ts:'08:30', text:'retur decor · UNATC · scena UNATC · microbuz Excelsior'},
    {k:'t', t:'08:15', route:'Cămin → CMT'},
    {k:'m', t:'08:30', e:'09:45', meal:'mic dejun', loc:'Alex Tell'},
    {k:'e', t:'10:00', e:'10:30', c:true, cat:'mica', loc:'Piața Ideo Ideis', locd:'scena mică', title:'repetiție și montare · „Năzdrăvanii mărilor”'},
@@ -237,6 +247,11 @@ const DAYS = [
    {k:'t', t:'00:15', route:'CMT → Cămin'},
  ]},
  {id:'l3', dw:'l', dn:'3', full:'3 august', h2:'luni', events:[
+   {k:'x', t:'08:00–10:00', ts:'08:00', text:'retur decor „Party” · CMT → Teatrul Metropolis · Duba mare Autocora · Vlad Moszojanu 0733 304 923'},
+   {k:'x', t:'oră TBC', ts:'08:31', text:'retur decor Zestrea · UNATC · Bianca Geantă 0770 829 611'},
+   {k:'x', t:'oră TBC', ts:'08:32', text:'retur · CIAA · monociclu + decor spațiu copii · Ștefan Craiu 0730 485 374'},
+   {k:'x', t:'oră TBC', ts:'08:33', text:'retur · Covor Plante Poezie · covor 4 × 2,5 m · Ana Maria Pop 0748 611 488'},
+   {k:'x', t:'oră TBC', ts:'08:34', text:'retur · Intimisfera & Facultatea de Arhitectură · băncuțe (TBC)'},
    {k:'x', t:'toată ziua', ts:'08:00', text:'demontare și strâns outdoor · Piața Ideo Ideis'},
    {k:'t', t:'08:15', route:'Cămin → CMT'},
    {k:'m', t:'08:30', e:'09:45', meal:'mic dejun', loc:'Alex Tell'},
@@ -282,6 +297,7 @@ const DAYS = [
    {k:'t', t:'03:00', route:'Ștrand → Cămin'},
  ]},
  {id:'mi5', dw:'mi', dn:'5', full:'5 august', h2:'miercuri', events:[
+   {k:'x', t:'oră TBC', ts:'09:00', text:'retur decor · Teatrul Național Craiova · echipamente sonorizare'},
    {k:'e', t:'08:00', e:'12:30', cat:'alt', loc:'CMT', title:'demontare și eliberare CMT'},
    {k:'e', t:'12:30', e:'14:30', cat:'alt', loc:'CMT', title:'Comunitate CMT', sub:['prezentare fundații comunitare']},
    {k:'e', t:'15:00', cat:'alt', loc:'CMT', title:'ședință de închidere'},
@@ -718,32 +734,6 @@ const MURALE = [
  ['Mural Clinica TeraVita','str. Ion Creangă 63','31 iul: 20:00-22:30 (trasare schiță) · 1-5 aug: 10:00-12:00 & 16:00-20:00','ATOMA','0757 150 915'],
 ];
 
-/* transport decoruri · în responsabilitatea echipei TEHNIC
-   (Andrei Tălpigă / Sebi Stroie) · [data, locație, ce, contact, mașină] */
-const TRANSPORT_DECOR = {
- responsabil:'Andrei Tălpigă / Sebi Stroie',
- preluari:[
-  ['28 iul','UNATC · str. Matei Voievod 75-77','echipamente UNATC + costume & picioroange','Clara Dobre · 0737 055 663','Duba Autocora + șofer'],
-  ['28 iul','Teatrul Național București · Bd. N. Bălcescu 2','videoproiector & case','de confirmat',''],
-  ['28 iul','Teatrul Național Craiova · str. Al. I. Cuza 11','echipamente sonorizare','de confirmat',''],
-  ['29 iul','UNATC · str. Matei Voievod 75-77','scena UNATC','Diana Păcurar (TBC)','microbuz Excelsior'],
-  ['30 iul','Teatrul Metropolis · str. M. Eminescu 89','decor „Party”','Vlad Moszojanu · 0733 304 923','Duba mare Autocora + șofer'],
-  ['30 iul','UNATC · str. Matei Voievod 75-77','decor Zestrea','Bianca Geantă · 0770 829 611',''],
-  ['30 iul','CIAA · str. Orzari 11','monociclu Vlad Benescu + decor spațiu copii (șezlonguri, mese & scaune copii, hamace, materiale ateliere)','Ștefan Craiu · 0730 485 374',''],
-  ['30 iul','Covor Plante Poezie · str. Biserica Amzei 25','covor 4 × 2,5 m','Ana Maria Pop · 0748 611 488',''],
-  ['30 iul','Intimisfera','de confirmat','de confirmat',''],
-  ['30 iul','Facultatea de Arhitectură','băncuțe (TBC)','de confirmat',''],
- ],
- retururi:[
-  ['2 aug','UNATC · str. Matei Voievod 75-77','scena UNATC','Diana Păcurar (TBC)','microbuz Excelsior'],
-  ['3 aug','Teatrul Metropolis · str. M. Eminescu 89','decor „Party” (8:00-10:00)','Vlad Moszojanu · 0733 304 923','Duba mare Autocora + șofer'],
-  ['3 aug','UNATC · str. Matei Voievod 75-77','decor Zestrea','Bianca Geantă · 0770 829 611',''],
-  ['3 aug','CIAA · str. Orzari 11','monociclu + decor spațiu copii','Ștefan Craiu · 0730 485 374',''],
-  ['3 aug','Covor Plante Poezie · str. Biserica Amzei 25','covor 4 × 2,5 m','Ana Maria Pop · 0748 611 488',''],
-  ['3 aug','Intimisfera / Facultatea de Arhitectură','băncuțe (TBC)','de confirmat',''],
-  ['5 aug','Teatrul Național Craiova · str. Al. I. Cuza 11','echipamente sonorizare','de confirmat',''],
- ],
-};
 
 /* locațiile din tabul +info */
 const LOCS = [
