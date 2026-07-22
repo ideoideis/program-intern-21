@@ -357,7 +357,7 @@ section.day.on{display:block}
 <div class="egg" id="egg" hidden>ne vedem la #22 ♥</div>
 <button class="fab" id="fab" hidden>acum<small id="fabt"></small></button>
 
-<script src="program.js?v=12"></script>
+<script src="program.js?v=13"></script>
 <script>
 /* ── utilitare ──────────────────────────── */
 const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -421,10 +421,17 @@ document.getElementById('railpins').appendChild(infoChip);
 /* ── vederea listă ──────────────────────── */
 /* logistica pe două niveluri: sala + trainerul pe card,
    participanți / necesar tehnic / producție după "▸ detalii" */
-function detailRows(ev){
-  if(ev.xlist) return {label:ev.xlabel, rows:ev.xlist.map(r=>[r[1],r[0]])};
-  let rows=[];
-  if(ev.title==='ateliere teatru tânăr')
+const norm=s=>String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/<[^>]*>/g,'');
+function volFor(ev,dayId){
+  if(typeof VOL_EV==='undefined')return null;
+  const nt=norm(ev.title);
+  const m=VOL_EV.find(e=>e[0]===dayId && e[1]===ev.t && nt.includes(norm(e[2])));
+  return m?m[3]:null;
+}
+function detailRows(ev,dayId){
+  let rows=[], label=ev.xlabel||'detalii';
+  if(ev.xlist) rows=ev.xlist.map(r=>[r[1],r[0]]);
+  else if(ev.title==='ateliere teatru tânăr')
     rows=ATELIERE_TT.map(r=>[`${r[0]} · ${r[1]}`, r[2]+(r[3]?' · '+r[3]:'')]);
   else if(ev.title==='ateliere arte alăturate')
     rows=ARTE_ALATURATE.map(r=>[`${r[0]} · ${r[1]}`, r[2]]);
@@ -434,14 +441,16 @@ function detailRows(ev){
     if(lg.tehnic)rows.push(['necesar tehnic',lg.tehnic]);
     if(lg.prod)rows.push(['necesar producție',lg.prod]);
   }
-  return rows.length?{label:ev.xlabel||'detalii',rows}:null;
+  const v=volFor(ev,dayId);
+  if(v)rows.push(['voluntari',v]);
+  return rows.length?{label,rows}:null;
 }
 const slug=s=>s.toLowerCase().replace(/<[^>]*>/g,'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,28);
 function evHtml(ev,dayId){
   const cat=CATS[ev.cat]||CATS.alt;
   const eid=`${dayId}-${ev.t.replace(':','')}-${slug(ev.title)}`;
   const lg=LOGISTICS[ev.title];
-  const det=detailRows(ev);
+  const det=detailRows(ev,dayId);
   const search=[ev.title,ev.loc,ev.locd,(ev.sub||[]).join(' '),(det?det.rows.flat().join(' '):'')].join(' ').toLowerCase();
   let x='';
   if(det){

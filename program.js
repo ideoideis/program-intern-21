@@ -728,6 +728,90 @@ const CONTACTS = [
  ]],
 ];
 
+/* voluntari pe evenimente · [ziua, ora de start, cuvânt-cheie din titlu, echipă]
+   se afișează la „detalii” pe evenimentul potrivit */
+const CREW_CMT = "Gîgîlice Gabriela, Stan Daria, Nedeluș Bogdan Gabriel, Șurcan Eduard, Mihai Daria Elena, Tănăsescu Ana, Irimia Sorina Georgiana, Vasile Alexandra, Pavel Anda, Botorogeanu Alexandra, Anastasia Corradi, Robert Mocanu, Florea Angelina";
+const VOL_EV = [
+ // 29 iul
+ ['mi29','13:30','In a Relationship','Toader Roberta Elena Maria, Daria Micu'],
+ ['mi29','14:00','ședință coordonatori','Bianca Poață, Florea Angelina Maria'],
+ ['mi29','20:00','gală de deschidere',CREW_CMT],
+ // 30 iul
+ ['j30','10:00','paradă','Toader Roberta Elena Maria, Preda Marina, Carabașu Miruna'],
+ ['j30','10:30','Show Your Moves','Chircu Rebeca, Marin Maria'],
+ ['j30','14:00','Stand Up','Mihnea Nițu, Vatui Ioana-Rebeca'],
+ ['j30','18:00','Trupa Leira',CREW_CMT],
+ ['j30','20:30','Atelierul de Teatru',CREW_CMT],
+ ['j30','21:30','paradă','Toader Roberta Elena Maria, Preda Marina, Iulia Fusea, Marin Maria, Carabașu Miruna'],
+ ['j30','22:30','Catane','Zlotea Liviu, Gheorghe Elena-Alexandra, Zlate Răzvan, Vatui Ioana-Rebeca, Chircu Rebeca, Dragoș Erimia, Brîndaș Elena-Daniela, Dragomir Andreea Ștefania'],
+ // 31 iul
+ ['v31','10:00','ateliere teatru tânăr','pe trupe: vezi „teatru tânăr” la +info'],
+ ['v31','10:30','face painting','Eric-Andrei Alexandri, Stănceoi Andreea, Vasile Alexandra, Milcu Alessia'],
+ ['v31','10:30','Se întâmplă între N-O-I','Ionescu Betty, Florea Angelina Maria'],
+ ['v31','10:30','Show Your Moves','Chircu Rebeca, Marin Maria'],
+ ['v31','11:00','Pauza de la dezinformare','Șurcan Eduard, Mihai Daria Elena'],
+ ['v31','11:30','Brățările','Stan Daria, Zlotea Liviu, Botorogeanu Alexandra Iuliana, Iulia Fusea'],
+ ['v31','14:30','Se întâmplă între N-O-I','Ivanuș Denisa Mihaela, Brîndaș Elena-Daniela'],
+ ['v31','15:00','De la pasiune la profesie','Carabașu Miruna, Preda Marina'],
+ ['v31','15:00','Mintea ta','Mihnea Nițu, Vatui Ioana-Rebeca'],
+ ['v31','17:00','Bunicul și bunica','Popescu Amalia Ioana, Marinescu Andreea, Lorena Maftei, Iulia Fusea, Milcu Alessia'],
+ ['v31','18:00','spectacol teatru tânăr · Artwork',CREW_CMT],
+ ['v31','18:00','Bine de știut #1','Coconu Livia, Toader Roberta Elena Maria, Zlotea Liviu, Trandafir Ariana, Antoniu Rareș, Voicu Rafael, Gîlcă Rebeca Ioana'],
+ ['v31','19:00','Seara Povestitorilor #1','Coconu Livia, Toader Roberta Elena Maria, Zlotea Liviu, Trandafir Ariana, Antoniu Rareș, Voicu Rafael, Gîlcă Rebeca Ioana'],
+ ['v31','19:00','Atelierul de joacă','Enescu Sonia Maria, Medințu Emma-Gabriela, Gîgîlice Gabriela, Gabriela Prună'],
+ ['v31','20:00','masterclass',CREW_CMT],
+ ['v31','20:30','Covor, plante, poezie','Dinu Eliza, Mocanu Alisia, Bianca Poață, Jainea Bianca, Anghel Mihaela, Medințu Thea, Mihnea Spătaru'],
+ ['v31','21:30','paradă','Zlotea Liviu, Gheorghe Elena-Alexandra, Dragomir Andreea Ștefania, Vatui Ioana-Rebeca, Chircu Rebeca, Dragoș Erimia, Brîndaș Elena-Daniela, Zlate Răzvan'],
+ ['v31','22:00','standup','Marinescu Andreea, Ionescu Raul-Ionuț, Adriana Popescu, Andres Catruna, Zlotea Isabel, Maria Nedelcu'],
+ ['v31','22:30','De capul nostru','Zlotea Liviu, Gheorghe Elena-Alexandra, Dragomir Andreea Ștefania, Vatui Ioana-Rebeca, Chircu Rebeca, Dragoș Erimia, Brîndaș Elena-Daniela, Zlate Răzvan'],
+ // 1 aug
+ ['s1','09:30','Animalul care te locuiește','Ionescu Betty, Florea Angelina'],
+ ['s1','10:00','Se întâmplă între N-O-I','Mihnea Nițu, Vatui Ioana-Rebeca'],
+ ['s1','10:30','Show Your Moves','Chircu Rebeca, Marin Maria'],
+ ['s1','10:30','Când mă fac mare','Zlotea Liviu, Marinescu Andreea, Botorogeanu Alexandra Iuliana, Popescu Amalia Ioana, Milcu Alessia'],
+ ['s1','10:30','cursa cu obstacole','Irimia Sorina, Robert Mocanu, Iulia Fusea, Coconu Livia, Toader Roberta Elena Maria'],
+ ['s1','14:30','Se întâmplă între N-O-I','Brîndaș Elena-Daniela, Ivanuș Denisa Mihaela'],
+ ['s1','15:00','De la pasiune la profesie','Carabașu Miruna, Preda Marina'],
+ ['s1','17:00','face painting','Ionescu Betty, Coconu Livia, Marinescu Andreea, Botorogeanu Alexandra Iuliana, Popescu Amalia Ioana'],
+ ['s1','17:00','Țup','Dinu Eliza, Mocanu Alisia, Gheorghe Elena-Alexandra, Iulia Fusea, Zlotea Isabel'],
+ ['s1','18:00','spectacol teatru tânăr · Amprente',CREW_CMT],
+ ['s1','18:00','Bine de știut #2','Enescu Sonia Maria, Mihnea Spătaru, Gabriela Prună, Lorena Maftei, Medințu Emma-Gabriela'],
+ ['s1','19:00','Seara Povestitorilor #2','Enescu Sonia Maria, Mihnea Spătaru, Gabriela Prună, Lorena Maftei, Medințu Emma-Gabriela'],
+ ['s1','20:30','PARTY',CREW_CMT],
+ ['s1','21:00','jonglerie cu lumini','Ivanuș Denisa Mihaela, Jainea Bianca, Antoniu Rareș, Marin Maria'],
+ ['s1','22:30','Multisenzorial','Zlotea Liviu, Gheorghe Elena-Alexandra, Zlate Răzvan, Vatui Ioana-Rebeca, Chircu Rebeca, Dragoș Erimia, Brîndaș Elena-Daniela, Dragomir Andreea Ștefania'],
+ // 2 aug
+ ['d2','09:30','Prim ajutor pediatric','Stan Daria, Șurcan Eduard'],
+ ['d2','10:00','Animalul care te locuiește','Ionescu Betty, Trandafir Ariana'],
+ ['d2','10:00','Se întâmplă între N-O-I','Mihnea Nițu, Vatui Ioana-Rebeca'],
+ ['d2','10:30','Năzdrăvanii','Florea Angelina, Zlotea Liviu, Tănăsescu Ana, Popescu Amalia Ioana, Milcu Alessia'],
+ ['d2','12:30','atelier cu păpuși','Florea Angelina, Zlotea Liviu, Tănăsescu Ana, Popescu Amalia Ioana, Milcu Alessia'],
+ ['d2','14:30','Se întâmplă între N-O-I','Carabașu Miruna, Preda Marina'],
+ ['d2','15:00','De la pasiune la profesie','Chircu Rebeca, Marin Maria'],
+ ['d2','16:00','Alexandria la 50','Brîndaș Elena-Daniela, Ivanuș Denisa Mihaela'],
+ ['d2','17:00','jonglerie','Gabriela Prună, Lorena Maftei, Medințu Emma-Gabriela, Enescu Sonia Maria, Milcu Alessia'],
+ ['d2','18:00','spectacol teatru tânăr · Brainstorming',CREW_CMT],
+ ['d2','18:00','Bine de știut #3','Zlotea Isabel, Marinescu Andreea, Botorogeanu Alexandra Iuliana, Popescu Amalia Ioana'],
+ ['d2','19:00','Seara Povestitorilor #3','Zlotea Isabel, Marinescu Andreea, Botorogeanu Alexandra Iuliana, Popescu Amalia Ioana'],
+ ['d2','20:30','ODD COUTURE',CREW_CMT],
+ ['d2','20:30','Wheels in Motion','Mocioi Delia, Ionescu Betty, Jainea Bianca, Antoniu Rareș'],
+ ['d2','21:30','Zestrea','Zlotea Liviu, Gheorghe Elena-Alexandra, Dragomir Andreea Ștefania, Vatui Ioana-Rebeca, Chircu Rebeca, Dragoș Erimia, Brîndaș Elena-Daniela, Zlate Răzvan'],
+ ['d2','22:30','Malul Vânăt','Zlotea Liviu, Gheorghe Elena-Alexandra, Dragomir Andreea Ștefania, Vatui Ioana-Rebeca, Chircu Rebeca, Dragoș Erimia, Brîndaș Elena-Daniela, Zlate Răzvan'],
+ // 3 aug
+ ['l3','10:00','Cetățenie activă','Marin Maria, Chircu Rebeca'],
+ ['l3','10:00','Animalul care te locuiește','Vatui Ioana-Rebeca, Mihnea Nițu'],
+ ['l3','14:00','Orașul e al tău','Ionescu Betty, Trandafir Ariana'],
+ ['l3','17:00','spectacol teatru tânăr · Alexandria',CREW_CMT],
+ ['l3','19:30','spectacol teatru tânăr · ACT',CREW_CMT],
+ ['l3','21:00','Atlasul','Zlotea Liviu, Gheorghe Elena-Alexandra, Toader Roberta Elena Maria, Trancă Alexandru Ionuț, Coconu Livia, Chircu Rebeca, Marin Maria, Ivanuș Denisa Mihaela, Vatui Ioana-Rebeca, Zlate Răzvan, Iriș Marius-Andrei'],
+ // 4 aug
+ ['ma4','10:00','Animalul care te locuiește','Ionescu Betty, Trandafir Ariana'],
+ ['ma4','18:00','spectacol teatru tânăr · Protha',CREW_CMT],
+ ['ma4','20:30','gală de închidere',CREW_CMT],
+ // 5 aug
+ ['mi5','12:30','Comunitate CMT',CREW_CMT],
+];
+
 /* permanențe voluntari · pe locații, calupuri de timp și zile
    [zi, [ [locație, [[calup, persoane]] ] ]] */
 const PERMANENTE = [
