@@ -70,7 +70,8 @@ const DAYS = [
    {k:'t', t:'13:00', route:'Cămin → CMT', note:'curse la 13:00 și 13:15'},
    {k:'e', t:'13:30', e:'14:30', cat:'cmt', loc:'CMT', title:'conferință interactivă In a Relationship'},
    {k:'e', t:'14:00', e:'15:00', cat:'alt', loc:'Primărie', locd:'Sala de Consiliu', title:'ședință coordonatori'},
-   {k:'x', t:'15:00–20:00', ts:'15:00', text:'montare „Chaplin” + probe gală · CMT'},
+   {k:'x', t:'15:00–19:00', ts:'15:00', text:'montare „Charlie Chaplin” (Teatrul Mic) · CMT'},
+   {k:'x', t:'19:00–20:00', ts:'19:00', text:'probe gală · CMT'},
    {k:'t', t:'15:05', route:'traseu de confirmat'},
    {k:'e', t:'17:00', e:'17:30', cat:'alt', loc:'loc de confirmat', title:'întâlnire mentori · participanți'},
    {k:'t', t:'18:00', route:'Cămin → CMT'},
@@ -107,6 +108,7 @@ const DAYS = [
    {k:'e', t:'21:45', e:'22:15', cat:'alt', loc:'CMT', trupa:'atelierul', title:'feedback cu mentorii · Atelierul de Teatru'},
    {k:'e', t:'21:30', e:'22:00', cat:'parada', loc:'Piața Ideo Ideis', title:'paradă papainoage „Actori la înălțime”', sub:['UNATC']},
    {k:'t', t:'21:45', route:'CMT → Cămin'},
+   {k:'e', t:'21:30', e:'22:30', c:true, cat:'cine', loc:'Piața Ideo Ideis', locd:'scena mare', title:'montare cinematecă · „Catane”'},
    {k:'e', t:'22:30', e:'00:30', cat:'cine', loc:'Piața Ideo Ideis', title:'cinemateca târzie · „Catane”', sub:['1 h 36 · invitat TBC']},
    {k:'t', t:'00:15', route:'Piața Ideo Ideis → Cămin'},
  ]},
@@ -117,7 +119,7 @@ const DAYS = [
    {k:'e', t:'10:00', e:'14:00', cat:'ateliere', loc:'Școala 5', title:'ateliere teatru tânăr'},
    {k:'e', t:'10:00', e:'14:00', cat:'ateliere', loc:'Școala 5', title:'atelier Train the Coordinators', sub:['mentori & coordonatori']},
    {k:'e', t:'10:00', e:'10:30', cat:'parada', loc:'Kaufland', locd:'în magazin', title:'paradă papainoage „Actori la înălțime”', sub:['UNATC']},
-   {k:'e', t:'10:30', e:'11:30', cat:'mica', loc:'Piața Ideo Ideis', locd:'scena mică', title:'sesiune face painting', sub:['cu Alexa Istrate']},
+   {k:'e', t:'10:30', e:'12:30', cat:'mica', loc:'Piața Ideo Ideis', locd:'scena mică', title:'sesiune face painting', sub:['cu Alexa Istrate']},
    {k:'e', t:'10:30', e:'12:30', cat:'artplay', loc:'Școala 5', title:'Se întâmplă între N-O-I', sub:['psihoeducație · 10-13 ani']},
    {k:'e', t:'10:30', e:'12:30', cat:'artplay', loc:'Școala 5', title:'Show Your Moves', sub:['atelier de dans · breaking']},
    {k:'e', t:'11:00', e:'13:00', cat:'artplay', loc:'Școala 5', title:'Pauza de la dezinformare', sub:['educație media pentru profesori']},
@@ -134,6 +136,7 @@ const DAYS = [
    {k:'t', t:'17:30', route:'Cămin → CMT'},
    {k:'e', t:'18:00', e:'19:00', cat:'tt', loc:'CMT', trupa:'artwork', title:'spectacol teatru tânăr · Artwork'},
    {k:'e', t:'19:15', e:'19:35', cat:'alt', loc:'CMT', trupa:'artwork', title:'feedback cu mentorii · Artwork'},
+   {k:'e', t:'17:00', e:'18:00', c:true, cat:'mare', loc:'Piața Ideo Ideis', locd:'scena mare', title:'montare · Bine de știut #1'},
    {k:'e', t:'18:00', e:'19:00', cat:'mare', loc:'Piața Ideo Ideis', locd:'scena mare', title:'Bine de știut #1 · adicția de jocuri de noroc', sub:['cu Alex Bogdan']},
    {k:'e', t:'18:00', e:'19:30', cat:'mica', loc:'Piața Ideo Ideis', locd:'scena mică', title:'sesiune face painting', sub:['cu Alexa Istrate']},
    {k:'e', t:'18:30', e:'20:30', c:true, cat:'mica', loc:'Piața Ideo Ideis', locd:'scena mică', title:'montare · „Covor, plante, poezie”'},
@@ -146,6 +149,7 @@ const DAYS = [
    {k:'e', t:'21:30', e:'22:00', cat:'parada', loc:'Piața Ideo Ideis', locd:'scena mică → scena mare', title:'paradă papainoage „Actori la înălțime”', sub:['UNATC']},
    {k:'e', t:'22:00', e:'23:00', cat:'alt', loc:'Alex Tell', title:'standup: Sabina Balan, Larisa Bănuță, Theodor Abagiu, Geo Adrian'},
    {k:'t', t:'22:30', route:'spre Cămin'},
+   {k:'e', t:'21:30', e:'22:30', c:true, cat:'cine', loc:'Piața Ideo Ideis', locd:'scena mare', title:'montare cinematecă · „De capul nostru”'},
    {k:'e', t:'22:30', e:'00:30', cat:'cine', loc:'Piața Ideo Ideis', locd:'scena mare', title:'cinemateca târzie · „De capul nostru”', sub:['1 h 34 · Q&A cu Tudor Jurgiu (30 min)']},
    {k:'t', t:'00:15', route:'Piața Ideo Ideis → Cămin'},
  ]},
@@ -174,16 +178,18 @@ const DAYS = [
    {k:'e', t:'17:00', e:'17:50', cat:'mica', loc:'Piața Ideo Ideis', locd:'scena mică', title:'spectacol „Țup · Imposibil e doar un cuvânt”', sub:['CIAA']},
    {k:'t', t:'17:30', route:'Cămin → CMT'},
    {k:'e', t:'17:45', e:'18:00', c:true, cat:'mare', loc:'Piața Ideo Ideis', locd:'scena mare', title:'probe sunet · invitați'},
+   {k:'e', t:'17:30', e:'18:00', c:true, cat:'mare', loc:'Piața Ideo Ideis', locd:'scena mare', title:'montare · Bine de știut #2'},
    {k:'e', t:'18:00', e:'19:00', cat:'mare', loc:'Piața Ideo Ideis', locd:'scena mare', title:'Bine de știut #2 · fraude financiare', sub:['cu Bogdan Ghebaur']},
    {k:'e', t:'18:00', e:'19:00', cat:'tt', loc:'CMT', trupa:'amprente', title:'spectacol teatru tânăr · Amprente'},
    {k:'e', t:'19:15', e:'19:35', cat:'alt', loc:'CMT', trupa:'amprente', title:'feedback cu mentorii · Amprente'},
-   {k:'e', t:'19:00', e:'20:00', c:true, cat:'cmt', loc:'CMT', title:'montare spectacol profesionist'},
+   {k:'e', t:'19:15', e:'20:30', c:true, cat:'cmt', loc:'CMT', title:'montare decor · PARTY (Teatrul Metropolis)'},
    {k:'m', t:'19:00', e:'20:30', meal:'cină', loc:'Alex Tell'},
    {k:'e', t:'19:00', e:'20:30', cat:'mare', loc:'Piața Ideo Ideis', locd:'scena mare', title:'Seara Povestitorilor #2', sub:['cu Lucian Prună']},
    {k:'e', t:'19:30', e:'22:30', c:true, cat:'mica', loc:'Piața Ideo Ideis', locd:'scena mică', title:'montare · Multisenzorial'},
    {k:'e', t:'20:30', e:'22:00', cat:'cmt', loc:'CMT', title:'PARTY', sub:['Teatrul Metropolis, București · 1 h 30']},
    {k:'e', t:'20:30', e:'21:00', cat:'parada', loc:'Piața Ideo Ideis', locd:'scena mare', title:'paradă papainoage „Actori la înălțime”', sub:['UNATC']},
    {k:'e', t:'21:00', e:'21:30', cat:'mare', loc:'Piața Ideo Ideis', locd:'scena mare', title:'spectacol de jonglerie cu lumini', sub:['cu Vlad Benescu · CIAA']},
+   {k:'e', t:'22:00', c:true, cat:'mare', loc:'Piața Ideo Ideis', locd:'scena mare', title:'setare lumini · Zestrea (pt. spectacolul de mâine)', sub:['oră TBC']},
    {k:'t', t:'22:15', route:'CMT → Cămin'},
    {k:'e', t:'22:30', e:'23:45', cat:'mica', loc:'Piața Ideo Ideis', locd:'scena mică', title:'concert Multisenzorial', sub:['1 h 15']},
    {k:'t', t:'00:00', route:'Piața Ideo Ideis → Cămin'},
@@ -191,7 +197,7 @@ const DAYS = [
  {id:'d2', dw:'d', dn:'2', full:'2 august', h2:'duminică', events:[
    {k:'t', t:'08:15', route:'Cămin → CMT'},
    {k:'m', t:'08:30', e:'09:45', meal:'mic dejun', loc:'Alex Tell'},
-   {k:'e', t:'09:30', e:'10:00', c:true, cat:'mica', loc:'Piața Ideo Ideis', locd:'scena mică', title:'repetiție · „Năzdrăvanii mărilor”'},
+   {k:'e', t:'10:00', e:'10:30', c:true, cat:'mica', loc:'Piața Ideo Ideis', locd:'scena mică', title:'repetiție și montare · „Năzdrăvanii mărilor”'},
    {k:'e', t:'10:00', e:'14:00', cat:'ateliere', loc:'Școala 5', title:'ateliere arte alăturate', sub:['+ sălile de sport „Mihai Viteazul” & „Ștefan cel Mare”']},
    {k:'e', t:'10:00', e:'14:00', cat:'ateliere', loc:'Școala 5', title:'atelier Train the Coordinators', sub:['mentori & coordonatori']},
    {k:'e', t:'10:00', e:'16:30', c:true, cat:'cmt', loc:'CMT', title:'montare și repetiție · <b>ODD COUTURE</b>'},
@@ -214,6 +220,7 @@ const DAYS = [
    {k:'t', t:'17:30', route:'Cămin → CMT'},
    {k:'e', t:'18:00', e:'19:00', cat:'tt', loc:'CMT', trupa:'brainstorming', title:'spectacol teatru tânăr · Brainstorming'},
    {k:'e', t:'19:15', e:'19:35', cat:'alt', loc:'CMT', trupa:'brainstorming', title:'feedback cu mentorii · Brainstorming'},
+   {k:'e', t:'17:30', e:'18:00', c:true, cat:'mare', loc:'Piața Ideo Ideis', locd:'scena mare', title:'montare · Bine de știut #3'},
    {k:'e', t:'18:00', e:'19:00', cat:'mare', loc:'Piața Ideo Ideis', locd:'scena mare', title:'Bine de știut #3 · screening HPV', sub:['cu Irina Mateescu']},
    {k:'e', t:'18:00', e:'18:30', cat:'parada', loc:'Kaufland', locd:'în magazin', title:'paradă papainoage „Actori la înălțime”', sub:['UNATC']},
    {k:'e', t:'18:30', e:'20:00', cat:'kauf', loc:'Kaufland', locd:'în parcare', title:'Atelierul de joacă', sub:['CIAA']},
@@ -225,6 +232,7 @@ const DAYS = [
    {k:'e', t:'20:30', e:'21:30', c:true, cat:'mare', loc:'Piața Ideo Ideis', locd:'scena mare', title:'montare · Zestrea'},
    {k:'e', t:'21:30', e:'22:30', cat:'mare', loc:'Piața Ideo Ideis', locd:'scena mare', title:'Zestrea', sub:['UNATC · 50 min']},
    {k:'t', t:'22:30', route:'CMT → Cămin'},
+   {k:'e', t:'22:15', e:'22:30', c:true, cat:'cine', loc:'CMT', title:'montare cinematecă · „Malul Vânăt”'},
    {k:'e', t:'22:30', e:'00:30', cat:'cine', loc:'CMT', title:'cinemateca târzie · „Malul Vânăt”', sub:['1 h 32 · Q&A cu Andreea Cristina Borțun (30 min)']},
    {k:'t', t:'00:15', route:'CMT → Cămin'},
  ]},
@@ -249,7 +257,7 @@ const DAYS = [
    {k:'e', t:'20:45', e:'21:15', cat:'alt', loc:'CMT', trupa:'act', title:'feedback cu mentorii · ACT'},
    {k:'e', t:'20:30', e:'21:00', c:true, cat:'cine', loc:'CMT', title:'montare tehnic · cinemateca târzie'},
    {k:'t', t:'20:45', route:'Cămin → CMT'},
-   {k:'e', t:'21:00', e:'22:45', cat:'cine', loc:'CMT', title:'cinemateca târzie · „Atlasul Universului”', sub:['1 h 25 · Q&A cu Paul Negoescu (TBC), 15 min']},
+   {k:'e', t:'21:00', e:'22:25', cat:'cine', loc:'CMT', title:'cinemateca târzie · „Atlasul Universului”', sub:['1 h 25 · Q&A cu Paul Negoescu (TBC), 15 min']},
    {k:'t', t:'22:45', route:'CMT → Cămin'},
  ]},
  {id:'ma4', dw:'ma', dn:'4', full:'4 august', h2:'marți', events:[
@@ -703,6 +711,39 @@ const CONTACTS = [
   ['Thea-Cristiana Medințu'],['Valentin Horvath'],['Vlad Gabriel Brinceanu'],
  ]],
 ];
+
+/* murale (spații conexe) · [nume, adresă, orar de funcționare, contact] */
+const MURALE = [
+ ['Mural Ștrand','str. Alexandru Ghica 72-80','1-5 aug · zilnic 10:00-12:00 & 16:00-20:00','Maria Zurbagiu','0743 585 255'],
+ ['Mural Clinica TeraVita','str. Ion Creangă 63','31 iul: 20:00-22:30 (trasare schiță) · 1-5 aug: 10:00-12:00 & 16:00-20:00','ATOMA','0757 150 915'],
+];
+
+/* transport decoruri · în responsabilitatea echipei TEHNIC
+   (Andrei Tălpigă / Sebi Stroie) · [data, locație, ce, contact, mașină] */
+const TRANSPORT_DECOR = {
+ responsabil:'Andrei Tălpigă / Sebi Stroie',
+ preluari:[
+  ['28 iul','UNATC · str. Matei Voievod 75-77','echipamente UNATC + costume & picioroange','Clara Dobre · 0737 055 663','Duba Autocora + șofer'],
+  ['28 iul','Teatrul Național București · Bd. N. Bălcescu 2','videoproiector & case','de confirmat',''],
+  ['28 iul','Teatrul Național Craiova · str. Al. I. Cuza 11','echipamente sonorizare','de confirmat',''],
+  ['29 iul','UNATC · str. Matei Voievod 75-77','scena UNATC','Diana Păcurar (TBC)','microbuz Excelsior'],
+  ['30 iul','Teatrul Metropolis · str. M. Eminescu 89','decor „Party”','Vlad Moszojanu · 0733 304 923','Duba mare Autocora + șofer'],
+  ['30 iul','UNATC · str. Matei Voievod 75-77','decor Zestrea','Bianca Geantă · 0770 829 611',''],
+  ['30 iul','CIAA · str. Orzari 11','monociclu Vlad Benescu + decor spațiu copii (șezlonguri, mese & scaune copii, hamace, materiale ateliere)','Ștefan Craiu · 0730 485 374',''],
+  ['30 iul','Covor Plante Poezie · str. Biserica Amzei 25','covor 4 × 2,5 m','Ana Maria Pop · 0748 611 488',''],
+  ['30 iul','Intimisfera','de confirmat','de confirmat',''],
+  ['30 iul','Facultatea de Arhitectură','băncuțe (TBC)','de confirmat',''],
+ ],
+ retururi:[
+  ['2 aug','UNATC · str. Matei Voievod 75-77','scena UNATC','Diana Păcurar (TBC)','microbuz Excelsior'],
+  ['3 aug','Teatrul Metropolis · str. M. Eminescu 89','decor „Party” (8:00-10:00)','Vlad Moszojanu · 0733 304 923','Duba mare Autocora + șofer'],
+  ['3 aug','UNATC · str. Matei Voievod 75-77','decor Zestrea','Bianca Geantă · 0770 829 611',''],
+  ['3 aug','CIAA · str. Orzari 11','monociclu + decor spațiu copii','Ștefan Craiu · 0730 485 374',''],
+  ['3 aug','Covor Plante Poezie · str. Biserica Amzei 25','covor 4 × 2,5 m','Ana Maria Pop · 0748 611 488',''],
+  ['3 aug','Intimisfera / Facultatea de Arhitectură','băncuțe (TBC)','de confirmat',''],
+  ['5 aug','Teatrul Național Craiova · str. Al. I. Cuza 11','echipamente sonorizare','de confirmat',''],
+ ],
+};
 
 /* locațiile din tabul +info */
 const LOCS = [

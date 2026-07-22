@@ -348,7 +348,7 @@ section.day.on{display:block}
 <div class="egg" id="egg" hidden>ne vedem la #22 ♥</div>
 <button class="fab" id="fab" hidden>acum<small id="fabt"></small></button>
 
-<script src="program.js?v=9"></script>
+<script src="program.js?v=10"></script>
 <script>
 /* ── utilitare ──────────────────────────── */
 const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -619,6 +619,18 @@ infoS.innerHTML=`
         ${ARTE_ALATURATE.map(r=>`<tr><td><b>${r[0]}</b>${r[3]?`<br><small>${r[3]}</small>`:''}</td><td>${r[1]}</td><td><small>${r[2]}</small></td><td><small>${[r[4]?'tehnic: '+r[4]:'',r[5]?'producție: '+r[5]:''].filter(Boolean).join('<br>')||'·'}</small></td></tr>`).join('')}
       </table></div>
     </div>
+    ${typeof MURALE==='undefined'?'':`<div class="iblock wide acc">
+      <h3>murale</h3>
+      ${MURALE.map(m=>`<div class="irow"><span class="ra">${m[0]}<small>${m[1]} · ${m[2]}</small></span><span class="rb">${m[3]}${m[4]?`<br><a class="tel" href="tel:${m[4].replace(/\s/g,'')}">${m[4]}</a>`:''}</span></div>`).join('')}
+    </div>`}
+    ${typeof TRANSPORT_DECOR==='undefined'?'':`<div class="iblock wide acc">
+      <h3>transport decoruri</h3>
+      <p class="inote" style="margin:0 0 8px">în responsabilitatea echipei tehnic · ${esc(TRANSPORT_DECOR.responsabil)}</p>
+      ${[['preluări',TRANSPORT_DECOR.preluari],['retururi',TRANSPORT_DECOR.retururi]].map(([tit,rows])=>`<p class="cdh">${tit}</p><div class="tscroll"><table class="ttable">
+        <tr><th>data</th><th>locație</th><th>ce</th><th>contact</th><th>mașină</th></tr>
+        ${rows.map(r=>`<tr><td><b>${esc(r[0])}</b></td><td><small>${esc(r[1])}</small></td><td><small>${esc(r[2])}</small></td><td><small>${esc(r[3])}</small></td><td><small>${esc(r[4]||'·')}</small></td></tr>`).join('')}
+      </table></div>`).join('')}
+    </div>`}
     <div class="iblock wide" id="teamviews">
       <h3>programe interne</h3>
       <div class="irow"><span class="ra">program formatori<small>traineri · mentori · trupe · fără Art&Play</small></span><a class="maplink" target="_blank" rel="noopener" href="https://ideoideis.github.io/program-intern-formatori/">deschide ↗</a></div>
