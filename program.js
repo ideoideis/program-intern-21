@@ -18,7 +18,7 @@
      xlabel/xlist  listă expandabilă (de ex. sesiuni masterclass)
    ============================================================ */
 
-const LAST_UPDATED = '20.07.2026';
+const LAST_UPDATED = '22.07.2026';
 
 /* Demo pentru marcajul "acum" în afara zilelor de festival:
    'zi-oră' (de ex. 'v31-19:32') sau null ca să îl stingi.
@@ -87,6 +87,7 @@ const DAYS = [
    {k:'t', t:'08:15', route:'Cămin → CMT'},
    {k:'m', t:'08:30', e:'09:45', meal:'mic dejun', loc:'Alex Tell'},
    {k:'e', t:'10:00', e:'14:00', cat:'ateliere', loc:'Școala 5', title:'ateliere teatru tânăr'},
+   {k:'e', t:'10:00', e:'14:00', cat:'ateliere', loc:'Școala 5', title:'atelier Train the Coordinators', sub:['mentori & coordonatori']},
    {k:'e', t:'10:00', e:'10:30', cat:'parada', loc:'Kaufland', locd:'în magazin', title:'paradă papainoage „Actori la înălțime”', sub:['UNATC']},
    {k:'e', t:'10:30', e:'12:30', cat:'artplay', loc:'Școala 5', title:'Show Your Moves', sub:['atelier de dans · breaking']},
    {k:'e', t:'14:00', e:'16:00', cat:'artplay', loc:'Școala 5', title:'Stand Up împotriva hărțuirii stradale', sub:['activism feminist']},
@@ -114,6 +115,7 @@ const DAYS = [
    {k:'t', t:'08:15', route:'Cămin → CMT'},
    {k:'m', t:'08:30', e:'09:45', meal:'mic dejun', loc:'Alex Tell'},
    {k:'e', t:'10:00', e:'14:00', cat:'ateliere', loc:'Școala 5', title:'ateliere teatru tânăr'},
+   {k:'e', t:'10:00', e:'14:00', cat:'ateliere', loc:'Școala 5', title:'atelier Train the Coordinators', sub:['mentori & coordonatori']},
    {k:'e', t:'10:00', e:'10:30', cat:'parada', loc:'Kaufland', locd:'în magazin', title:'paradă papainoage „Actori la înălțime”', sub:['UNATC']},
    {k:'e', t:'10:30', e:'11:30', cat:'mica', loc:'Piața Ideo Ideis', locd:'scena mică', title:'sesiune face painting', sub:['cu Alexa Istrate']},
    {k:'e', t:'10:30', e:'12:30', cat:'artplay', loc:'Școala 5', title:'Se întâmplă între N-O-I', sub:['psihoeducație · 10-13 ani']},
@@ -151,6 +153,7 @@ const DAYS = [
    {k:'t', t:'08:15', route:'Cămin → CMT'},
    {k:'m', t:'08:30', e:'09:45', meal:'mic dejun', loc:'Alex Tell'},
    {k:'e', t:'10:00', e:'14:00', cat:'ateliere', loc:'Școala 5', title:'ateliere teatru tânăr'},
+   {k:'e', t:'10:00', e:'14:00', cat:'ateliere', loc:'Școala 5', title:'atelier Train the Coordinators', sub:['mentori & coordonatori']},
    {k:'e', t:'10:00', e:'12:30', cat:'artplay', loc:'Școala 5', title:'Siguranța bebelușului', sub:['puericultură · pentru părinți']},
    {k:'e', t:'10:00', e:'10:30', cat:'parada', loc:'Kaufland', locd:'în magazin', title:'paradă papainoage „Actori la înălțime”', sub:['UNATC']},
    {k:'e', t:'10:00', e:'16:30', c:true, cat:'cmt', loc:'CMT', title:'montare și repetiție · <b>PARTY</b> (Teatrul Metropolis)'},
@@ -190,6 +193,7 @@ const DAYS = [
    {k:'m', t:'08:30', e:'09:45', meal:'mic dejun', loc:'Alex Tell'},
    {k:'e', t:'09:30', e:'10:00', c:true, cat:'mica', loc:'Piața Ideo Ideis', locd:'scena mică', title:'repetiție · „Năzdrăvanii mărilor”'},
    {k:'e', t:'10:00', e:'14:00', cat:'ateliere', loc:'Școala 5', title:'ateliere arte alăturate', sub:['+ sălile de sport „Mihai Viteazul” & „Ștefan cel Mare”']},
+   {k:'e', t:'10:00', e:'14:00', cat:'ateliere', loc:'Școala 5', title:'atelier Train the Coordinators', sub:['mentori & coordonatori']},
    {k:'e', t:'10:00', e:'16:30', c:true, cat:'cmt', loc:'CMT', title:'montare și repetiție · <b>ODD COUTURE</b>'},
    {k:'e', t:'10:00', e:'12:30', cat:'artplay', loc:'Școala 5', title:'Prim ajutor pediatric', sub:['Asociația Moașelor']},
    {k:'e', t:'10:00', e:'12:00', cat:'artplay', loc:'Școala 5', title:'Animalul care te locuiește', sub:['atelier de arte grafice']},
@@ -229,6 +233,7 @@ const DAYS = [
    {k:'t', t:'08:15', route:'Cămin → CMT'},
    {k:'m', t:'08:30', e:'09:45', meal:'mic dejun', loc:'Alex Tell'},
    {k:'e', t:'10:00', e:'14:00', cat:'ateliere', loc:'Școala 5', title:'ateliere arte alăturate', sub:['+ sălile de sport „Mihai Viteazul” & „Ștefan cel Mare”']},
+   {k:'e', t:'10:00', e:'14:00', cat:'ateliere', loc:'Școala 5', title:'atelier Train the Coordinators', sub:['mentori & coordonatori']},
    {k:'e', t:'10:00', e:'12:00', cat:'artplay', loc:'Școala 5', title:'Cetățenie activă: manual de utilizare', sub:['educație civică · 11-14 ani']},
    {k:'e', t:'10:00', e:'12:00', cat:'artplay', loc:'Școala 5', title:'Animalul care te locuiește', sub:['atelier de arte grafice']},
    {k:'m', t:'14:00', e:'15:30', meal:'prânz', loc:'Alex Tell'},
@@ -251,6 +256,7 @@ const DAYS = [
    {k:'t', t:'08:15', route:'Cămin → CMT'},
    {k:'m', t:'08:30', e:'09:45', meal:'mic dejun', loc:'Alex Tell'},
    {k:'e', t:'10:00', e:'14:00', cat:'ateliere', loc:'Școala 5', title:'ateliere arte alăturate', sub:['+ sălile de sport „Mihai Viteazul” & „Ștefan cel Mare”']},
+   {k:'e', t:'10:00', e:'14:00', cat:'ateliere', loc:'Școala 5', title:'atelier Train the Coordinators', sub:['mentori & coordonatori']},
    {k:'e', t:'10:00', e:'12:00', cat:'artplay', loc:'Școala 5', title:'Animalul care te locuiește', sub:['atelier de arte grafice']},
    {k:'m', t:'14:00', e:'15:30', meal:'prânz', loc:'Alex Tell'},
    {k:'e', t:'14:00', e:'17:00', cat:'alt', loc:'Conciato', locd:'sus', title:'Economia Intimă · masă de discuție cu participante'},
@@ -512,6 +518,7 @@ const ATELIERE_TT = [
  ['Alexandria','trainer de confirmat','sala 12',''],
  ['ACT','Alexa Tofan','sala 8','14 part.'],
  ['Protha','Bogdan Tulbure','sala 11','14 part.'],
+ ['Train the Coordinators','mentori & coordonatori','sala 13','7 part.'],
 ];
 const TT_NEEDS = 'câte o boxă portabilă + cutie standard: 1 eșarfă și 1 pix / participant, 5 mingi de tenis, 1 rolă scotch de hârtie, 5 cozi de mătură, 1 ghem sfoară, 1 top hârtie, 10 pahare carton, 1 tavă';
 
@@ -523,6 +530,7 @@ const ARTE_ALATURATE = [
  ['actorie de film','Theodor Ioniță','Șc. 5 · sala 6 (întunecoasă / jaluzele)','15 part.','videoproiector, cablu HDMI, prelungitor, perete alb, telefon bun pe cameră, set lavaliere de telefon, boxă bluetooth',''],
  ['dans 2','Teo Velescu','Șc. 3 · sala de sport','20 part.','boxă bluetooth',''],
  ['costume','Șteff Chelaru','Șc. 5 · sala 7','14 part.','',''],
+ ['Train the Coordinators','mentori & coordonatori','Șc. 5 · sala 13','7 part.','videoproiector, cablu HDMI, prelungitor',''],
 ];
 
 /* ateliere formatori (orientativ / de confirmat) */
@@ -553,6 +561,7 @@ const ARTPLAY_INFO = [
 
 /* logistica Art&Play, cu cheia = titlul evenimentului din program */
 const LOGISTICS = {
+ 'atelier Train the Coordinators': {sala:'sala 13', n:'7', tehnic:'videoproiector, cablu HDMI, prelungitor'},
  'Show Your Moves': {sala:'sala 2 (spațioasă)', n:'10', tehnic:'sonorizare'},
  'Stand Up împotriva hărțuirii stradale': {sala:'sala 1', n:'20', tehnic:'videoproiector + boxe'},
  'Se întâmplă între N-O-I': {sala:'sala 1', n:'15', prod:'coli, pixuri/creioane, carioci, flipchart & foi de flipchart'},
