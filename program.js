@@ -728,6 +728,54 @@ const CONTACTS = [
  ]],
 ];
 
+/* permanențe voluntari · pe locații, calupuri de timp și zile
+   [zi, [ [locație, [[calup, persoane]] ] ]] */
+const PERMANENTE = [
+ ['marți 28 iulie', [
+   ['bilete · Centrul de Tineret', [['14:00-18:00','Antoniu Rareș + Chircu Rebeca']]],
+ ]],
+ ['miercuri 29 iulie', [
+   ['bilete · Centrul de Tineret', [['10:00-13:00','Gîlcă Rebeca Ioana + Voicu Rafael'],['13:00-16:00','Antoniu Rareș + Jainea Bianca'],['16:00 → spectacol','Chircu Rebeca + Ionescu Raul-Ionuț']]],
+   ['HQ · cort Piața', [['10:00-14:00','Enescu Sonia Maria + Medințu Emma-Gabriela'],['14:00-18:00','Anghel Mihaela + Medințu Thea-Cristiana'],['18:00 → final','Eric-Andrei Alexandri + Stănceoi Andreea Sorana']]],
+   ['mese · Alex Tell', [['cină 18:00-20:00','Anelisse Vlad + Daria Micu']]],
+   ['internat · Rulmentul', [['08-12','Gabriela Prună + Lorena Maftei'],['12-16','Mihnea Spătaru + Maria Dide'],['16-20','Mihnea Nițu + Florea Angelina'],['20 → petrecere','Andres Catruna + Maria Nedelcu']]],
+ ]],
+ ['joi 30 iulie', [
+   ['bilete · Centrul de Tineret', [['10:00-13:00','Gîlcă Rebeca Ioana + Voicu Rafael'],['13:00-16:00','Antoniu Rareș + Jainea Bianca'],['16:00 → spectacol','Chircu Rebeca + Ionescu Raul-Ionuț']]],
+   ['HQ · cort Piața', [['10:00-14:00','Enescu Sonia Maria + Medințu Emma-Gabriela'],['14:00-18:00','Anghel Mihaela + Medințu Thea-Cristiana'],['18:00 → final','Eric-Andrei Alexandri + Stănceoi Andreea Sorana']]],
+   ['mese · Alex Tell', [['mic dejun 8:15-9:45','Anelisse Vlad + Daria Micu'],['prânz 13:45-15:30','Anelisse Vlad + Daria Micu'],['cină 18:45-20:30','Anelisse Vlad + Daria Micu']]],
+   ['internat · Rulmentul', [['08-12','Mihnea Spătaru + Maria Dide'],['12-16','Andres Catruna + Maria Nedelcu'],['16-20','Mihnea Nițu + Florea Angelina'],['20-24','Gabriela Prună + Lorena Maftei']]],
+ ]],
+ ['vineri 31 iulie', [
+   ['bilete · Centrul de Tineret', [['10:00-13:00','Gîlcă Rebeca Ioana + Voicu Rafael'],['13:00-16:00','Antoniu Rareș + Jainea Bianca'],['16:00 → spectacol','Chircu Rebeca + Ionescu Raul-Ionuț']]],
+   ['HQ · cort Piața', [['10:00-14:00','Enescu Sonia Maria + Medințu Emma-Gabriela'],['14:00-18:00','Anghel Mihaela + Medințu Thea-Cristiana'],['18:00 → final','Eric-Andrei Alexandri + Stănceoi Andreea Sorana']]],
+   ['mese · Alex Tell', [['mic dejun 8:15-9:45','Anelisse Vlad + Daria Micu'],['prânz 13:45-15:30','Anelisse Vlad + Daria Micu'],['cină 18:45-20:30','Anelisse Vlad + Daria Micu']]],
+   ['internat · Rulmentul', [['08-12','Mihnea Spătaru + Mihnea Nițu'],['12-16','Gabriela Prună + Lorena Maftei'],['16-20','Andres Catruna + Maria Nedelcu'],['20-24','Florea Angelina + Maria Dide']]],
+ ]],
+ ['sâmbătă 1 august', [
+   ['bilete · Centrul de Tineret', [['10:00-13:00','Gîlcă Rebeca Ioana + Voicu Rafael'],['13:00-16:00','Antoniu Rareș + Jainea Bianca'],['16:00 → spectacol','Chircu Rebeca + Ionescu Raul-Ionuț']]],
+   ['HQ · cort Piața', [['10:00-14:00','Enescu Sonia Maria + Medințu Emma-Gabriela'],['14:00-18:00','Anghel Mihaela + Medințu Thea-Cristiana'],['18:00 → final','Eric-Andrei Alexandri + Stănceoi Andreea Sorana']]],
+   ['mese · Alex Tell', [['mic dejun 8:15-9:45','Anelisse Vlad + Daria Micu'],['prânz 13:45-15:30','Anelisse Vlad + Daria Micu'],['cină 18:45-20:30','Anelisse Vlad + Daria Micu']]],
+   ['internat · Rulmentul', [['08-12','Gabriela Prună + Lorena Maftei'],['12-16','Mihnea Spătaru + Maria Dide'],['16-20','Mihnea Nițu'],['20-24','Andres Catruna + Maria Nedelcu']]],
+ ]],
+ ['duminică 2 august', [
+   ['bilete · Centrul de Tineret', [['10:00-13:00','Gîlcă Rebeca Ioana + Voicu Rafael'],['13:00-16:00','Antoniu Rareș + Jainea Bianca'],['16:00 → spectacol','Chircu Rebeca + Ionescu Raul-Ionuț']]],
+   ['HQ · cort Piața', [['10:00-14:00','Enescu Sonia Maria + Medințu Emma-Gabriela'],['14:00-18:00','Anghel Mihaela + Medințu Thea-Cristiana'],['18:00 → final','Eric-Andrei Alexandri + Stănceoi Andreea Sorana']]],
+   ['mese · Alex Tell', [['mic dejun 8:15-9:45','Anelisse Vlad + Daria Micu'],['prânz 13:45-15:30','Anelisse Vlad + Daria Micu'],['cină 18:45-20:30','Anelisse Vlad + Daria Micu']]],
+   ['internat · Rulmentul', [['08-12','Mihnea Spătaru + Maria Dide'],['12-16','Andres Catruna + Maria Nedelcu'],['16-20','Mihnea Nițu'],['20-24','Gabriela Prună + Lorena Maftei']]],
+ ]],
+ ['luni 3 august', [
+   ['HQ · cort Piața', [['10:00-14:00','Enescu Sonia Maria + Medințu Emma-Gabriela'],['14:00-18:00','Anghel Mihaela + Medințu Thea-Cristiana'],['18:00 → final','Eric-Andrei Alexandri + Stănceoi Andreea Sorana']]],
+   ['mese · Alex Tell', [['mic dejun 8:15-9:45','Anelisse Vlad + Daria Micu'],['prânz 13:45-15:30','Anelisse Vlad + Daria Micu'],['cină 18:45-20:30','Anelisse Vlad + Daria Micu']]],
+   ['internat · Rulmentul', [['08-12','Mihnea Spătaru + Mihnea Nițu'],['12-16','Gabriela Prună + Lorena Maftei'],['16-20','Andres Catruna + Maria Nedelcu'],['20-24','Maria Dide']]],
+ ]],
+ ['marți 4 august', [
+   ['HQ · cort Piața', [['10:00-14:00','Enescu Sonia Maria + Medințu Emma-Gabriela'],['14:00-18:00','Anghel Mihaela + Medințu Thea-Cristiana'],['18:00 → final','Eric-Andrei Alexandri + Stănceoi Andreea Sorana']]],
+   ['mese · Alex Tell', [['mic dejun 8:15-9:45','Anelisse Vlad + Daria Micu'],['prânz 13:45-15:30','Anelisse Vlad + Daria Micu'],['cină 18:45-20:30','Anelisse Vlad + Daria Micu']]],
+   ['internat · Rulmentul', [['08-12','Gabriela Prună + Lorena Maftei'],['12-16','Mihnea Spătaru + Maria Dide'],['16-20','Mihnea Nițu + Iriș Marius-Andrei']]],
+ ]],
+];
+
 /* murale (spații conexe) · [nume, adresă, orar de funcționare, contact] */
 const MURALE = [
  ['Mural Ștrand','str. Alexandru Ghica 72-80','1-5 aug · zilnic 10:00-12:00 & 16:00-20:00','Maria Zurbagiu','0743 585 255'],

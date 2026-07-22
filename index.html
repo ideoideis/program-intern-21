@@ -203,6 +203,11 @@ section.day.on{display:block}
 .bigpublic small{display:block;font-weight:400;font-family:var(--mono);font-size:11px;opacity:.85;margin-top:2px}
 .inote{font-size:13px;color:var(--muted)}
 .cdh{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--amber-dim);margin:16px 0 2px}
+.permg{margin:6px 0 10px}
+.perml{font-weight:600;font-size:13.5px;margin-bottom:2px}
+.perms{display:flex;gap:10px;align-items:baseline;padding:3px 0;border-bottom:1px solid var(--line-soft);font-size:13px}
+.perms .pt{flex:0 0 34%;font-family:var(--mono);font-size:11px;color:var(--amber-dim)}
+.perms .pn{color:#c7c9cf}
 .crow{display:flex;gap:10px;align-items:baseline;padding:6px 0;border-bottom:1px solid var(--line-soft);font-size:14px}
 .crow .cn{font-weight:500}
 .crow .cr{color:var(--muted);font-size:12.5px}
@@ -352,7 +357,7 @@ section.day.on{display:block}
 <div class="egg" id="egg" hidden>ne vedem la #22 ♥</div>
 <button class="fab" id="fab" hidden>acum<small id="fabt"></small></button>
 
-<script src="program.js?v=11"></script>
+<script src="program.js?v=12"></script>
 <script>
 /* ── utilitare ──────────────────────────── */
 const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -631,6 +636,11 @@ infoS.innerHTML=`
     ${typeof MURALE==='undefined'?'':`<div class="iblock wide acc">
       <h3>murale</h3>
       ${MURALE.map(m=>`<div class="irow"><span class="ra">${m[0]}<small>${m[1]} · ${m[2]}</small></span><span class="rb">${m[3]}${m[4]?`<br><a class="tel" href="tel:${m[4].replace(/\s/g,'')}">${m[4]}</a>`:''}</span></div>`).join('')}
+    </div>`}
+    ${typeof PERMANENTE==='undefined'?'':`<div class="iblock wide acc">
+      <h3>permanențe voluntari</h3>
+      <p class="inote" style="margin:0 0 8px">pe locații, calupuri de timp și zile</p>
+      ${PERMANENTE.map(([zi,grupuri])=>`<p class="cdh">${esc(zi)}</p>${grupuri.map(([loc,sloturi])=>`<div class="permg"><div class="perml">${esc(loc)}</div>${sloturi.map(s=>`<div class="perms"><span class="pt">${esc(s[0])}</span><span class="pn">${esc(s[1])}</span></div>`).join('')}</div>`).join('')}`).join('')}
     </div>`}
     <div class="iblock wide" id="teamviews">
       <h3>programe interne</h3>
