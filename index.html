@@ -138,8 +138,52 @@ section.day.on{display:block}
 .xrow .xa{color:var(--fg);font-weight:500}
 .xrow .xb{color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
 .xrow.volrow{flex-direction:column;align-items:stretch;gap:6px}
-.xrow.atrow{flex-direction:column;align-items:stretch;gap:4px;padding:7px 0;border-bottom:1px solid var(--line-soft)}
-.xrow.atrow .xmeta{color:var(--muted);text-align:left;font-size:12.5px}
+.xrow.atrow{align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--line-soft)}
+.xlist .xrow.atrow:last-child{border-bottom:0}
+.atinfo{display:flex;flex-direction:column;gap:2px;min-width:0}
+.atname{font-weight:600;font-size:13.5px}
+.atsub{color:var(--muted);font-size:12px;line-height:1.35}
+.atside{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex:0 0 auto}
+.atsala{font-family:var(--mono);font-size:12px;color:var(--amber-dim);white-space:nowrap}
+.xrow.btnrow{justify-content:flex-start}
+.pbtn{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);background:none;color:var(--fg);font-family:inherit;font-size:12px;padding:4px 9px;cursor:pointer;white-space:nowrap}
+.pbtn:hover{border-color:var(--fg)}
+.pbtn .pbn{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.pbtn .pbc{color:var(--muted);font-size:14px;line-height:1}
+.sheet-bd{position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.55);display:flex;align-items:flex-end;justify-content:center}
+.sheet-bd[hidden]{display:none}
+.sheet{width:100%;max-width:560px;max-height:82vh;background:var(--panel);border-top:3px solid var(--red);display:flex;flex-direction:column;transform:translateY(100%);transition:transform .22s ease;box-shadow:0 -12px 40px rgba(0,0,0,.5)}
+.sheet-bd.open .sheet{transform:translateY(0)}
+.sheet-grip{width:40px;height:4px;background:var(--line);margin:8px auto 2px}
+.sheet-h{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 16px 10px;border-bottom:1px solid var(--line-soft)}
+.sheet-t{font-weight:600;font-size:15px}
+.sheet-x{background:none;border:0;color:var(--muted);font-size:17px;cursor:pointer;padding:4px 6px;line-height:1}
+.sheet-b{overflow-y:auto;padding:4px 8px 28px;-webkit-overflow-scrolling:touch}
+.prow{display:flex;align-items:center;gap:12px;padding:10px 8px;border-bottom:1px solid var(--line-soft);cursor:pointer}
+.prow:last-child{border-bottom:0}
+.pav{flex:0 0 auto;width:42px;height:42px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:15px;font-weight:600;background:hsl(var(--h,220) 32% 24%);color:hsl(var(--h,220) 65% 80%);object-fit:cover;cursor:pointer}
+.pzoom{position:fixed;inset:0;z-index:2100;background:rgba(0,0,0,.82);display:flex;align-items:center;justify-content:center;padding:24px}
+.pzoom[hidden]{display:none}
+.pzoom-c{display:flex;flex-direction:column;align-items:center;gap:14px}
+.pzoom-img{max-width:min(82vw,340px);max-height:66vh;object-fit:contain;border:1px solid var(--line)}
+.pzoom-i{width:min(66vw,220px);height:min(66vw,220px);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:58px;font-weight:600;background:hsl(var(--h,220) 32% 24%);color:hsl(var(--h,220) 65% 80%)}
+.pzoom-nm{font-size:17px;font-weight:600;color:#fff;text-align:center}
+.pzoom-role{font-family:var(--mono);font-size:12px;color:var(--amber-dim);text-align:center;letter-spacing:.02em}
+.pzoom .pcall{font-size:15px;padding:12px 26px;margin-top:4px}
+.pinfo{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:2px}
+.pnm{font-size:15px;font-weight:500}
+.prole{font-family:var(--mono);font-size:10px;color:var(--amber);text-transform:uppercase;letter-spacing:.05em}
+.pcall{flex:0 0 auto;background:var(--amber);color:#1c1d20;font-weight:600;font-size:14px;padding:10px 18px;text-decoration:none}
+.pcall.no{background:none;color:var(--muted);font-weight:400;border:1px solid var(--line)}
+body.sheet-open{overflow:hidden}
+@media (prefers-reduced-motion:reduce){.sheet{transition:none}}
+.sheet-bd.popup{align-items:center;padding:0 16px}
+.sheet-bd.popup .sheet-grip{display:none}
+.sheet-bd.popup .sheet{max-width:400px;max-height:74vh;border:1px solid var(--line);border-top:3px solid var(--red);transform:scale(.96);opacity:0;transition:transform .18s ease,opacity .18s ease}
+.sheet-bd.popup.open .sheet{transform:scale(1);opacity:1}
+.toplink{position:fixed;right:16px;bottom:76px;z-index:900;width:42px;height:42px;display:flex;align-items:center;justify-content:center;background:rgba(38,39,44,.3);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:var(--amber);border:1.5px solid transparent;font-size:18px;line-height:1;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .2s,border-color .15s}
+.toplink.show{opacity:1;pointer-events:auto}
+.toplink:active,.toplink:focus-visible{border-color:var(--amber)}
 .vchips{display:flex;flex-wrap:wrap;gap:5px}
 .vchip{display:inline-block;font-size:12px;padding:4px 9px;border:1px solid var(--line);color:#c7c9cf;text-decoration:none;white-space:nowrap}
 a.vchip{border-color:rgba(31,163,95,.5);color:#7bd6a2}
@@ -219,10 +263,10 @@ a.vchip:hover{border-color:#1FA35F;color:#9be8bd}
 .bigpublic small{display:block;font-weight:400;font-family:var(--mono);font-size:11px;opacity:.85;margin-top:2px}
 .inote{font-size:13px;color:var(--muted)}
 .cdh{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--amber-dim);margin:16px 0 2px}
-.permg{margin:6px 0 10px}
-.perml{font-weight:600;font-size:13.5px;margin-bottom:2px}
-.perms{display:flex;flex-direction:column;gap:5px;padding:6px 0;border-bottom:1px solid var(--line-soft)}
-.perms .pt{font-family:var(--mono);font-size:11px;color:var(--amber-dim)}
+.permg{margin:0 0 14px}
+.perml{font-weight:600;font-size:12.5px;color:var(--fg);padding-bottom:5px;margin-bottom:2px;border-bottom:1px solid var(--line-soft)}
+.perms{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:7px 0}
+.perms .pt{font-family:var(--mono);font-size:12px;color:var(--amber-dim);white-space:nowrap}
 .perms .pn{display:flex;flex-wrap:wrap;gap:5px}
 .dayperm{margin:0 0 14px;border:1px solid var(--line-soft)}
 .dayperm>summary{list-style:none;cursor:pointer;padding:9px 11px;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.02em}
@@ -231,8 +275,12 @@ a.vchip:hover{border-color:#1FA35F;color:#9be8bd}
 .dayperm[open]>summary::before{content:'▾  '}
 .dayperm .dpbody{padding:2px 11px 10px}
 .dayperm .permg:last-child .perms:last-child{border-bottom:0}
-.crow{display:flex;gap:10px;align-items:baseline;padding:6px 0;border-bottom:1px solid var(--line-soft);font-size:14px}
-.crow .cn{font-weight:500}
+.crow{display:flex;gap:10px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line-soft);font-size:14px;cursor:pointer}
+.crow .cr{text-align:right}
+.cchev{flex:0 0 auto;color:var(--muted);font-size:16px;line-height:1;opacity:.55}
+.cgrid .cchev{display:none}
+.cav{flex:0 0 auto;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:9.5px;font-weight:600;background:hsl(var(--h,220) 30% 26%);color:hsl(var(--h,220) 60% 80%);cursor:pointer;object-fit:cover}
+.crow .cn{font-weight:500;flex:1 1 auto;min-width:0}
 .crow .cr{color:var(--muted);font-size:12.5px}
 .crow .tel{margin-left:auto;flex:0 0 auto}
 .cgrid{display:grid;grid-template-columns:1fr 1fr;column-gap:16px}
@@ -316,7 +364,7 @@ a.vchip:hover{border-color:#1FA35F;color:#9be8bd}
 @media print{
   :root{color-scheme:light}
   body{background:#fff;color:#111}
-  nav.rail,.filters,.fab,.plink,.greet,.egg,.viewgrid,.nowline,.updated,.nowtag,.minetag,.xbtn,#camfab,#vsheet,#day-vibe,#anuntbar,[data-live]{display:none!important}
+  nav.rail,.filters,.fab,.plink,.greet,.egg,.viewgrid,.nowline,.updated,.nowtag,.minetag,.xbtn,.toplink,.sheet-bd,#camfab,#vsheet,#day-vibe,#anuntbar,[data-live]{display:none!important}
   .iblock.acc>*:not(h3){display:block!important}
   header.site{padding:0}
 
@@ -381,7 +429,7 @@ a.vchip:hover{border-color:#1FA35F;color:#9be8bd}
 <div class="egg" id="egg" hidden>ne vedem la #22 ♥</div>
 <button class="fab" id="fab" hidden>acum<small id="fabt"></small></button>
 
-<script src="program.js?v=22"></script>
+<script src="program.js?v=28"></script>
 <script>
 /* ── utilitare ──────────────────────────── */
 const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -478,15 +526,87 @@ function volChips(str){
               :`<span class="${cls}">${esc(lab)}${isGhid?' ·ghid':''}</span>`;
   }).join('');
 }
-/* ghidul unei trupe -> chip apelabil (numărul vine din TRUPE) */
-function ghidChipFor(slug){
-  if(typeof TRUPE==='undefined'||typeof TRUPE_IDS==='undefined')return '';
-  const t=TRUPE.find(x=>x[0]===TRUPE_IDS[slug]); if(!t)return '';
-  const name=t[4]||'', tel=(t[5]||'').replace(/\s/g,'');
-  if(!name||/confirmat/i.test(name))return '';
-  return tel?`<a class="vchip ghid" href="tel:${tel}">${esc(name)}</a>`
-           :`<span class="vchip ghid nolink">${esc(name)}</span>`;
+/* ── oameni: parser + buton „vezi cine" care deschide un bottom-sheet ── */
+function _nmToks(s){s=String(s).normalize('NFKD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[șş]/g,'s').replace(/[țţ]/g,'t');return new Set(s.split(/[^a-z0-9]+/).filter(Boolean));}
+const _PHIDX=(()=>{const a=[];if(typeof PHOTOS!=='undefined')for(const k in PHOTOS)a.push([_nmToks(k),PHOTOS[k]]);return a;})();
+function photoFor(n){
+  if(!n)return null;
+  if(typeof PHOTOS!=='undefined'&&PHOTOS[n])return PHOTOS[n];
+  const t=_nmToks(n); if(t.size<2)return null;
+  for(const [kt,p] of _PHIDX){if(kt.size!==t.size)continue;let eq=true;for(const x of t)if(!kt.has(x)){eq=false;break;}if(eq)return p;}
+  let hit=null,many=false;
+  for(const [kt,p] of _PHIDX){const sm=t.size<=kt.size?t:kt,lg=t.size<=kt.size?kt:t;if(sm.size<2)continue;let sub=true;for(const x of sm)if(!lg.has(x)){sub=false;break;}if(sub){if(hit&&hit!==p){many=true;break;}hit=p;}}
+  return many?null:hit;
 }
+function peopleFromStr(str,roleDefault){
+  return String(str).split(/\s*\+\s*|,\s*/).map(p=>{
+    p=p.trim(); if(!p)return null;
+    const isGhid=/\(ghid\)/i.test(p);
+    const name=p.replace(/\s*\(ghid\)/i,'').trim();
+    return {name, role:isGhid?'ghid':(roleDefault||''), tel:resolvePhone(name), photo:photoFor(name)};
+  }).filter(Boolean);
+}
+function ghidPerson(slug){
+  if(typeof TRUPE==='undefined'||typeof TRUPE_IDS==='undefined')return null;
+  const t=TRUPE.find(x=>x[0]===TRUPE_IDS[slug]); if(!t)return null;
+  const name=t[4]||''; if(!name||/confirmat/i.test(name))return null;
+  return {name, role:'ghid', tel:(t[5]||'').replace(/\s/g,''), photo:photoFor(name)};
+}
+let _pgSeq=0; const PEOPLE_GROUPS={};
+function peopleButton(people,btnLabel,sheetTitle){
+  people=(people||[]).filter(Boolean);
+  if(!people.length)return '';
+  const id='pg'+(++_pgSeq);
+  PEOPLE_GROUPS[id]={label:sheetTitle||btnLabel, people};
+  const names=people.map(p=>p.name).join(', ');
+  return `<button type="button" class="pbtn" data-people="${id}" aria-label="${esc(btnLabel+': '+names)}">${esc(btnLabel)}${people.length>1?`<span class="pbn">${people.length}</span>`:''}<span class="pbc">›</span></button>`;
+}
+function _initials(n){return n.split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]||'').join('').toUpperCase();}
+function _hue(n){let h=0;for(let i=0;i<n.length;i++)h=(h*31+n.charCodeAt(i))%360;return h;}
+const _sheet=document.createElement('div');
+_sheet.className='sheet-bd'+(new URLSearchParams(location.search).get('ui')==='popup'?' popup':''); _sheet.hidden=true;
+_sheet.innerHTML='<div class="sheet" role="dialog" aria-modal="true" aria-label="contacte"><div class="sheet-grip"></div><div class="sheet-h"><span class="sheet-t" id="sheet-t"></span><button type="button" class="sheet-x" aria-label="închide">✕</button></div><div class="sheet-b" id="sheet-b"></div></div>';
+document.body.appendChild(_sheet);
+const _sb=_sheet.querySelector('#sheet-b'), _st=_sheet.querySelector('#sheet-t');
+function openPeople(id){
+  const g=PEOPLE_GROUPS[id]; if(!g)return;
+  _st.textContent=g.label;
+  _sb.innerHTML=g.people.map(p=>{
+    const h=_hue(p.name||'');
+    const dat=`data-nm="${esc(p.name||'')}" data-h="${h}"${p.role?` data-role="${esc(p.role)}"`:''}${p.tel?` data-tel="${esc(p.tel)}"`:''}${p.photo?` data-photo="${p.photo}"`:''}`;
+    const av=p.photo?`<img class="pav" src="${p.photo}" alt="${esc(p.name||'')}">`:`<span class="pav" style="--h:${h}">${esc(_initials(p.name||''))}</span>`;
+    const role=p.role?`<span class="prole">${esc(p.role)}</span>`:'';
+    const tel=(p.tel||'').replace(/\s/g,'');
+    const call=tel?`<a class="pcall" href="tel:${tel}">sună</a>`:`<span class="pcall no">fără număr</span>`;
+    return `<div class="prow" ${dat}>${av}<div class="pinfo"><span class="pnm">${esc(p.name||'')}</span>${role}</div>${call}</div>`;
+  }).join('');
+  _sheet.hidden=false; requestAnimationFrame(()=>_sheet.classList.add('open'));
+  document.body.classList.add('sheet-open');
+  const x=_sheet.querySelector('.sheet-x'); if(x)x.focus();
+}
+function closeSheet(){_sheet.classList.remove('open');document.body.classList.remove('sheet-open');setTimeout(()=>{_sheet.hidden=true;},220);}
+/* mărește avatarul (poză sau inițiale) ca să vezi cum arată omul */
+const _pz=document.createElement('div'); _pz.className='pzoom'; _pz.hidden=true; document.body.appendChild(_pz);
+function zoomAvatar(el){
+  const nm=el.getAttribute('data-nm')||'', photo=el.getAttribute('data-photo'), h=el.getAttribute('data-h')||220;
+  const role=el.getAttribute('data-role')||'', telRaw=el.getAttribute('data-tel')||'', tel=telRaw.replace(/\s/g,'');
+  const big=photo?`<img class="pzoom-img" src="${photo}" alt="${esc(nm)}">`:`<div class="pzoom-i" style="--h:${h}">${esc(_initials(nm))}</div>`;
+  const call=tel?`<a class="pcall" href="tel:${tel}">sună · ${esc(telRaw)}</a>`:`<span class="pcall no">fără număr</span>`;
+  _pz.innerHTML=`<div class="pzoom-c">${big}<div class="pzoom-nm">${esc(nm)}</div>${role?`<div class="pzoom-role">${esc(role)}</div>`:''}${call}</div>`;
+  _pz.hidden=false;
+}
+function closeZoom(){_pz.hidden=true;_pz.innerHTML='';}
+_pz.addEventListener('click',closeZoom);
+_sheet.addEventListener('click',e=>{if(e.target.closest('.pcall'))return; const row=e.target.closest('.prow[data-nm]'); if(row){zoomAvatar(row);return;} if(e.target===_sheet||e.target.closest('.sheet-x'))closeSheet();});
+document.addEventListener('keydown',e=>{if(e.key!=='Escape')return; if(!_pz.hidden)closeZoom(); else if(!_sheet.hidden)closeSheet();});
+document.addEventListener('click',e=>{const b=e.target.closest('.pbtn');if(b){e.preventDefault();openPeople(b.dataset.people);}});
+document.addEventListener('click',e=>{const r=e.target.closest('.crow[data-nm]');if(r)zoomAvatar(r);});
+/* buton „sus": apare la scroll în jos, revine în capul paginii */
+const _top=document.createElement('button');
+_top.type='button'; _top.className='toplink'; _top.setAttribute('aria-label','înapoi sus'); _top.textContent='↑';
+document.body.appendChild(_top);
+_top.addEventListener('click',()=>window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'}));
+addEventListener('scroll',()=>{_top.classList.toggle('show',window.scrollY>500);},{passive:true});
 function volFor(ev,dayId){
   if(typeof VOL_EV==='undefined')return null;
   const nt=norm(ev.title);
@@ -497,18 +617,18 @@ function detailRows(ev,dayId){
   let rows=[], label=ev.xlabel||'detalii';
   if(ev.xlist) rows=ev.xlist.map(r=>[r[1],r[0]]);
   else if(ev.title==='ateliere teatru tânăr')
-    rows=ATELIERE_TT.map(r=>[`${r[0]} · ${r[1]}`, [r[2],r[3]].filter(Boolean).join(' · '), r[4]||'']);
+    rows=ATELIERE_TT.map(r=>['@at', r[0], [r[1],r[3]].filter(Boolean).join(' · '), r[2]||'', r[4]?peopleButton(peopleFromStr(r[4]),'voluntari',`${r[0]} · ${r[1]}`):'']);
   else if(ev.title==='ateliere arte alăturate')
-    rows=ARTE_ALATURATE.map(r=>[`${r[0]} · ${r[1]}`, r[2], r[6]||'']);
+    rows=ARTE_ALATURATE.map(r=>['@at', r[0], r[1]||'', r[2]||'', r[6]?peopleButton(peopleFromStr(r[6]),'voluntari',`${r[0]} · ${r[1]}`):'']);
   const lg=LOGISTICS[ev.title];
   if(lg){
     if(lg.n)rows.push(['participanți',lg.n]);
     if(lg.tehnic)rows.push(['necesar tehnic',lg.tehnic]);
     if(lg.prod)rows.push(['necesar producție',lg.prod]);
   }
-  if(ev.trupa){const g=ghidChipFor(ev.trupa); if(g)rows.push(['ghid',g]);}
+  if(ev.trupa){const gp=ghidPerson(ev.trupa); if(gp)rows.push(['ghid',peopleButton([gp],'ghid',TRUPE_IDS[ev.trupa]+' · ghid')]);}
   const v=volFor(ev,dayId);
-  if(v)rows.push(['voluntari',volChips(v)]);
+  if(v)rows.push(['voluntari',peopleButton(peopleFromStr(v),'voluntari',ev.title.replace(/<[^>]*>/g,'')+' · voluntari')]);
   return rows.length?{label,rows}:null;
 }
 const slug=s=>s.toLowerCase().replace(/<[^>]*>/g,'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,28);
@@ -521,10 +641,10 @@ function evHtml(ev,dayId){
   let x='';
   if(det){
     const rows=det.rows.map(r=>
-      r[2]!==undefined
-        ? `<div class="xrow atrow"><span class="xa">${r[0]}</span>${r[1]?`<span class="xmeta">${r[1]}</span>`:''}${r[2]?`<div class="vchips">${volChips(r[2])}</div>`:''}</div>`
+      r[0]==='@at'
+        ? `<div class="xrow atrow"><div class="atinfo"><span class="atname">${r[1]}</span>${r[2]?`<span class="atsub">${r[2]}</span>`:''}</div><div class="atside">${r[3]?`<span class="atsala">${r[3]}</span>`:''}${r[4]}</div></div>`
       : (r[0]==='voluntari'||r[0]==='ghid')
-        ? `<div class="xrow volrow"><span class="xa">${r[0]}</span><div class="vchips">${r[1]}</div></div>`
+        ? `<div class="xrow btnrow">${r[1]}</div>`
         : `<div class="xrow"><span class="xa">${r[0]}</span><span class="xb">${r[1]}</span></div>`
     ).join('');
     x=`<button class="xbtn" data-x>▸ ${det.label}</button><div class="xlist">${rows}</div>`;
@@ -641,7 +761,7 @@ DAYS.forEach(d=>{
   const permD=(typeof PERMANENTE!=='undefined')?PERMANENTE.find(p=>p[0].split(' ').slice(0,2).join(' ')===d.h2+' '+d.dn):null;
   s.innerHTML=`<div class="dayhero"><h2>${d.h2}</h2><div class="dd"><b>${d.full}</b></div></div>
     ${(BIRTHDAYS[d.id]||[]).length?`<p class="bday">🎂 la mulți ani: ${BIRTHDAYS[d.id].join(', ')}!</p>`:''}
-    ${permD?`<details class="dayperm"><summary>permanențe voluntari azi</summary><div class="dpbody">${permD[1].map(([loc,sloturi])=>`<div class="permg"><div class="perml">${esc(loc)}</div>${sloturi.map(s=>`<div class="perms"><span class="pt">${esc(s[0])}</span><div class="pn">${volChips(s[1])}</div></div>`).join('')}</div>`).join('')}</div></details>`:''}
+    ${permD?`<details class="dayperm"><summary>permanențe voluntari azi</summary><div class="dpbody">${permD[1].map(([loc,sloturi])=>`<div class="permg"><div class="perml">${esc(loc)}</div>${sloturi.map(s=>`<div class="perms"><span class="pt">${esc(s[0])}</span>${peopleButton(peopleFromStr(s[1]),'voluntari',loc+' · '+s[0])}</div>`).join('')}</div>`).join('')}</div></details>`:''}
     <div class="viewlist">${list}<button class="techreveal" data-reveal hidden></button></div>
     <div class="viewgrid">${gridHtml(d)}</div>`;
   daysEl.appendChild(s);
@@ -672,7 +792,12 @@ infoS.innerHTML=`
       <input class="search" id="cq" type="search" placeholder="caută om, rol sau departament…" aria-label="caută în contacte">
       ${CONTACTS.map(([dep,people])=>{
         const plain=people.every(x=>!x[1]);
-        const rows=people.map(x=>`<div class="crow" data-s="${(dep+' '+x[0]+' '+(x[1]||'')).toLowerCase()}"><span class="cn">${x[0]}</span>${x[1]?`<span class="cr">${x[1]}</span>`:''}${x[2]?`<a class="tel" href="tel:${x[2].replace(/\s/g,'')}">${x[2]}</a>`:''}</div>`).join('');
+        const rows=people.map(x=>{
+          const h=_hue(x[0]), ph=photoFor(x[0]);
+          const dat=`data-nm="${esc(x[0])}" data-h="${h}"${x[1]?` data-role="${esc(x[1])}"`:''}${x[2]?` data-tel="${esc(x[2])}"`:''}${ph?` data-photo="${ph}"`:''}`;
+          const av=ph?`<img class="cav" src="${ph}" alt="${esc(x[0])}">`:`<span class="cav" style="--h:${h}">${esc(_initials(x[0]))}</span>`;
+          return `<div class="crow" ${dat} data-s="${(dep+' '+x[0]+' '+(x[1]||'')).toLowerCase()}">${av}<span class="cn">${x[0]}</span>${x[1]?`<span class="cr">${x[1]}</span>`:''}<span class="cchev">›</span></div>`;
+        }).join('');
         return `<div class="cdep"><p class="cdh">${dep}</p><div class="${plain?'cgrid':''}">${rows}</div></div>`;
       }).join('')}
       <p class="inote" style="margin-top:12px">în curând: telefoanele + voluntarii de permanență pe locații (08:00–00:00).</p>
