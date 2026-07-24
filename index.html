@@ -92,6 +92,8 @@ body[data-view="loc"] .viewgrid{display:block}
 .techreveal{display:block;width:100%;margin:6px 0 2px;font-family:var(--mono);font-size:11.5px;color:var(--muted);border:1px dashed var(--line);padding:8px 10px;text-align:left}
 .techreveal:hover{color:var(--amber);border-color:rgba(255,196,46,.5)}
 .techreveal[hidden]{display:none}
+body.tech .meal{display:none!important}
+.techtag{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#1c1d20;background:var(--amber);padding:1px 6px;margin-left:8px}
 #sres{border:1px solid var(--line);background:var(--panel);margin-top:6px;max-height:300px;overflow-y:auto}
 #sres[hidden]{display:none}
 .srow{display:block;width:100%;text-align:left;padding:9px 10px;border-bottom:1px solid var(--line-soft);font-size:14px}
@@ -341,7 +343,7 @@ a.vchip:hover{border-color:#1FA35F;color:#9be8bd}
     <div class="eticheta"><img src="assets/eticheta-rosie.png?v=2" alt="festivalul ideo ideis"></div>
     <h1>festivalul #21<br>program intern</h1>
     <p class="greet" id="greet" hidden></p>
-    <p class="updated">last updated <span id="lastupd"></span> · <a class="plink" href="https://ideoideis.ro/proiectele/festivalul/program/" target="_blank" rel="noopener">program public ↗</a></p>
+    <p class="updated">last updated <span id="lastupd"></span><span class="techtag" id="techtag" hidden>vedere tehnic</span> · <a class="plink" href="https://ideoideis.ro/proiectele/festivalul/program/" target="_blank" rel="noopener">program public ↗</a></p>
   </div>
 </header>
 
@@ -375,7 +377,10 @@ const mins = hm => { const [h,m]=hm.split(':').map(Number); let v=h*60+m; if(h<5
 const smins = ev => mins(ev.ts || ev.t);
 const maps = q => 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(MAPQ[q]||q+' Alexandria');
 
+const TECH=new URLSearchParams(location.search).has('tehnic')||!!window.TECH_MODE;
+if(TECH)document.body.classList.add('tech');
 document.getElementById('lastupd').textContent=LAST_UPDATED;
+if(TECH)document.getElementById('techtag').hidden=false;
 
 /* ora curentă în Europe/Bucharest; până în 05:00 aparține zilei de program precedente.
    Pentru test: ?test=v31-19:32 */
@@ -752,7 +757,7 @@ catchips.appendChild(trChip);
 /* @tehnic: comutator de sine stătător, implicit aprins.
    Stins → dispar rândurile @tehnic ȘI montările/repetițiile (data-tech). */
 const techChip=document.createElement('button');
-techChip.className='fchip tech'; techChip.setAttribute('aria-pressed','false');
+techChip.className='fchip tech'; techChip.setAttribute('aria-pressed',TECH?'true':'false');
 techChip.textContent='@tehnic · montări & repetiții';
 techChip.addEventListener('click',()=>{
   const on=techChip.getAttribute('aria-pressed')==='true';
