@@ -259,6 +259,9 @@ a.vchip:hover{border-color:#1FA35F;color:#9be8bd}
 .irow .rb{color:var(--muted);font-size:13px;flex:0 0 auto;font-variant-numeric:tabular-nums}
 .maplink{font-family:var(--mono);font-size:11px;color:var(--amber);text-decoration:none;flex:0 0 auto}
 .maplink:hover{text-decoration:underline}
+.trupechips{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.trupelink{display:inline-flex;align-items:center;border:1px solid var(--line);color:var(--fg);font-size:12px;padding:4px 9px;text-decoration:none;white-space:nowrap}
+.trupelink:hover{border-color:var(--fg)}
 .bigpublic{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--red);color:#fff;text-decoration:none;padding:16px;font-weight:700;font-size:17px;margin-bottom:4px}
 .bigpublic small{display:block;font-weight:400;font-family:var(--mono);font-size:11px;opacity:.85;margin-top:2px}
 .inote{font-size:13px;color:var(--muted)}
@@ -295,6 +298,11 @@ a.vchip:hover{border-color:#1FA35F;color:#9be8bd}
 /* ── personalizări ───────────────────────── */
 .greet{margin:22px 0 0;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.03em;min-height:1.2em}
 .greet[hidden]{display:none}
+.mealegg{margin:8px 0 0;font-family:var(--mono);font-size:11.5px;color:var(--amber-dim);letter-spacing:.02em}
+.mealegg[hidden]{display:none}
+.mealegg .me-t{color:var(--muted)}
+.mealegg a{color:var(--amber);text-decoration:none}
+.mealegg a:hover{text-decoration:underline}
 .greet .gcursor{color:var(--red);animation:gblink 1s steps(1) infinite}
 @keyframes gblink{50%{opacity:0}}
 @media (prefers-reduced-motion:reduce){.greet .gcursor{animation:none}}
@@ -364,7 +372,7 @@ a.vchip:hover{border-color:#1FA35F;color:#9be8bd}
 @media print{
   :root{color-scheme:light}
   body{background:#fff;color:#111}
-  nav.rail,.filters,.fab,.plink,.greet,.egg,.viewgrid,.nowline,.updated,.nowtag,.minetag,.xbtn,.toplink,.sheet-bd,#camfab,#vsheet,#day-vibe,#anuntbar,[data-live]{display:none!important}
+  nav.rail,.filters,.fab,.plink,.greet,.mealegg,.egg,.viewgrid,.nowline,.updated,.nowtag,.minetag,.xbtn,.toplink,.sheet-bd,#camfab,#vsheet,#day-vibe,#anuntbar,[data-live]{display:none!important}
   .iblock.acc>*:not(h3){display:block!important}
   header.site{padding:0}
 
@@ -402,6 +410,7 @@ a.vchip:hover{border-color:#1FA35F;color:#9be8bd}
     <div class="eticheta"><img src="assets/eticheta-rosie.png?v=2" alt="festivalul ideo ideis"></div>
     <h1>festivalul #21<br>program intern</h1>
     <p class="greet" id="greet" hidden></p>
+    <div class="mealegg" id="mealegg" hidden></div>
     <p class="updated">last updated <span id="lastupd"></span><span class="techtag" id="techtag" hidden>vedere tehnic</span> · <a class="plink" href="https://ideoideis.ro/proiectele/festivalul/program/" target="_blank" rel="noopener">program public ↗</a></p>
   </div>
 </header>
@@ -420,7 +429,7 @@ a.vchip:hover{border-color:#1FA35F;color:#9be8bd}
       <input class="search" id="q" type="search" placeholder="caută: eveniment, trupă, invitat…" aria-label="caută în program">
       <div class="chiprow" id="catchips"></div>
       <div class="chiprow techrow" id="techrow"></div>
-      <p class="legend-note">atinge o categorie → vezi doar acel tip de evenimente (din nou = tot programul). montările, repetițiile & tehnicul sunt ascunse ca să nu aglomereze; arată-le din butonul de mai jos.</p>
+      <p class="legend-note">atinge o categorie → vezi doar acel tip de evenimente (din nou = tot programul). montările & tehnicul sunt ascunse ca să nu aglomereze; arată-le din butonul de mai jos.</p>
     </div>
   </div>
   <main id="days"><noscript>Pagina are nevoie de JavaScript ca să afișeze programul.</noscript></main>
@@ -429,7 +438,7 @@ a.vchip:hover{border-color:#1FA35F;color:#9be8bd}
 <div class="egg" id="egg" hidden>ne vedem la #22 ♥</div>
 <button class="fab" id="fab" hidden>acum<small id="fabt"></small></button>
 
-<script src="program.js?v=30"></script>
+<script src="program.js?v=31"></script>
 <script>
 /* ── utilitare ──────────────────────────── */
 const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -652,7 +661,7 @@ function evHtml(ev,dayId){
   const subs=(ev.sub||[]).map(s=>`<div class="sub">${s}</div>`).join('');
   const room=lg&&lg.sala?` · ${esc(lg.sala)}<span style="color:var(--muted)">*</span>`:'';
   const locline=ev.loc?`<div class="locline"><b>${esc(ev.loc)}</b>${ev.locd?' · '+esc(ev.locd):''}${room}</div>`:'';
-  return `<article class="ev${ev.c?' compact':''}" data-eid="${eid}" data-cat="${ev.cat||'alt'}"${ev.c?' data-tech="1"':''}${ev.notech?' data-notech="1"':''}${ev.trupa?` data-trupa="${ev.trupa}"`:''} data-s="${mins(ev.t)}"${ev.e?` data-e="${mins(ev.e)}"`:''} data-search="${esc(search)}" style="--cat:${cat.color}">
+  return `<article class="ev${ev.c?' compact':''}" data-eid="${eid}" data-cat="${ev.cat||'alt'}"${(ev.c&&!/repeti/i.test(ev.title))?' data-tech="1"':''}${ev.notech?' data-notech="1"':''}${ev.trupa?` data-trupa="${ev.trupa}"`:''} data-s="${mins(ev.t)}"${ev.e?` data-e="${mins(ev.e)}"`:''} data-search="${esc(search)}" style="--cat:${cat.color}">
     <div class="tcol"><div class="t1">${ev.t}</div>${ev.e?`<div class="t2">${ev.e}</div>`:''}</div>
     <div>
       <div class="title">${ev.title}<span class="nowtag" hidden>acum</span></div>
@@ -734,7 +743,7 @@ function gridHtml(d){
       const inner=short
         ?`<i>${e.t}</i>${e.title}`
         :`<i>${e.t}${e.e?'–'+e.e:''}</i><span class="gt" style="-webkit-line-clamp:${lines}">${e.title}</span>`;
-      return `<div class="gblock${e.c?' ops':''}${short?' short':''}" data-cat="${e.cat||'alt'}"${e.c?' data-tech="1"':''}${e.trupa?` data-trupa="${e.trupa}"`:''} data-search="${esc(search)}" style="top:${top}px;height:${h}px;left:${l}%;width:${w}%;--cat:${cat.color}">${inner}</div>`;
+      return `<div class="gblock${e.c?' ops':''}${short?' short':''}" data-cat="${e.cat||'alt'}"${(e.c&&!/repeti/i.test(e.title||''))?' data-tech="1"':''}${e.trupa?` data-trupa="${e.trupa}"`:''} data-search="${esc(search)}" style="top:${top}px;height:${h}px;left:${l}%;width:${w}%;--cat:${cat.color}">${inner}</div>`;
     }).join('')
   }</div>`).join('');
   return `<div class="gridwrap">
@@ -812,7 +821,7 @@ infoS.innerHTML=`
       <div class="irow"><span class="ra" style="display:flex;align-items:center;gap:8px"><span style="width:18px;border-top:2px dashed rgba(255,196,46,.7);flex:0 0 auto"></span>transport</span></div>
       <div class="irow"><span class="ra" style="display:flex;align-items:center;gap:8px"><span style="width:18px;height:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);flex:0 0 auto"></span>mese</span></div>
       <div class="irow"><span class="ra" style="display:flex;align-items:center;gap:8px"><span style="width:18px;height:10px;border:1px dashed var(--muted);flex:0 0 auto"></span>montare / repetiție (contur punctat)</span></div>
-      <div class="irow"><span class="ra" style="font-family:var(--mono);font-size:12px;color:var(--amber-dim)">@tehnic · montări, repetiții, echipa tehnică</span></div>
+      <div class="irow"><span class="ra" style="font-family:var(--mono);font-size:12px;color:var(--amber-dim)">@tehnic · montări & echipa tehnică</span></div>
     </div>
     <div class="iblock wide acc">
       <h3>teatru tânăr</h3>
@@ -848,6 +857,8 @@ infoS.innerHTML=`
       <h3>programe interne</h3>
       <div class="irow"><span class="ra">program formatori<small>traineri · mentori · trupe · fără Art&Play</small></span><a class="maplink" target="_blank" rel="noopener" href="https://ideoideis.github.io/program-intern-formatori/">deschide ↗</a></div>
       <div class="irow"><span class="ra">program formatori Art&Play<small>ateliere comunitate & evenimente mari</small></span><a class="maplink" target="_blank" rel="noopener" href="https://ideoideis.github.io/program-intern-formatori/artplay/">deschide ↗</a></div>
+      <div class="irow" style="border-bottom:0;padding-bottom:2px"><span class="ra">program pe trupă<small>vederea fiecărei trupe, cu spectacolele lor evidențiate</small></span></div>
+      ${typeof TRUPE_IDS==='undefined'?'':`<div class="trupechips">${Object.entries(TRUPE_IDS).map(([s,nm])=>`<a class="trupelink" href="?t=${s}">${esc(nm)}</a>`).join('')}</div>`}
     </div>
 
   </div>`;
@@ -907,7 +918,7 @@ catchips.appendChild(trChip);
    Stins → dispar rândurile @tehnic ȘI montările/repetițiile (data-tech). */
 const techChip=document.createElement('button');
 techChip.className='fchip tech'; techChip.setAttribute('aria-pressed',TECH?'true':'false');
-function techLabel(){techChip.textContent=(techChip.getAttribute('aria-pressed')==='true'?'✓ ':'＋ ')+'montări, repetiții & tehnic';}
+function techLabel(){techChip.textContent=(techChip.getAttribute('aria-pressed')==='true'?'✓ ':'＋ ')+'montări & tehnic';}
 techLabel();
 techChip.addEventListener('click',()=>{
   const on=techChip.getAttribute('aria-pressed')==='true';
@@ -997,7 +1008,7 @@ function applyFilters(){
   daysEl.querySelectorAll('section.day').forEach(sec=>{
     const btn=sec.querySelector('[data-reveal]'); if(!btn)return;
     const hid=[...sec.querySelectorAll('.viewlist .tech, .viewlist .ev[data-tech]')].filter(e=>e.style.display==='none').length;
-    if(!techOn && !term && hid>0){btn.hidden=false; btn.textContent=`▸ arată montările, repetițiile & tehnicul (${hid})`;}
+    if(!techOn && !term && hid>0){btn.hidden=false; btn.textContent=`▸ arată montările & tehnicul (${hid})`;}
     else btn.hidden=true;
   });
 }
@@ -1039,6 +1050,17 @@ const fab=document.getElementById('fab');
 const fabT=document.getElementById('fabt');
 const nowlineEl=document.createElement('div');
 nowlineEl.className='nowline'; nowlineEl.innerHTML='<span></span>';
+function updateMealEgg(n){
+  const el=document.getElementById('mealegg'); if(!el) return;
+  const links=(typeof MENIURI!=='undefined')?MENIURI:null;
+  /* doar pe programul mare, în zilele festivalului; NU pe /tehnic, NU pe trupe */
+  if(!links||!links.length||TECH||TRUPA||!(n&&n.day)){el.hidden=true; return;}
+  const m=(((n.mins%1440)+1440)%1440);
+  const inWin=(m>=480&&m<600)||(m>=810&&m<960)||(m>=1200&&m<1320); /* 08–10 · 13:30–16 · 20–22 */
+  if(!inWin){el.hidden=true; return;}
+  el.innerHTML='<span class="me-t">ți-e foame?</span> '+links.map(x=>`<a href="${x[2]}" target="_blank" rel="noopener">${esc(x[0])} ↗</a>`).join(' · ');
+  el.hidden=false;
+}
 function updateNow(){
   const n=roNow();
   document.querySelectorAll('.nowtag').forEach(x=>x.hidden=true);
@@ -1049,6 +1071,7 @@ function updateNow(){
   window.CURRENT_DAY=n.day||null;
   document.getElementById('egg').hidden=!(n.day==='ma4'&&n.mins>=mins('22:30'));
   updateGreet(n);
+  updateMealEgg(n);
   if(!n.day) return;
   fabT.textContent=(n.demo?'demo · ':'')+n.hm;
   const sec=document.getElementById('day-'+n.day);

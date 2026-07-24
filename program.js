@@ -1068,6 +1068,11 @@ const PERMANENTE = [
 ];
 
 /* murale (spații conexe) · [nume, adresă, orar de funcționare, contact] */
+/* meniuri restaurant pt. cine nu are masă fixă (comandă când vrea): [nume, etichetă, link] */
+const MENIURI = [
+ ['Alex Tell','meniu','https://alextell.ro/app/w_AlexTell/s_5/l_23489659/p_menu/c_-1'],
+ ['Conciato','comandă','https://conciato.ro/comanda/'],
+];
 const MURALE = [
  ['Mural Ștrand','str. Alexandru Ghica 72-80','1-5 aug · zilnic 10:00-12:00 & 16:00-20:00','Maria Zurbagiu','0743 585 255'],
  ['Mural Clinica TeraVita','str. Ion Creangă 63','31 iul: 20:00-22:30 (trasare schiță) · 1-5 aug: 10:00-12:00 & 16:00-20:00','ATOMA','0757 150 915'],
