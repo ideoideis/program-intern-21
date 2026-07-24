@@ -137,6 +137,8 @@ section.day.on{display:block}
 .xrow .xa{color:var(--fg);font-weight:500}
 .xrow .xb{color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
 .xrow.volrow{flex-direction:column;align-items:stretch;gap:6px}
+.xrow.atrow{flex-direction:column;align-items:stretch;gap:4px;padding:7px 0;border-bottom:1px solid var(--line-soft)}
+.xrow.atrow .xmeta{color:var(--muted);text-align:left;font-size:12.5px}
 .vchips{display:flex;flex-wrap:wrap;gap:5px}
 .vchip{display:inline-block;font-size:12px;padding:4px 9px;border:1px solid var(--line);color:#c7c9cf;text-decoration:none;white-space:nowrap}
 a.vchip{border-color:rgba(31,163,95,.5);color:#7bd6a2}
@@ -484,9 +486,9 @@ function detailRows(ev,dayId){
   let rows=[], label=ev.xlabel||'detalii';
   if(ev.xlist) rows=ev.xlist.map(r=>[r[1],r[0]]);
   else if(ev.title==='ateliere teatru tânăr')
-    rows=ATELIERE_TT.map(r=>[`${r[0]} · ${r[1]}`, r[2]+(r[3]?' · '+r[3]:'')+(r[4]?' · voluntari: '+r[4]:'')]);
+    rows=ATELIERE_TT.map(r=>[`${r[0]} · ${r[1]}`, [r[2],r[3]].filter(Boolean).join(' · '), r[4]||'']);
   else if(ev.title==='ateliere arte alăturate')
-    rows=ARTE_ALATURATE.map(r=>[`${r[0]} · ${r[1]}`, r[2]+(r[6]?' · voluntari: '+r[6]:'')]);
+    rows=ARTE_ALATURATE.map(r=>[`${r[0]} · ${r[1]}`, r[2], r[6]||'']);
   const lg=LOGISTICS[ev.title];
   if(lg){
     if(lg.n)rows.push(['participanți',lg.n]);
@@ -506,7 +508,13 @@ function evHtml(ev,dayId){
   const search=[ev.title,ev.loc,ev.locd,(ev.sub||[]).join(' '),(det?det.rows.flat().join(' '):'')].join(' ').toLowerCase();
   let x='';
   if(det){
-    const rows=det.rows.map(r=>r[0]==='voluntari'?`<div class="xrow volrow"><span class="xa">voluntari</span><div class="vchips">${r[1]}</div></div>`:`<div class="xrow"><span class="xa">${r[0]}</span><span class="xb">${r[1]}</span></div>`).join('');
+    const rows=det.rows.map(r=>
+      r[2]!==undefined
+        ? `<div class="xrow atrow"><span class="xa">${r[0]}</span>${r[1]?`<span class="xmeta">${r[1]}</span>`:''}${r[2]?`<div class="vchips">${volChips(r[2])}</div>`:''}</div>`
+      : r[0]==='voluntari'
+        ? `<div class="xrow volrow"><span class="xa">voluntari</span><div class="vchips">${r[1]}</div></div>`
+        : `<div class="xrow"><span class="xa">${r[0]}</span><span class="xb">${r[1]}</span></div>`
+    ).join('');
     x=`<button class="xbtn" data-x>▸ ${det.label}</button><div class="xlist">${rows}</div>`;
   }
   const subs=(ev.sub||[]).map(s=>`<div class="sub">${s}</div>`).join('');
@@ -621,7 +629,7 @@ DAYS.forEach(d=>{
   const permD=(typeof PERMANENTE!=='undefined')?PERMANENTE.find(p=>p[0].split(' ').slice(0,2).join(' ')===d.h2+' '+d.dn):null;
   s.innerHTML=`<div class="dayhero"><h2>${d.h2}</h2><div class="dd"><b>${d.full}</b></div></div>
     ${(BIRTHDAYS[d.id]||[]).length?`<p class="bday">🎂 la mulți ani: ${BIRTHDAYS[d.id].join(', ')}!</p>`:''}
-    ${permD?`<details class="dayperm"><summary>permanențe voluntari · posturile zilei</summary><div class="dpbody">${permD[1].map(([loc,sloturi])=>`<div class="permg"><div class="perml">${esc(loc)}</div>${sloturi.map(s=>`<div class="perms"><span class="pt">${esc(s[0])}</span><div class="pn">${volChips(s[1])}</div></div>`).join('')}</div>`).join('')}</div></details>`:''}
+    ${permD?`<details class="dayperm"><summary>permanențe voluntari azi</summary><div class="dpbody">${permD[1].map(([loc,sloturi])=>`<div class="permg"><div class="perml">${esc(loc)}</div>${sloturi.map(s=>`<div class="perms"><span class="pt">${esc(s[0])}</span><div class="pn">${volChips(s[1])}</div></div>`).join('')}</div>`).join('')}</div></details>`:''}
     <div class="viewlist">${list}<button class="techreveal" data-reveal hidden></button></div>
     <div class="viewgrid">${gridHtml(d)}</div>`;
   daysEl.appendChild(s);
