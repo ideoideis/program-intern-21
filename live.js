@@ -14,7 +14,11 @@
 
 const SUPA_URL='https://waqyaewaldphstmiobjj.supabase.co';
 const SUPA_KEY='sb_publishable_XtarsOK52eqlRUmv1ElS4Q_RwrDK78G'; /* cheia publică */
-const BUCKET='jurnal-21';
+const TR=new URLSearchParams(location.search).has('t'); /* ?t=... -> vibe pe trupe, spațiu izolat de programul mare */
+const BUCKET=TR?'jurnal-trupe-21':'jurnal-21';
+const TBL_PHOTOS=TR?'jurnal_photos_trupe':'jurnal_photos';
+const TBL_LIKES=TR?'vibe_likes_trupe':'vibe_likes';
+const RPC_UNLIKE=TR?'vibe_unlike_trupe':'vibe_unlike';
 const ANUNT_TTL_H=12; /* câte ore stă un anunț în banner */
 const PAGE=60;        /* postări pe pagină în feed */
 
@@ -158,7 +162,7 @@ function syncFabs(){
 async function syncVibeDot(){
   if(!vibeChip||vibeChip.hidden)return;
   try{
-    const rows=await sbGet('/jurnal_photos?select=created_at&order=created_at.desc&limit=1');
+    const rows=await sbGet(`/${TBL_PHOTOS}?select=created_at&order=created_at.desc&limit=1`);
     const dot=vibeChip.querySelector('.vdot');
     const latest=rows[0]&&rows[0].created_at;
     const seen=localStorage.getItem('vibe-last-seen')||'';
@@ -190,7 +194,7 @@ async function feedLoad(reset){
   const sel=hasAuthorCol?'id,path,day,created_at,caption':'id,path,day,created_at';
   let rows,total;
   try{
-    ({rows,total}=await sbGetCount(`/jurnal_photos?select=${sel}&order=created_at.desc&limit=${PAGE}&offset=${feedShown}`));
+    ({rows,total}=await sbGetCount(`/${TBL_PHOTOS}?select=${sel}&order=created_at.desc&limit=${PAGE}&offset=${feedShown}`));
   }catch(e){
     if(hasAuthorCol){hasAuthorCol=false;return feedLoad(reset);} /* coloana author nu există încă */
     box.innerHTML='<p class="jnote">nu s-a putut încărca</p><button class="vretry">încearcă din nou</button>';
@@ -223,7 +227,7 @@ async function feedLoad(reset){
 async function loadLikes(ids){
   if(!likesOn||!ids.length)return;
   try{
-    const rows=await sbGet(`/vibe_likes?photo_id=in.(${ids.join(',')})&select=photo_id`);
+    const rows=await sbGet(`/${TBL_LIKES}?photo_id=in.(${ids.join(',')})&select=photo_id`);
     const m={}; rows.forEach(r=>{m[r.photo_id]=(m[r.photo_id]||0)+1;});
     ids.forEach(id=>{
       const b=document.querySelector(`.vitem[data-id="${id}"] .vln`);
@@ -246,8 +250,8 @@ document.addEventListener('click',async e=>{
     like.classList.add('on'); like.firstChild.textContent='♥';
     n.textContent=(count()+1)?' '+(count()+1):'';
     try{
-      try{await sbIns('vibe_likes',{photo_id:id,token:DEV});}
-      catch(e1){await sbIns('vibe_likes',{photo_id:id});} /* fără coloana token încă */
+      try{await sbIns(TBL_LIKES,{photo_id:id,token:DEV});}
+      catch(e1){await sbIns(TBL_LIKES,{photo_id:id});} /* fără coloana token încă */
     }catch(err){}
   }else{
     /* o iei înapoi */
@@ -255,7 +259,7 @@ document.addEventListener('click',async e=>{
     like.classList.remove('on'); like.firstChild.textContent='♡';
     n.textContent=count()-1>0?' '+(count()-1):'';
     try{
-      const r=await sb('/rest/v1/rpc/vibe_unlike',{method:'POST',
+      const r=await sb(`/rest/v1/rpc/${RPC_UNLIKE}`,{method:'POST',
         headers:{'Content-Type':'application/json'},body:JSON.stringify({p_photo:id,p_token:DEV})});
       if(!r.ok)throw 0;
     }catch(err){
@@ -327,9 +331,9 @@ function openSheet(file){
       if(!up.ok)throw new Error('nu a mers uploadul · mai încearcă');
       let row=null;
       try{
-        row=await sbIns('jurnal_photos',{event_id:'vibe',day,title:'',path,caption:caption||null},true);
+        row=await sbIns(TBL_PHOTOS,{event_id:'vibe',day,title:'',path,caption:caption||null},true);
       }catch(e2){ /* coloana caption nu există încă: postăm simplu */
-        row=await sbIns('jurnal_photos',{event_id:'vibe',day,title:'',path},true);
+        row=await sbIns(TBL_PHOTOS,{event_id:'vibe',day,title:'',path},true);
       }
       /* optimist: postarea intră în capul feed-ului */
       const box=document.getElementById('vfeed');
