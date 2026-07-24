@@ -220,6 +220,14 @@ a.vchip:hover{border-color:#1FA35F;color:#9be8bd}
 .perms{display:flex;flex-direction:column;gap:5px;padding:6px 0;border-bottom:1px solid var(--line-soft)}
 .perms .pt{font-family:var(--mono);font-size:11px;color:var(--amber-dim)}
 .perms .pn{display:flex;flex-wrap:wrap;gap:5px}
+.dayperm{margin:0 0 14px;border:1px solid var(--line-soft)}
+.dayperm>summary{list-style:none;cursor:pointer;padding:9px 11px;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.02em}
+.dayperm>summary::-webkit-details-marker{display:none}
+.dayperm>summary::before{content:'▸  ';color:var(--amber)}
+.dayperm[open]>summary::before{content:'▾  '}
+.dayperm .dpbody{padding:2px 11px 10px}
+.dayperm .permg:last-child .perms:last-child{border-bottom:0}
+.mapi{text-decoration:none;font-size:13px;margin-left:3px;vertical-align:baseline}
 .crow{display:flex;gap:10px;align-items:baseline;padding:6px 0;border-bottom:1px solid var(--line-soft);font-size:14px}
 .crow .cn{font-weight:500}
 .crow .cr{color:var(--muted);font-size:12.5px}
@@ -454,7 +462,7 @@ function resolvePhone(name){
   }
   return best?best.ph:null;
 }
-/* voluntarii unui eveniment -> chipuri mici, fiecare sună direct */
+/* voluntarii unui eveniment -> chipuri mici, fiecare cu apel din tap */
 function volChips(str){
   return String(str).split(/\s*\+\s*|,\s*/).map(part=>{
     part=part.trim(); if(!part)return '';
@@ -498,7 +506,7 @@ function evHtml(ev,dayId){
   const search=[ev.title,ev.loc,ev.locd,(ev.sub||[]).join(' '),(det?det.rows.flat().join(' '):'')].join(' ').toLowerCase();
   let x='';
   if(det){
-    const rows=det.rows.map(r=>r[0]==='voluntari'?`<div class="xrow volrow"><span class="xa">voluntari · sună direct</span><div class="vchips">${r[1]}</div></div>`:`<div class="xrow"><span class="xa">${r[0]}</span><span class="xb">${r[1]}</span></div>`).join('');
+    const rows=det.rows.map(r=>r[0]==='voluntari'?`<div class="xrow volrow"><span class="xa">voluntari</span><div class="vchips">${r[1]}</div></div>`:`<div class="xrow"><span class="xa">${r[0]}</span><span class="xb">${r[1]}</span></div>`).join('');
     x=`<button class="xbtn" data-x>▸ ${det.label}</button><div class="xlist">${rows}</div>`;
   }
   const subs=(ev.sub||[]).map(s=>`<div class="sub">${s}</div>`).join('');
@@ -610,8 +618,10 @@ DAYS.forEach(d=>{
     else if(ev.k==='x')list+=techHtml(ev);
     else list+=evHtml(ev,d.id);
   });
+  const permD=(typeof PERMANENTE!=='undefined')?PERMANENTE.find(p=>p[0].split(' ').slice(0,2).join(' ')===d.h2+' '+d.dn):null;
   s.innerHTML=`<div class="dayhero"><h2>${d.h2}</h2><div class="dd"><b>${d.full}</b></div></div>
     ${(BIRTHDAYS[d.id]||[]).length?`<p class="bday">🎂 la mulți ani: ${BIRTHDAYS[d.id].join(', ')}!</p>`:''}
+    ${permD?`<details class="dayperm"><summary>permanențe voluntari · posturile zilei</summary><div class="dpbody">${permD[1].map(([loc,sloturi])=>`<div class="permg"><div class="perml">${esc(loc)}</div>${sloturi.map(s=>`<div class="perms"><span class="pt">${esc(s[0])}</span><div class="pn">${volChips(s[1])}</div></div>`).join('')}</div>`).join('')}</div></details>`:''}
     <div class="viewlist">${list}<button class="techreveal" data-reveal hidden></button></div>
     <div class="viewgrid">${gridHtml(d)}</div>`;
   daysEl.appendChild(s);
@@ -688,12 +698,7 @@ infoS.innerHTML=`
     </div>
     ${typeof MURALE==='undefined'?'':`<div class="iblock wide acc">
       <h3>murale</h3>
-      ${MURALE.map(m=>`<div class="irow"><span class="ra">${m[0]}<small>${m[1]} · ${m[2]}</small></span><span class="rb">${m[3]}${m[4]?`<br><a class="tel" href="tel:${m[4].replace(/\s/g,'')}">${m[4]}</a>`:''}</span></div>`).join('')}
-    </div>`}
-    ${typeof PERMANENTE==='undefined'?'':`<div class="iblock wide acc">
-      <h3>permanențe voluntari</h3>
-      <p class="inote" style="margin:0 0 8px">pe locații, calupuri de timp și zile</p>
-      ${PERMANENTE.map(([zi,grupuri])=>`<p class="cdh">${esc(zi)}</p>${grupuri.map(([loc,sloturi])=>`<div class="permg"><div class="perml">${esc(loc)}</div>${sloturi.map(s=>`<div class="perms"><span class="pt">${esc(s[0])}</span><div class="pn">${volChips(s[1])}</div></div>`).join('')}</div>`).join('')}`).join('')}
+      ${MURALE.map(m=>`<div class="irow"><span class="ra">${m[0]}<small class="muraddr">${m[1]} <a class="mapi" target="_blank" rel="noopener" href="${maps(m[1])}" aria-label="deschide harta">📍</a></small>${m[2].split(' · ').map(w=>`<small>${w}</small>`).join('')}</span><span class="rb">${m[3]}${m[4]?`<br><a class="tel" href="tel:${m[4].replace(/\s/g,'')}">${m[4]}</a>`:''}</span></div>`).join('')}
     </div>`}
     <div class="iblock wide" id="teamviews">
       <h3>programe interne</h3>
