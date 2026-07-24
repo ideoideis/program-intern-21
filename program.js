@@ -773,7 +773,7 @@ const CONTACTS = [
   ["Alexandru Varninschi","Coord. Departament Video","0727403769"],
   ["Radu Rusu","Videograf"],
   ["Teodora Roșu","Videograf"],
-  ["Adina Biet","Grafică"],
+  ["Adina Biet","Designer Grafic"],
  ]],
  ["Tehnic", [
   ["Andrei Tălpigă","Director Tehnic","0769410054"],
