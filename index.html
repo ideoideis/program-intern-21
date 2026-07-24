@@ -429,7 +429,7 @@ a.vchip:hover{border-color:#1FA35F;color:#9be8bd}
 <div class="egg" id="egg" hidden>ne vedem la #22 ♥</div>
 <button class="fab" id="fab" hidden>acum<small id="fabt"></small></button>
 
-<script src="program.js?v=28"></script>
+<script src="program.js?v=29"></script>
 <script>
 /* ── utilitare ──────────────────────────── */
 const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -800,7 +800,6 @@ infoS.innerHTML=`
         }).join('');
         return `<div class="cdep"><p class="cdh">${dep}</p><div class="${plain?'cgrid':''}">${rows}</div></div>`;
       }).join('')}
-      <p class="inote" style="margin-top:12px">în curând: telefoanele + voluntarii de permanență pe locații (08:00–00:00).</p>
     </div>`}
     ${FEEDBACK_URL?`<a class="bigpublic iblock wide" style="background:var(--panel-2);color:var(--fg)" href="${FEEDBACK_URL}" target="_blank" rel="noopener"><span>feedback în timp real<small>idei & probleme, direct în doc</small></span><span>↗</span></a>`:''}
     <div class="iblock acc">
