@@ -82,6 +82,7 @@ body[data-view="loc"] .viewgrid{display:block}
 .search{width:100%;background:var(--panel);border:1px solid var(--line);color:var(--fg);padding:10px 12px;font-size:15px;font-family:inherit;margin-top:8px}
 .search::placeholder{color:var(--muted)}
 .chiprow{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.techrow{padding-top:12px;border-top:1px solid var(--line-soft)}
 .fchip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);padding:5px 9px;font-size:12px;font-weight:500;color:var(--fg)}
 .fchip .sw{width:9px;height:9px;flex:0 0 auto}
 .fchip[aria-pressed="true"]{border-color:var(--selc,#fff);color:var(--selc,#fff);font-weight:600}
@@ -370,7 +371,8 @@ a.vchip:hover{border-color:#1FA35F;color:#9be8bd}
     <div class="fbody">
       <input class="search" id="q" type="search" placeholder="caută: eveniment, trupă, invitat…" aria-label="caută în program">
       <div class="chiprow" id="catchips"></div>
-      <p class="legend-note">click pe una sau mai multe categorii ca să vezi doar acel tip de evenimente · atinge din nou pentru tot programul</p>
+      <div class="chiprow techrow" id="techrow"></div>
+      <p class="legend-note">atinge o categorie → vezi doar acel tip de evenimente (din nou = tot programul). montările, repetițiile & tehnicul sunt ascunse ca să nu aglomereze; arată-le din butonul de mai jos.</p>
     </div>
   </div>
   <main id="days"><noscript>Pagina are nevoie de JavaScript ca să afișeze programul.</noscript></main>
@@ -476,6 +478,15 @@ function volChips(str){
               :`<span class="${cls}">${esc(lab)}${isGhid?' ·ghid':''}</span>`;
   }).join('');
 }
+/* ghidul unei trupe -> chip apelabil (numărul vine din TRUPE) */
+function ghidChipFor(slug){
+  if(typeof TRUPE==='undefined'||typeof TRUPE_IDS==='undefined')return '';
+  const t=TRUPE.find(x=>x[0]===TRUPE_IDS[slug]); if(!t)return '';
+  const name=t[4]||'', tel=(t[5]||'').replace(/\s/g,'');
+  if(!name||/confirmat/i.test(name))return '';
+  return tel?`<a class="vchip ghid" href="tel:${tel}">${esc(name)}</a>`
+           :`<span class="vchip ghid nolink">${esc(name)}</span>`;
+}
 function volFor(ev,dayId){
   if(typeof VOL_EV==='undefined')return null;
   const nt=norm(ev.title);
@@ -495,6 +506,7 @@ function detailRows(ev,dayId){
     if(lg.tehnic)rows.push(['necesar tehnic',lg.tehnic]);
     if(lg.prod)rows.push(['necesar producție',lg.prod]);
   }
+  if(ev.trupa){const g=ghidChipFor(ev.trupa); if(g)rows.push(['ghid',g]);}
   const v=volFor(ev,dayId);
   if(v)rows.push(['voluntari',volChips(v)]);
   return rows.length?{label,rows}:null;
@@ -511,8 +523,8 @@ function evHtml(ev,dayId){
     const rows=det.rows.map(r=>
       r[2]!==undefined
         ? `<div class="xrow atrow"><span class="xa">${r[0]}</span>${r[1]?`<span class="xmeta">${r[1]}</span>`:''}${r[2]?`<div class="vchips">${volChips(r[2])}</div>`:''}</div>`
-      : r[0]==='voluntari'
-        ? `<div class="xrow volrow"><span class="xa">voluntari</span><div class="vchips">${r[1]}</div></div>`
+      : (r[0]==='voluntari'||r[0]==='ghid')
+        ? `<div class="xrow volrow"><span class="xa">${r[0]}</span><div class="vchips">${r[1]}</div></div>`
         : `<div class="xrow"><span class="xa">${r[0]}</span><span class="xb">${r[1]}</span></div>`
     ).join('');
     x=`<button class="xbtn" data-x>▸ ${det.label}</button><div class="xlist">${rows}</div>`;
@@ -771,13 +783,15 @@ catchips.appendChild(trChip);
    Stins → dispar rândurile @tehnic ȘI montările/repetițiile (data-tech). */
 const techChip=document.createElement('button');
 techChip.className='fchip tech'; techChip.setAttribute('aria-pressed',TECH?'true':'false');
-techChip.textContent='@tehnic · montări & repetiții';
+function techLabel(){techChip.textContent=(techChip.getAttribute('aria-pressed')==='true'?'✓ ':'＋ ')+'montări, repetiții & tehnic';}
+techLabel();
 techChip.addEventListener('click',()=>{
   const on=techChip.getAttribute('aria-pressed')==='true';
   techChip.setAttribute('aria-pressed',String(!on));
+  techLabel();
   applyFilters();
 });
-catchips.appendChild(techChip);
+document.getElementById('techrow').appendChild(techChip);
 
 /* plierea zonei de filtre & căutare */
 const fhead=document.getElementById('fhead');
@@ -836,8 +850,8 @@ function applyFilters(){
   const term=q.value.trim().toLowerCase();
   const filtering=selCats.size>0;
   const techOn=techChip.getAttribute('aria-pressed')==='true';
-  const nActive=selCats.size+(techOn?0:1)+(term?1:0);
-  document.getElementById('fcount').textContent=nActive?` · ${nActive} active`:'';
+  const nActive=selCats.size+(term?1:0);
+  document.getElementById('fcount').textContent=nActive?` · ${nActive} ${nActive===1?'filtru activ':'filtre active'}`:'';
   /* doar conținutul zilelor; chipurile de filtre nu se ating niciodată */
   daysEl.querySelectorAll('.ev,.tr,.meal,.tech,.gblock,.gtr,.gtrt').forEach(el=>{
     /* pe linkul unei trupe ascundem repetițiile/spectacolele celorlalte trupe */
@@ -859,7 +873,7 @@ function applyFilters(){
   daysEl.querySelectorAll('section.day').forEach(sec=>{
     const btn=sec.querySelector('[data-reveal]'); if(!btn)return;
     const hid=[...sec.querySelectorAll('.viewlist .tech, .viewlist .ev[data-tech]')].filter(e=>e.style.display==='none').length;
-    if(!techOn && !term && hid>0){btn.hidden=false; btn.textContent=`▸ arată montările, repetițiile & transportul (${hid})`;}
+    if(!techOn && !term && hid>0){btn.hidden=false; btn.textContent=`▸ arată montările, repetițiile & tehnicul (${hid})`;}
     else btn.hidden=true;
   });
 }
