@@ -18,7 +18,7 @@
      xlabel/xlist  listă expandabilă (de ex. sesiuni masterclass)
    ============================================================ */
 
-const LAST_UPDATED = '22.07.2026';
+const LAST_UPDATED = '24.07.2026';
 
 /* Demo pentru marcajul "acum" în afara zilelor de festival:
    'zi-oră' (de ex. 'v31-19:32') sau null ca să îl stingi.

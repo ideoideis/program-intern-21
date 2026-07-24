@@ -93,7 +93,8 @@ body[data-view="loc"] .viewgrid{display:block}
 .techreveal:hover{color:var(--amber);border-color:rgba(255,196,46,.5)}
 .techreveal[hidden]{display:none}
 body.tech .meal,body.tech .tr,body.tech .gtr,body.tech .gtrt,body.tech .ev[data-notech]{display:none!important}
-.techtag{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#1c1d20;background:var(--amber);padding:1px 6px;margin-left:8px}
+.techtag{display:none;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#1c1d20;background:var(--amber);padding:1px 6px;margin-left:8px}
+body.tech .techtag{display:inline-block}
 #sres{border:1px solid var(--line);background:var(--panel);margin-top:6px;max-height:300px;overflow-y:auto}
 #sres[hidden]{display:none}
 .srow{display:block;width:100%;text-align:left;padding:9px 10px;border-bottom:1px solid var(--line-soft);font-size:14px}
@@ -227,7 +228,6 @@ a.vchip:hover{border-color:#1FA35F;color:#9be8bd}
 .dayperm[open]>summary::before{content:'▾  '}
 .dayperm .dpbody{padding:2px 11px 10px}
 .dayperm .permg:last-child .perms:last-child{border-bottom:0}
-.mapi{text-decoration:none;font-size:13px;margin-left:3px;vertical-align:baseline}
 .crow{display:flex;gap:10px;align-items:baseline;padding:6px 0;border-bottom:1px solid var(--line-soft);font-size:14px}
 .crow .cn{font-weight:500}
 .crow .cr{color:var(--muted);font-size:12.5px}
@@ -377,7 +377,7 @@ a.vchip:hover{border-color:#1FA35F;color:#9be8bd}
 <div class="egg" id="egg" hidden>ne vedem la #22 ♥</div>
 <button class="fab" id="fab" hidden>acum<small id="fabt"></small></button>
 
-<script src="program.js?v=21"></script>
+<script src="program.js?v=22"></script>
 <script>
 /* ── utilitare ──────────────────────────── */
 const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -698,7 +698,7 @@ infoS.innerHTML=`
     </div>
     ${typeof MURALE==='undefined'?'':`<div class="iblock wide acc">
       <h3>murale</h3>
-      ${MURALE.map(m=>`<div class="irow"><span class="ra">${m[0]}<small class="muraddr">${m[1]} <a class="mapi" target="_blank" rel="noopener" href="${maps(m[1])}" aria-label="deschide harta">📍</a></small>${m[2].split(' · ').map(w=>`<small>${w}</small>`).join('')}</span><span class="rb">${m[3]}${m[4]?`<br><a class="tel" href="tel:${m[4].replace(/\s/g,'')}">${m[4]}</a>`:''}</span></div>`).join('')}
+      ${MURALE.map(m=>`<div class="irow"><span class="ra">${m[0]}<small class="muraddr">${m[1]} <a class="maplink" target="_blank" rel="noopener" href="${maps(m[1])}">hartă ↗</a></small>${m[2].split(' · ').map(w=>`<small>${w}</small>`).join('')}</span><span class="rb">${m[3]}${m[4]?`<br><a class="tel" href="tel:${m[4].replace(/\s/g,'')}">${m[4]}</a>`:''}</span></div>`).join('')}
     </div>`}
     <div class="iblock wide" id="teamviews">
       <h3>programe interne</h3>
