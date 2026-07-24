@@ -92,7 +92,7 @@ body[data-view="loc"] .viewgrid{display:block}
 .techreveal{display:block;width:100%;margin:6px 0 2px;font-family:var(--mono);font-size:11.5px;color:var(--muted);border:1px dashed var(--line);padding:8px 10px;text-align:left}
 .techreveal:hover{color:var(--amber);border-color:rgba(255,196,46,.5)}
 .techreveal[hidden]{display:none}
-body.tech .meal{display:none!important}
+body.tech .meal,body.tech .tr,body.tech .gtr,body.tech .gtrt,body.tech .ev[data-notech]{display:none!important}
 .techtag{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#1c1d20;background:var(--amber);padding:1px 6px;margin-left:8px}
 #sres{border:1px solid var(--line);background:var(--panel);margin-top:6px;max-height:300px;overflow-y:auto}
 #sres[hidden]{display:none}
@@ -369,7 +369,7 @@ a.vchip:hover{border-color:#1FA35F;color:#9be8bd}
 <div class="egg" id="egg" hidden>ne vedem la #22 ♥</div>
 <button class="fab" id="fab" hidden>acum<small id="fabt"></small></button>
 
-<script src="program.js?v=20"></script>
+<script src="program.js?v=21"></script>
 <script>
 /* ── utilitare ──────────────────────────── */
 const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -504,7 +504,7 @@ function evHtml(ev,dayId){
   const subs=(ev.sub||[]).map(s=>`<div class="sub">${s}</div>`).join('');
   const room=lg&&lg.sala?` · ${esc(lg.sala)}<span style="color:var(--muted)">*</span>`:'';
   const locline=ev.loc?`<div class="locline"><b>${esc(ev.loc)}</b>${ev.locd?' · '+esc(ev.locd):''}${room}</div>`:'';
-  return `<article class="ev${ev.c?' compact':''}" data-eid="${eid}" data-cat="${ev.cat||'alt'}"${ev.c?' data-tech="1"':''}${ev.trupa?` data-trupa="${ev.trupa}"`:''} data-s="${mins(ev.t)}"${ev.e?` data-e="${mins(ev.e)}"`:''} data-search="${esc(search)}" style="--cat:${cat.color}">
+  return `<article class="ev${ev.c?' compact':''}" data-eid="${eid}" data-cat="${ev.cat||'alt'}"${ev.c?' data-tech="1"':''}${ev.notech?' data-notech="1"':''}${ev.trupa?` data-trupa="${ev.trupa}"`:''} data-s="${mins(ev.t)}"${ev.e?` data-e="${mins(ev.e)}"`:''} data-search="${esc(search)}" style="--cat:${cat.color}">
     <div class="tcol"><div class="t1">${ev.t}</div>${ev.e?`<div class="t2">${ev.e}</div>`:''}</div>
     <div>
       <div class="title">${ev.title}<span class="nowtag" hidden>acum</span></div>
