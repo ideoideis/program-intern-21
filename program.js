@@ -579,7 +579,7 @@ const TRUPE = [
  ['Artwork','Oana Jipa · sala 6','Diana Roman','0740 127 623','Horvath Valentin','0760111213'],
  ['Amprente','Ioana Brumar · sala 9','Anca Maria Băcanu','0721 916 009','Ariana Mișu',''],
  ['Brainstorming','Cezara Petredeanu · sala 5','Ruxandra Stoica','0770 346 780','Dide Noemi','0770597515'],
- ['Alexandria','trainer de confirmat · sala 12','Eric Alexandru','','de confirmat',''],
+ ['Alexandria','Noreen Elamir & Andrei Dumitrana · sala 12','Eric Alexandru','','',''],
  ['ACT','Alexa Tofan · sala 8','Andi Andriucă','0784 246 202','Sebe Cristina','0756557105'],
  ['Protha','Bogdan Tulbure · sala 11','Alexandru Stan','0744 871 882','Dinu Andrei','0722112111'],
 ];
