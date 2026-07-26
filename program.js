@@ -210,7 +210,7 @@ const DAYS = [
    {k:'e', t:'14:00', e:'15:00', cat:'alt', notech:true, loc:'Primărie', locd:'Sala de Consiliu', title:'ședință coordonatori'},
    {k:'x', t:'15:00–19:00', ts:'15:00', text:'montare & repetiție „Charlie Chaplin” (Teatrul Mic) · CMT'},
    {k:'x', t:'19:00–20:00', ts:'19:00', text:'probe gală · CMT'},
-   {k:'t', t:'15:05', route:'traseu de confirmat'},
+   {k:'t', t:'15:05', route:'CMT → Cămin'},
    {k:'e', t:'17:00', e:'17:30', cat:'alt', notech:true, loc:'loc de confirmat', title:'întâlnire mentori · participanți'},
    {k:'t', t:'18:00', route:'Cămin → CMT'},
    {k:'m', t:'18:20', e:'19:45', meal:'cină', loc:'Alex Tell'},
