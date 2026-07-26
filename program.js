@@ -396,7 +396,6 @@ const DAYS = [
    {k:'e', t:'15:30', e:'16:30', c:true, cat:'tt', loc:'CMT', trupa:'alexandria', title:'repetiție și montare · <b>Alexandria</b>'},
    {k:'t', t:'16:45', route:'Cămin → CMT'},
    {k:'e', t:'17:00', e:'18:00', cat:'tt', loc:'CMT', trupa:'alexandria', title:'spectacol teatru tânăr · Alexandria'},
-   {k:'m', t:'17:00', e:'18:00', meal:'cină', loc:'pachet', trupa:'act', note:'doar trupa ACT'},
    {k:'e', t:'18:00', e:'19:00', c:true, cat:'tt', loc:'CMT', trupa:'act', title:'repetiție și montare · <b>ACT</b>'},
    {k:'m', t:'18:00', e:'19:30', meal:'cină', loc:'Alex Tell'},
    {k:'e', t:'19:30', e:'20:30', cat:'tt', loc:'CMT', trupa:'act', title:'spectacol teatru tânăr · ACT'},
