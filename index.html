@@ -124,6 +124,9 @@ section.day.on{display:block}
 .title{font-weight:600;font-size:16.5px;line-height:1.25}
 .locline{margin-top:3px;font-size:13px;color:var(--muted)}
 .locline b{color:#c7c9cf;font-weight:500}
+.mln{color:inherit;text-decoration:none}
+.mln::after{content:'↗';color:var(--amber-dim);font-size:.82em;margin-left:2px}
+.mln:hover{text-decoration:underline;text-decoration-color:var(--amber-dim)}
 .sub{margin-top:4px;font-size:13.5px;color:#c7c9cf}
 .sub.note{color:var(--muted)}
 .ev.now-active{border-color:var(--red);border-left-color:var(--red)}
@@ -649,6 +652,9 @@ function detailRows(ev,dayId){
   return rows.length?{label,rows}:null;
 }
 const slug=s=>s.toLowerCase().replace(/<[^>]*>/g,'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,28);
+/* localuri cu meniu online (Alex Tell, Conciato din MENIURI): numele lor devine link c\u0103tre meniu */
+const _MENU=(()=>{const m={};if(typeof MENIURI!=='undefined')MENIURI.forEach(x=>m[x[0]]=x[2]);return m;})();
+const locMenu=loc=>{const u=_MENU[loc];return u?`<a class="mln" href="${u}" target="_blank" rel="noopener">${esc(loc)}</a>`:esc(loc);};
 function evHtml(ev,dayId){
   const cat=CATS[ev.cat]||CATS.alt;
   const eid=`${dayId}-${ev.t.replace(':','')}-${slug(ev.title)}`;
@@ -668,7 +674,7 @@ function evHtml(ev,dayId){
   }
   const subs=(ev.sub||[]).map(s=>`<div class="sub">${s}</div>`).join('');
   const room=lg&&lg.sala?` · ${esc(lg.sala)}<span style="color:var(--muted)">*</span>`:'';
-  const locline=ev.loc?`<div class="locline"><b>${esc(ev.loc)}</b>${ev.locd?' · '+esc(ev.locd):''}${room}</div>`:'';
+  const locline=ev.loc?`<div class="locline"><b>${locMenu(ev.loc)}</b>${ev.locd?' · '+esc(ev.locd):''}${room}</div>`:'';
   return `<article class="ev${ev.c?' compact':''}" data-eid="${eid}" data-cat="${ev.cat||'alt'}"${(ev.c&&!/repeti/i.test(ev.title))?' data-tech="1"':''}${ev.notech?' data-notech="1"':''}${ev.trupa?` data-trupa="${ev.trupa}"`:''} data-s="${mins(ev.t)}"${ev.e?` data-e="${mins(ev.e)}"`:''} data-search="${esc(search)}" style="--cat:${cat.color}">
     <div class="tcol"><div class="t1">${ev.t}</div>${ev.e?`<div class="t2">${ev.e}</div>`:''}</div>
     <div>
@@ -678,7 +684,7 @@ function evHtml(ev,dayId){
   </article>`;
 }
 const trHtml=ev=>`<div class="tr"${ev.trupa?` data-trupa="${ev.trupa}"`:''} data-s="${smins(ev)}" data-search="transport ${esc(ev.route.toLowerCase())} ${esc((ev.note||'').toLowerCase())}"><span class="tag">transport</span><span class="tt">${ev.t}</span><span class="route">${esc(ev.route)}</span>${ev.note?`<span class="note">${esc(ev.note)}</span>`:''}</div>`;
-const mealHtml=ev=>`<div class="meal"${ev.trupa?` data-trupa="${ev.trupa}"`:''} data-s="${smins(ev)}" data-search="masa ${ev.meal} ${esc((ev.loc||'').toLowerCase())} ${esc((ev.note||'').toLowerCase())}"><span class="tag">masă</span><span class="tt">${ev.t}–${ev.e}</span><span class="mt">${ev.meal} · ${esc(ev.loc)}</span>${ev.note?`<span class="note">${esc(ev.note)}</span>`:''}</div>`;
+const mealHtml=ev=>`<div class="meal"${ev.trupa?` data-trupa="${ev.trupa}"`:''} data-s="${smins(ev)}" data-search="masa ${ev.meal} ${esc((ev.loc||'').toLowerCase())} ${esc((ev.note||'').toLowerCase())}"><span class="tag">masă</span><span class="tt">${ev.t}–${ev.e}</span><span class="mt">${ev.meal} · ${locMenu(ev.loc)}</span>${ev.note?`<span class="note">${esc(ev.note)}</span>`:''}</div>`;
 const techHtml=ev=>{
   const parts=esc(ev.text).split(' · ');
   const main=parts.shift()||'';
@@ -823,10 +829,6 @@ infoS.innerHTML=`
       <h3>locații & hărți</h3>
       ${LOCS.map(l=>`<div class="irow"><span class="ra">${l[0]}${l[1]?`<small>${l[1]}</small>`:''}</span><a class="maplink" target="_blank" rel="noopener" href="${maps(l[0])}">hartă ↗</a></div>`).join('')}
     </div>
-    ${typeof MENIURI==='undefined'?'':`<div class="iblock">
-      <h3>mâncare · comenzi</h3>
-      ${MENIURI.map(m=>`<div class="irow"><span class="ra">${esc(m[0])}</span><a class="maplink" target="_blank" rel="noopener" href="${m[2]}">${esc(m[1])} ↗</a></div>`).join('')}
-    </div>`}
     <div class="iblock acc">
       <h3>legendă</h3>
       ${Object.values(CATS).map(c=>`<div class="irow"><span class="ra" style="display:flex;align-items:center;gap:8px"><span style="width:10px;height:10px;background:${c.color};flex:0 0 auto"></span>${c.label}</span></div>`).join('')}
