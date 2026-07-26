@@ -278,7 +278,29 @@ document.addEventListener('click',e=>{
 });
 
 /* ── capturarea: cameră → preview → nume opțional → postează ── */
+/* acordul GDPR: se cere O SINGURĂ DATĂ per dispozitiv, înainte de prima poză */
+const VCONSENT_KEY='vibe-consent-21';
+const hasVConsent=()=>{try{return localStorage.getItem(VCONSENT_KEY)==='1';}catch(e){return false;}};
+function showVConsent(onOk){
+  if(document.getElementById('vconsent'))return;
+  const bd=document.createElement('div'); bd.id='vconsent'; bd.className='vconsent-bd';
+  bd.innerHTML='<div class="vconsent" role="dialog" aria-modal="true" aria-label="acord vibe check">'
+    +'<h3>înainte de prima poză</h3>'
+    +'<p>Prin accesarea acestui site și încărcarea de fotografii sau alte materiale în cadrul platformei de Vibe Check a festivalului Ideo Ideis, îți exprimi acordul ca imaginile în care apari să fie prelucrate de organizator exclusiv în scopul desfășurării, documentării și promovării activităților festivalului Ideo Ideis.</p>'
+    +'<p>Materialele încărcate vor fi utilizate doar în legătură cu festivalul și nu vor fi folosite în alte scopuri fără un temei legal sau, după caz, fără acordul tău. Prelucrarea datelor se realizează cu respectarea Regulamentului (UE) 2016/679 (GDPR).</p>'
+    +'<div class="vconsent-btns"><button type="button" class="vc-no">renunț</button><button type="button" class="vc-yes">sunt de acord</button></div>'
+    +'</div>';
+  document.body.appendChild(bd);
+  const close=()=>bd.remove();
+  bd.querySelector('.vc-no').addEventListener('click',close);
+  bd.addEventListener('click',e=>{if(e.target===bd)close();});
+  bd.querySelector('.vc-yes').addEventListener('click',()=>{try{localStorage.setItem(VCONSENT_KEY,'1');}catch(e){} close(); onOk&&onOk();});
+}
 function openCapture(){
+  if(!hasVConsent()){ showVConsent(pickPhoto); return; }
+  pickPhoto();
+}
+function pickPhoto(){
   const input=document.createElement('input');
   input.type='file'; input.accept='image/*,video/mp4,video/quicktime,video/webm';
   input.hidden=true; document.body.appendChild(input);
