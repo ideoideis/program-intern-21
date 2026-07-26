@@ -438,7 +438,7 @@ a.vchip:hover{border-color:#1FA35F;color:#9be8bd}
 <div class="egg" id="egg" hidden>ne vedem la #22 ♥</div>
 <button class="fab" id="fab" hidden>acum<small id="fabt"></small></button>
 
-<script src="program.js?v=31"></script>
+<script src="program.js?v=32"></script>
 <script>
 /* ── utilitare ──────────────────────────── */
 const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -455,6 +455,7 @@ if(TECH)document.getElementById('techtag').hidden=false;
    Pentru test: ?test=v31-19:32 */
 const TESTP=new URLSearchParams(location.search).get('test');
 const parseSim=s=>{const i=s.indexOf('-');return {day:s.slice(0,i), mins:mins(s.slice(i+1)), hm:s.slice(i+1), demo:true};};
+function deDiac(s){return String(s).toLowerCase().replace(/[ăâáà]/g,'a').replace(/[îí]/g,'i').replace(/[éè]/g,'e').replace(/[óò]/g,'o').replace(/[úù]/g,'u').replace(/[șş]/g,'s').replace(/[țţ]/g,'t');}
 function roNow(){
   if(TESTP) return parseSim(TESTP);
   const fmt=o=>new Intl.DateTimeFormat('ro-RO',Object.assign({timeZone:'Europe/Bucharest'},o));
@@ -872,9 +873,9 @@ daysEl.appendChild(infoS);
 /* căutarea în contacte */
 infoS.addEventListener('input',e=>{
   if(e.target.id!=='cq')return;
-  const term=e.target.value.trim().toLowerCase();
+  const term=deDiac(e.target.value.trim().toLowerCase());
   infoS.querySelectorAll('#cblock .crow').forEach(r=>{
-    r.style.display=(!term||r.dataset.s.includes(term))?'':'none';
+    r.style.display=(!term||deDiac(r.dataset.s).includes(term))?'':'none';
   });
   infoS.querySelectorAll('#cblock .cdep').forEach(d=>{
     const any=[...d.querySelectorAll('.crow')].some(r=>r.style.display!=='none');
@@ -946,11 +947,11 @@ sres.id='sres'; sres.hidden=true;
 q.after(sres);
 const DAYSHORT=Object.fromEntries(DAYS.map(d=>[d.id,`${d.dw} ${d.dn} ${d.full.split(' ')[1]||''}`.trim()]));
 function globalSearch(){
-  const term=q.value.trim().toLowerCase();
+  const term=deDiac(q.value.trim().toLowerCase());
   if(term.length<2){sres.hidden=true;sres.innerHTML='';return;}
   const hits=[];
   document.querySelectorAll('section.day .viewlist .ev').forEach(ev=>{
-    if((ev.dataset.search||'').includes(term)){
+    if(deDiac(ev.dataset.search||'').includes(term)){
       const day=ev.closest('section.day').id.replace('day-','');
       const c=ev.querySelector('.title').cloneNode(true);
       c.querySelectorAll('.nowtag,.minetag').forEach(x=>x.remove());
@@ -982,7 +983,7 @@ sres.addEventListener('click',e=>{
   }
 });
 function applyFilters(){
-  const term=q.value.trim().toLowerCase();
+  const term=deDiac(q.value.trim().toLowerCase());
   const filtering=selCats.size>0;
   const techOn=techChip.getAttribute('aria-pressed')==='true';
   const nActive=selCats.size+(term?1:0);
@@ -1001,7 +1002,7 @@ function applyFilters(){
       /* mesele rămân mereu vizibile: sunt scheletul zilei */
       if(show && el.dataset.tech && !techOn) show=false;
     }
-    if(show && term && el.dataset.search!==undefined && !el.dataset.search.includes(term)) show=false;
+    if(show && term && el.dataset.search!==undefined && !deDiac(el.dataset.search).includes(term)) show=false;
     el.style.display=show?'':'none';
   });
   /* rândul discret „arată montările & tehnicul (N)” pe zilele cu tehnic ascuns */

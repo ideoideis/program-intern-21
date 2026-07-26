@@ -346,7 +346,7 @@ const DAYS = [
    {k:'e', t:'10:00', e:'10:30', cat:'parada', loc:'Kaufland', locd:'în magazin', title:'paradă papainoage „Actori la înălțime”', sub:['UNATC']},
    {k:'e', t:'10:30', e:'12:00', cat:'kauf', loc:'Kaufland', locd:'în parcare', title:'face painting & baloane', sub:['CIAA']},
    {k:'e', t:'10:30', e:'12:30', cat:'artplay', loc:'Școala 5', title:'Se întâmplă între N-O-I', sub:['psihoeducație · 10-13 ani']},
-   {k:'e', t:'10:30', e:'11:30', cat:'mica', loc:'Piața Ideo Ideis', locd:'scena mică', title:'spectacol pentru copii · „Năzdrăvanii mărilor”', sub:['cu Edi Cîrlan']},
+   {k:'e', t:'10:30', e:'11:20', cat:'mica', loc:'Piața Ideo Ideis', locd:'scena mică', title:'spectacol pentru copii · „Năzdrăvanii mărilor”', sub:['cu Edi Cîrlan']},
    {k:'e', t:'11:00', e:'13:30', c:true, cat:'mare', loc:'Piața Ideo Ideis', locd:'scena mare', title:'repetiție · Zestrea'},
    {k:'e', t:'12:30', e:'13:30', cat:'mica', loc:'Piața Ideo Ideis', locd:'scena mică', title:'atelier cu păpuși', sub:['CIAA']},
    {k:'m', t:'14:00', e:'15:30', meal:'prânz', loc:'Alex Tell'},
