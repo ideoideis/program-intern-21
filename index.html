@@ -867,7 +867,7 @@ infoS.innerHTML=`
       <div class="irow" style="padding:12px 0"><span class="ra">program formatori</span><a class="maplink" target="_blank" rel="noopener" href="https://ideoideis.github.io/program-intern-formatori/">deschide ↗</a></div>
       <div class="irow" style="padding:12px 0"><span class="ra">program formatori Art&Play</span><a class="maplink" target="_blank" rel="noopener" href="https://ideoideis.github.io/program-intern-formatori/artplay/">deschide ↗</a></div>
       <div class="irow" style="padding:12px 0;border-bottom:0"><span class="ra">program pe trupă</span></div>
-      ${typeof TRUPE_IDS==='undefined'?'':`<div class="trupechips" style="margin:2px 0 6px">${Object.entries(TRUPE_IDS).map(([s,nm])=>`<a class="trupelink" href="?t=${s}">${esc(nm)}</a>`).join('')}</div>`}
+      ${typeof TRUPE_IDS==='undefined'?'':`<div class="trupechips" style="margin:2px 0 6px">${Object.entries(TRUPE_IDS).map(([s,nm])=>{const sl={leira:'trupa-leira',atelierul:'atelierul-de-teatru'}[s]||s;return `<a class="trupelink" target="_blank" rel="noopener" href="https://ideoideis.github.io/program-trupe-21/${sl}/">${esc(nm)}</a>`;}).join('')}</div>`}
     </div>
 
   </div>`;
