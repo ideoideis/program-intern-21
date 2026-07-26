@@ -823,6 +823,10 @@ infoS.innerHTML=`
       <h3>locații & hărți</h3>
       ${LOCS.map(l=>`<div class="irow"><span class="ra">${l[0]}${l[1]?`<small>${l[1]}</small>`:''}</span><a class="maplink" target="_blank" rel="noopener" href="${maps(l[0])}">hartă ↗</a></div>`).join('')}
     </div>
+    ${typeof MENIURI==='undefined'?'':`<div class="iblock">
+      <h3>mâncare · comenzi</h3>
+      ${MENIURI.map(m=>`<div class="irow"><span class="ra">${esc(m[0])}</span><a class="maplink" target="_blank" rel="noopener" href="${m[2]}">${esc(m[1])} ↗</a></div>`).join('')}
+    </div>`}
     <div class="iblock acc">
       <h3>legendă</h3>
       ${Object.values(CATS).map(c=>`<div class="irow"><span class="ra" style="display:flex;align-items:center;gap:8px"><span style="width:10px;height:10px;background:${c.color};flex:0 0 auto"></span>${c.label}</span></div>`).join('')}
