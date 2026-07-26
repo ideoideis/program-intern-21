@@ -687,6 +687,55 @@ const ARTE_ALATURATE = [
  ['Train the Coordinators','mentori & coordonatori','Șc. 5 · sala 13','7 part.','videoproiector, cablu HDMI, prelungitor','',''],
 ];
 
+/* participanții pe fiecare atelier de arte alăturate · cheia = numele atelierului
+   din ARTE_ALATURATE[0]; fiecare rând = [trupă, ...copii] */
+const ARTE_PARTICIPANTI = {
+ 'scriere dramatică':[
+  ['ACT','Cupaș Raluca','Mihăilă Georgiana','Păunescu Medeea'],
+  ['Amprente','Hîrjoabă Diana','Simionescu Luca','Teodor Bucur'],
+  ['Artwork','Brebu Andrei','Huzum Melania','Tun Zamfira','Oglinzeanu Maria'],
+  ['Atelierul de Teatru','Aniței Evelin-Ștefania','Franț-Rusu Denisa-Ioana','Voroneanu Ana-Miruna'],
+  ['Brainstorming','Bogdan Diana'],
+ ],
+ 'dans 1':[
+  ['Amprente','Băcanu Teodor-Sasha','Bucur Rareș','Corboș Bogdan'],
+  ['Artwork','Blașcu Ștefania','Nedelcu Ana','Oancea Darius'],
+  ['Atelierul de Teatru','Bursuc Ștefan','Grădinaru Maria-Ecaterina'],
+  ['Brainstorming','Beciu Daria','Sebastian Ioana','Ursu Mihaela'],
+  ['Protha','Costandache Cristina','Drăgan Denisa Maria','Matei Georgiana Dănuța','Melinte Miruna Cosmina','Zbîrciog Alina'],
+  ['Trupa Leira','Diță Andrei','Lupu Alexia','Nicolae Anastasia','Purcărea Răzvan'],
+ ],
+ 'actorie de film':[
+  ['ACT','Turcu Andreea'],
+  ['Artwork','Vlad Simon'],
+  ['Brainstorming','Ene Mara','Mirea Ana'],
+  ['Protha','Crucianu Teodor Ionuț','Ignat David Raul','Manovici Teodor Andrei','Pleșcan Melania Valentina','Roșu Bogdan Ionuț','Vasile Alexandru'],
+  ['Trupa Leira','Ghițulescu Daria','Marin Rebeca','Palea Alexandra','Popescu Alexandra','Ruiu Călin'],
+ ],
+ 'costume':[
+  ['ACT','Doboșeriu David','Geangu Elena','Hazu Alexandru','Niță Teodora'],
+  ['Artwork','Lucescu Lia','Militaru Maria','Tufă Amalia'],
+  ['Brainstorming','Duță Teodora','Lazăr Ecaterina','Rusu Karina'],
+  ['Protha','Găman Andreea Patricia','Popoiu Gabriel'],
+  ['Trupa Leira','Ignat Eduard','Todeci Marta'],
+ ],
+ 'dans 2':[
+  ['ACT','Avarvarei Cezara','Iojă Andreea'],
+  ['Amprente','Anganu Raluca','Coman Sofia','Corboș Maria','Oloeriu Maria'],
+  ['Artwork','Isari Ivona'],
+  ['Atelierul de Teatru','Ignat Maia-Ioana','Iordăchescu Alessia','Jâșcanu Anastasia','Livadariu David','Niculina Alessia','Sandu Maria-Timeea','Scîntei Teofan','Teodoru Ana','Țîcu Ecaterina','Ungureanu Alessia-Maria'],
+  ['Trupa Leira','Mititelu Gabriela'],
+ ],
+ 'film':[
+  ['ACT','Cernat Teodora','Gherasimoaia Giulia','Ilieș Theodora'],
+  ['Amprente','Amocăniței Ștefan'],
+  ['Artwork','Lucescu Nectaria','Nicolau Amalia'],
+  ['Brainstorming','Cibotariu Miruna','Dobrin Ionuț','Marcan Julia','Oprea Eduard','Papuc Petru'],
+  ['Protha','Drăgan Andreea'],
+  ['Trupa Leira','Constantin Ștefania','Stamatie Rareș'],
+ ],
+};
+
 /* ateliere formatori (orientativ / de confirmat) */
 const FORMATORI = [
  ['Train the Trainers','Conciato (sus?) · 15:00-16:00 · joi/vineri/sâmbătă'],
