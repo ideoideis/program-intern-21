@@ -856,10 +856,14 @@ infoS.innerHTML=`
     </div>`}
     <div class="iblock wide" id="teamviews">
       <h3>programe interne</h3>
-      <div class="irow"><span class="ra">program formatori<small>traineri · mentori · trupe · fără Art&Play</small></span><a class="maplink" target="_blank" rel="noopener" href="https://ideoideis.github.io/program-intern-formatori/">deschide ↗</a></div>
-      <div class="irow"><span class="ra">program formatori Art&Play<small>ateliere comunitate & evenimente mari</small></span><a class="maplink" target="_blank" rel="noopener" href="https://ideoideis.github.io/program-intern-formatori/artplay/">deschide ↗</a></div>
-      <div class="irow" style="border-bottom:0;padding-bottom:2px"><span class="ra">program pe trupă<small>vederea fiecărei trupe, cu spectacolele lor evidențiate</small></span></div>
-      ${typeof TRUPE_IDS==='undefined'?'':`<div class="trupechips">${Object.entries(TRUPE_IDS).map(([s,nm])=>`<a class="trupelink" href="?t=${s}">${esc(nm)}</a>`).join('')}</div>`}
+      <p class="inote" style="margin:0 0 4px">alte vederi ale aceluiași program · se actualizează odată cu el</p>
+      <p class="cdh" style="margin-top:14px">vederea tehnică</p>
+      <div class="irow"><span class="ra">program tehnic<small>montări, repetiții, decor & echipa tehnică</small></span><a class="maplink" href="?tehnic">deschide →</a></div>
+      <p class="cdh">pe echipe de formatori</p>
+      <div class="irow"><span class="ra">formatori<small>traineri · mentori · trupe · fără Art&Play</small></span><a class="maplink" target="_blank" rel="noopener" href="https://ideoideis.github.io/program-intern-formatori/">deschide ↗</a></div>
+      <div class="irow"><span class="ra">formatori Art&Play<small>ateliere comunitate & evenimente mari</small></span><a class="maplink" target="_blank" rel="noopener" href="https://ideoideis.github.io/program-intern-formatori/artplay/">deschide ↗</a></div>
+      <p class="cdh">pe trupă<span style="text-transform:none;letter-spacing:0;color:var(--muted)"> · spectacolele lor evidențiate</span></p>
+      ${typeof TRUPE_IDS==='undefined'?'':`<div class="trupechips" style="margin-top:6px">${Object.entries(TRUPE_IDS).map(([s,nm])=>`<a class="trupelink" href="?t=${s}">${esc(nm)}</a>`).join('')}</div>`}
     </div>
 
   </div>`;
