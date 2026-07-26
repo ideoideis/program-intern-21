@@ -18,7 +18,7 @@
      xlabel/xlist  listă expandabilă (de ex. sesiuni masterclass)
    ============================================================ */
 
-const LAST_UPDATED = '24.07.2026';
+const LAST_UPDATED = '26.07.2026';
 
 /* pozele oamenilor: nume exact (cum apare afișat) -> cale spre poză
    (ex. 'assets/people/andreea-nuta.jpg'). Gol acum = peste tot apar inițialele.
