@@ -14,7 +14,7 @@
 
 const SUPA_URL='https://waqyaewaldphstmiobjj.supabase.co';
 const SUPA_KEY='sb_publishable_XtarsOK52eqlRUmv1ElS4Q_RwrDK78G'; /* cheia publică */
-const TR=new URLSearchParams(location.search).has('t'); /* ?t=... -> vibe pe trupe, spațiu izolat de programul mare */
+const TR=new URLSearchParams(location.search).has('t') || !!(window.AUD && window.AUD.lockTrupa); /* ?t=... SAU pagină dedicată de trupă -> vibe izolat, bucket de trupă */
 const BUCKET=TR?'jurnal-trupe-21':'jurnal-21';
 const TBL_PHOTOS=TR?'jurnal_photos_trupe':'jurnal_photos';
 const TBL_LIKES=TR?'vibe_likes_trupe':'vibe_likes';
@@ -140,7 +140,7 @@ function ensureVibeUI(){
 function syncVibeVisibility(){
   ensureVibeUI();
   if(!vibeChip)return;
-  const inFest=!!window.CURRENT_DAY;
+  const inFest=!!window.CURRENT_DAY||TR; /* pe paginile de trupă: vizibil mereu, nu doar în festival */
   vibeChip.hidden=!inFest;
   if(!inFest&&ACTIVE==='vibe'){
     const c=document.querySelector('.daychip:not(.vibe):not(.info)');
@@ -402,6 +402,7 @@ async function refreshAnunt(){
 let infoBuilt=false;
 function buildInfo(){
   if(infoBuilt)return; infoBuilt=true;
+  if(TR)return; /* pe paginile de trupă: doar vibe, fără feedback aici */
   const grid=document.querySelector('#day-info .info-grid'); if(!grid)return;
 
   /* feedback: mereu vizibil, nu în acordeon */
