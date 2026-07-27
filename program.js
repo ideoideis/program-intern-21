@@ -207,7 +207,7 @@ const DAYS = [
    {k:'e', t:'08:30', e:'13:00', cat:'alt', loc:'Cămin', title:'sosiri trupe'},
    {k:'t', t:'13:00', route:'Cămin → CMT', note:'curse la 13:00 și 13:15'},
    {k:'e', t:'13:30', e:'14:30', cat:'cmt', loc:'CMT', title:'conferință interactivă In a Relationship'},
-   {k:'e', t:'14:00', e:'15:00', cat:'alt', notech:true, loc:'Primărie', locd:'Sala de Consiliu', title:'ședință coordonatori'},
+   {k:'e', t:'14:00', e:'15:00', cat:'alt', notech:true, loc:'Primărie', locd:'Sala de Consiliu', title:'ședință coordonatori trupe × autorități locale'},
    {k:'x', t:'15:00–19:00', ts:'15:00', text:'montare & repetiție „Charlie Chaplin” (Teatrul Mic) · CMT'},
    {k:'x', t:'19:00–20:00', ts:'19:00', text:'probe gală · CMT'},
    {k:'t', t:'15:05', route:'CMT → Cămin'},
@@ -985,7 +985,7 @@ const CREW_CMT = "Gîgîlice Gabriela, Stan Daria, Nedeluș Bogdan Gabriel, Șur
 const VOL_EV = [
  // 29 iul
  ['mi29','13:30','In a Relationship','Toader Roberta Elena Maria, Daria Micu'],
- ['mi29','14:00','ședință coordonatori','Bianca Poață, Florea Angelina Maria'],
+ ['mi29','14:00','ședință coordonatori trupe × autorități locale','Bianca Poață, Florea Angelina Maria'],
  ['mi29','20:00','gală de deschidere',CREW_CMT],
  // 30 iul
  ['j30','10:00','paradă','Toader Roberta Elena Maria, Preda Marina, Carabașu Miruna'],
