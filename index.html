@@ -268,6 +268,11 @@ a.vchip:hover{border-color:#1FA35F;color:#9be8bd}
 .iblock.acc.tacc>h3::after{right:13px}
 .iblock.acc.tacc>h3 small{font-weight:400;color:var(--muted);font-size:12px}
 .iblock.acc.tacc .ti-body{padding:12px 13px 14px;border:1px solid var(--line-soft);border-top:0;border-radius:0 0 10px 10px}
+.partlink{display:block;width:100%;margin:12px 0 2px;background:none;border:1px dashed var(--line);color:var(--amber);font-family:var(--mono);font-size:12px;letter-spacing:.02em;padding:11px 12px;text-align:center;cursor:pointer}
+.partlink:hover{border-color:var(--amber)}
+.parth{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--amber);margin:18px 0 8px;font-weight:600}
+.partgrp:first-child .parth{margin-top:2px}
+.parth small{color:var(--muted)}
 .trupechips{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
 .trupelink{display:inline-flex;align-items:center;border:1px solid var(--line);color:var(--fg);font-size:12px;padding:4px 9px;text-decoration:none;white-space:nowrap}
 .trupelink:hover{border-color:var(--fg)}
@@ -448,7 +453,7 @@ a.vchip:hover{border-color:#1FA35F;color:#9be8bd}
 <div class="egg" id="egg" hidden>ne vedem la #22 ♥</div>
 <button class="fab" id="fab" hidden>acum<small id="fabt"></small></button>
 
-<script src="program.js?v=42"></script>
+<script src="program.js?v=43"></script>
 <script>
 /* ── utilitare ──────────────────────────── */
 const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -612,6 +617,17 @@ function openPartSheet(atelier){
   document.body.classList.add('sheet-open');
   const x=_sheet.querySelector('.sheet-x'); if(x)x.focus();
 }
+function openAllPartSheet(){
+  if(typeof ARTE_PARTICIPANTI==='undefined')return;
+  _st.textContent='repartizarea participanților pe ateliere';
+  _sb.innerHTML='<div class="partsheet">'+Object.keys(ARTE_PARTICIPANTI).map(a=>{
+    const gs=ARTE_PARTICIPANTI[a]; const n=gs.reduce((s,g)=>s+g.length-1,0);
+    return `<div class="partgrp"><h4 class="parth">${esc(a)}<small> · ${n} participanți</small></h4>${gs.map(g=>`<p class="ti-row"><b>${esc(g[0])}</b>${g.slice(1).map(esc).join(', ')}</p>`).join('')}</div>`;
+  }).join('')+'</div>';
+  _sheet.hidden=false; requestAnimationFrame(()=>_sheet.classList.add('open'));
+  document.body.classList.add('sheet-open');
+  const x=_sheet.querySelector('.sheet-x'); if(x)x.focus();
+}
 /* mărește avatarul (poză sau inițiale) ca să vezi cum arată omul */
 const _pz=document.createElement('div'); _pz.className='pzoom'; _pz.hidden=true; document.body.appendChild(_pz);
 function zoomAvatar(el){
@@ -626,7 +642,7 @@ function closeZoom(){_pz.hidden=true;_pz.innerHTML='';}
 _pz.addEventListener('click',closeZoom);
 _sheet.addEventListener('click',e=>{if(e.target.closest('.pcall'))return; const row=e.target.closest('.prow[data-nm]'); if(row){zoomAvatar(row);return;} if(e.target===_sheet||e.target.closest('.sheet-x'))closeSheet();});
 document.addEventListener('keydown',e=>{if(e.key!=='Escape')return; if(!_pz.hidden)closeZoom(); else if(!_sheet.hidden)closeSheet();});
-document.addEventListener('click',e=>{const b=e.target.closest('.pbtn');if(b){e.preventDefault(); if(b.dataset.part){openPartSheet(b.dataset.part);}else{openPeople(b.dataset.people);}}});
+document.addEventListener('click',e=>{const pa=e.target.closest('[data-partall]');if(pa){e.preventDefault();openAllPartSheet();return;} const b=e.target.closest('.pbtn');if(b){e.preventDefault(); if(b.dataset.part){openPartSheet(b.dataset.part);}else{openPeople(b.dataset.people);}}});
 document.addEventListener('click',e=>{const r=e.target.closest('.crow[data-nm]');if(r)zoomAvatar(r);});
 /* buton „sus": apare la scroll în jos, revine în capul paginii */
 const _top=document.createElement('button');
@@ -646,11 +662,7 @@ function detailRows(ev,dayId){
   else if(ev.title==='ateliere teatru tânăr')
     rows=ATELIERE_TT.map(r=>['@at', r[0], [r[1],r[3]].filter(Boolean).join(' · '), r[2]||'', r[4]?peopleButton(peopleFromStr(r[4]),'voluntari',`${r[0]} · ${r[1]}`):'']);
   else if(ev.title==='ateliere arte alăturate')
-    rows=ARTE_ALATURATE.map(r=>{
-      const vol=r[6]?peopleButton(peopleFromStr(r[6]),'voluntari',`${r[0]} · ${r[1]}`):'';
-      const part=(typeof ARTE_PARTICIPANTI!=='undefined'&&ARTE_PARTICIPANTI[r[0]])?`<button type="button" class="pbtn" data-part="${esc(r[0])}" aria-label="cine e repartizat la ${esc(r[0])}">participanți<span class="pbn">${ARTE_PARTICIPANTI[r[0]].reduce((s,g)=>s+g.length-1,0)}</span><span class="pbc">›</span></button>`:'';
-      return ['@at', r[0], r[1]||'', r[2]||'', part+vol];
-    });
+    rows=ARTE_ALATURATE.map(r=>['@at', r[0], r[1]||'', r[2]||'', r[6]?peopleButton(peopleFromStr(r[6]),'voluntari',`${r[0]} · ${r[1]}`):'']);
   const lg=LOGISTICS[ev.title];
   if(lg){
     if(lg.n)rows.push(['participanți',lg.n]);
@@ -660,6 +672,7 @@ function detailRows(ev,dayId){
   if(ev.trupa){const gp=ghidPerson(ev.trupa); if(gp)rows.push(['ghid',peopleButton([gp],'ghid',TRUPE_IDS[ev.trupa]+' · ghid')]);}
   const v=volFor(ev,dayId);
   if(v)rows.push(['voluntari',peopleButton(peopleFromStr(v),'voluntari',ev.title.replace(/<[^>]*>/g,'')+' · voluntari')]);
+  if(ev.title==='ateliere arte alăturate' && typeof ARTE_PARTICIPANTI!=='undefined') rows.push(['@partlink','']);
   return rows.length?{label,rows}:null;
 }
 const slug=s=>s.toLowerCase().replace(/<[^>]*>/g,'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,28);
@@ -676,6 +689,8 @@ function evHtml(ev,dayId){
     const rows=det.rows.map(r=>
       r[0]==='@at'
         ? `<div class="xrow atrow"><div class="atinfo"><span class="atname">${r[1]}</span>${r[2]?`<span class="atsub">${r[2]}</span>`:''}</div><div class="atside">${r[3]?`<span class="atsala">${r[3]}</span>`:''}${r[4]}</div></div>`
+      : r[0]==='@partlink'
+        ? `<button type="button" class="partlink" data-partall>vezi repartizarea participanților pe ateliere <span class="pbc">›</span></button>`
       : (r[0]==='voluntari'||r[0]==='ghid')
         ? `<div class="xrow btnrow">${r[1]}</div>`
         : `<div class="xrow"><span class="xa">${r[0]}</span><span class="xb">${r[1]}</span></div>`
@@ -866,7 +881,6 @@ infoS.innerHTML=`
         <tr><th>atelier</th><th>sală</th><th>zile & ore</th><th>necesar</th></tr>
         ${ARTPLAY_INFO.map(r=>`<tr><td><b>${r[0]}</b>${r[1]?`<br><small>${r[1]} part.</small>`:''}</td><td><small>${r[2]}</small></td><td><small>${r[3]}<br><b>${r[4]}</b></small></td><td><small>${[r[5]?'tehnic: '+r[5]:'',r[6]?'producție: '+r[6]:''].filter(Boolean).join('<br>')||'·'}</small></td></tr>`).join('')}
       </table></div>
-      <p class="inote" style="margin-top:10px">orele sunt în program, pe zilele respective · sălile sunt orientative.</p>
     </div>`}
     <div class="iblock wide acc">
       <h3>arte alăturate</h3>
@@ -890,6 +904,23 @@ infoS.innerHTML=`
       <div class="irow" style="padding:12px 0"><span class="ra">program formatori Art&Play</span><a class="maplink" target="_blank" rel="noopener" href="https://ideoideis.github.io/program-intern-formatori/artplay/">deschide ↗</a></div>
       <div class="irow" style="padding:12px 0;border-bottom:0"><span class="ra">program pe trupă</span></div>
       ${typeof TRUPE_IDS==='undefined'?'':`<div class="trupechips" style="margin:2px 0 6px">${Object.entries(TRUPE_IDS).map(([s,nm])=>{const sl={leira:'trupa-leira',atelierul:'atelierul-de-teatru'}[s]||s;return `<a class="trupelink" target="_blank" rel="noopener" href="https://ideoideis.github.io/program-trupe-21/${sl}/">${esc(nm)}</a>`;}).join('')}</div>`}
+    </div>
+    <div class="iblock wide">
+      <h3>kit atelier teatru tânăr</h3>
+      <p class="inote" style="margin-bottom:10px">7 cutii · aceeași pentru toate trupele (o boxă portabilă + o cutie standard / trupă)</p>
+      <div class="tscroll"><table class="ttable" style="min-width:0">
+        <tr><th>obiect</th><th>buc.</th></tr>
+        <tr><td>eșarfe</td><td><small>1 / participant (max 15)</small></td></tr>
+        <tr><td>pixuri</td><td><small>1 / participant (max 15)</small></td></tr>
+        <tr><td>mingi de tenis</td><td><small>5</small></td></tr>
+        <tr><td>bețe (cozi de mătură)</td><td><small>5</small></td></tr>
+        <tr><td>boxă portabilă</td><td><small>1 · jack</small></td></tr>
+        <tr><td>ghem de sfoară</td><td><small>1</small></td></tr>
+        <tr><td>scotch de hârtie</td><td><small>1 rolă</small></td></tr>
+        <tr><td>top de hârtie</td><td><small>1</small></td></tr>
+        <tr><td>pahare de carton</td><td><small>10</small></td></tr>
+        <tr><td>tavă</td><td><small>1</small></td></tr>
+      </table></div>
     </div>
 
   </div>`;
