@@ -260,6 +260,14 @@ a.vchip:hover{border-color:#1FA35F;color:#9be8bd}
 .maplink{font-family:var(--mono);font-size:11px;color:var(--amber);text-decoration:none;flex:0 0 auto}
 .maplink:hover{text-decoration:underline}
 .ilinks{display:flex;gap:12px;flex:0 0 auto;align-items:baseline}
+.ti-row{font-size:13px;color:#c7c9cf;margin:0 0 8px}
+.ti-row b{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--amber-dim);font-weight:500;margin-bottom:2px}
+.iblock.acc.tacc{margin:0 0 8px}
+.iblock.acc.tacc>h3{font-size:15px;padding:12px 36px 12px 13px;background:rgba(255,255,255,.04);border:1px solid var(--line-soft);border-radius:10px}
+.iblock.acc.tacc.open>h3{margin-bottom:0;border-bottom-left-radius:0;border-bottom-right-radius:0}
+.iblock.acc.tacc>h3::after{right:13px}
+.iblock.acc.tacc>h3 small{font-weight:400;color:var(--muted);font-size:12px}
+.iblock.acc.tacc .ti-body{padding:12px 13px 14px;border:1px solid var(--line-soft);border-top:0;border-radius:0 0 10px 10px}
 .trupechips{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
 .trupelink{display:inline-flex;align-items:center;border:1px solid var(--line);color:var(--fg);font-size:12px;padding:4px 9px;text-decoration:none;white-space:nowrap}
 .trupelink:hover{border-color:var(--fg)}
@@ -838,6 +846,7 @@ infoS.innerHTML=`
           const np=(s&&typeof REPARTIZARE!=='undefined'&&REPARTIZARE[s])?REPARTIZARE[s][1].length:0;
           return `<tr><td><b>${r[0]}</b>${np?`<br><small>${np} participanți</small>`:''}</td><td><small>${r[1]}</small></td><td>${tel(r[2],r[3])}</td><td>${tel(r[4],r[5])}</td></tr>`;
         }).join('')}
+        <tr><td><b>Train the Coordinators</b><br><small>7 participanți</small></td><td><small>mentori & coordonatori · Șc. 5 · sala 13</small></td><td>·</td><td>·</td></tr>
       </table></div>
     </div>
     ${typeof ARTPLAY_INFO==='undefined'?'':`<div class="iblock wide acc">
@@ -854,6 +863,10 @@ infoS.innerHTML=`
         <tr><th>atelier</th><th>trainer</th><th>sală</th><th>voluntari</th><th>necesar</th></tr>
         ${ARTE_ALATURATE.map(r=>`<tr><td><b>${r[0]}</b>${r[3]?`<br><small>${r[3]}</small>`:''}</td><td>${r[1]}</td><td><small>${r[2]}</small></td><td><small>${r[6]||'·'}</small></td><td><small>${[r[4]?'tehnic: '+r[4]:'',r[5]?'producție: '+r[5]:''].filter(Boolean).join('<br>')||'·'}</small></td></tr>`).join('')}
       </table></div>
+      ${typeof ARTE_PARTICIPANTI!=='undefined'?`<div style="margin-top:14px">${ARTE_ALATURATE.filter(r=>ARTE_PARTICIPANTI[r[0]]).map(r=>{const gs=ARTE_PARTICIPANTI[r[0]];const n=gs.reduce((s,g)=>s+g.length-1,0);return `<div class="iblock acc tacc">
+        <h3>${esc(r[0])} <small>· ${esc(r[1])} · ${n} participanți</small></h3>
+        <div class="ti-body">${gs.map(g=>`<p class="ti-row"><b>${esc(g[0])}</b>${g.slice(1).map(esc).join(', ')}</p>`).join('')}</div>
+      </div>`;}).join('')}</div>`:''}
     </div>
     ${typeof MURALE==='undefined'?'':`<div class="iblock wide acc">
       <h3>murale</h3>
