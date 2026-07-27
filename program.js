@@ -675,13 +675,13 @@ const TT_NEEDS = 'câte o boxă portabilă + cutie standard: 1 eșarfă și 1 pi
 
 /* ateliere arte alăturate · duminică/luni/marți 10:00-14:00 */
 const ARTE_ALATURATE = [
- ['scriere dramatică','Alex Gorghe','Șc. 5 · sala 2','13 part.','','flipchart, scaune pentru 13 copii, 14 pixuri, 1 top hârtie','Anastasia Corradi + Sorina Irimia'],
- ['dans 1','Eduard Chimac','Șc. 2 · sala de sport','20 part.','boxă bluetooth, apă, sală potrivită pentru mișcare','','Andreea Ștefania Dragomir + Bianca Poață'],
- ['film','Tudor Platon','Șc. 5 · sala 5','14 part.','tablă inteligentă funcțională (video & audio) cu ieșire HDMI, WiFi, aer condiționat, sală întunecoasă / cu jaluzele','1 set hârtie + cartuș pt. imprimanta foto Canon Selphy CP1300','Alisia Mocanu + Eliza Dinu'],
- ['actorie de film','Theodor Ioniță','Șc. 5 · sala 6','15 part.','videoproiector, cablu HDMI, prelungitor, perete alb, telefon bun pe cameră, set lavaliere de telefon, boxă bluetooth','','Alexandra Botorogeanu + Bianca Milcu'],
- ['dans 2','Teo Velescu','Șc. 3 · sala de sport','20 part.','boxă bluetooth, sală potrivită pentru mișcare','','Anda Pavel + Iulia Fusea'],
+ ['scriere dramatică','Alex Gorghe','Șc. 5 · sala 2','13 part.','','flipchart, markere, 14 pixuri, 1 top hârtie','Anastasia Corradi + Sorina Irimia'],
+ ['dans 1','Eduard Chimac','Șc. 2 · sala de sport','20 part.','boxă bluetooth','','Andreea Ștefania Dragomir + Bianca Poață'],
+ ['film','Tudor Platon','Șc. 5 · sala 5','14 part.','tablă inteligentă funcțională (video & audio) cu ieșire HDMI, WiFi, sală întunecoasă / cu jaluzele','1 set hârtie + cartuș pt. imprimanta foto Canon Selphy CP1300','Alisia Mocanu + Eliza Dinu'],
+ ['actorie de film','Theodor Ioniță','Șc. 5 · sala 6','15 part.','videoproiector, cablu HDMI, prelungitor, perete alb, telefon bun pe cameră, set lavaliere de telefon, boxă bluetooth, sală întunecoasă / cu jaluzele','','Alexandra Botorogeanu + Bianca Milcu'],
+ ['dans 2','Teo Velescu','Șc. 3 · sala de sport','20 part.','boxă bluetooth','','Anda Pavel + Iulia Fusea'],
  ['costume','Șteff Chelaru','Șc. 5 · sala 7','14 part.','','','Andreea Marinescu + Elena-Alexandra Gheorghe'],
- ['Train the Coordinators','mentori & coordonatori','Șc. 5 · sala 13','7 part.','videoproiector, cablu HDMI, prelungitor','',''],
+ ['Train the Coordinators','mentori & coordonatori','Șc. 5 · sala 13','7 part.','videoproiector, cablu HDMI, prelungitor','un top de hârtie și 15 pixuri',''],
 ];
 
 /* participanții pe fiecare atelier de arte alăturate · cheia = numele atelierului
@@ -745,11 +745,11 @@ const FORMATORI = [
    [atelier, participanți, sală, zile, necesar tehnic, necesar producție] */
 const ARTPLAY_INFO = [
  ['Show Your Moves (dans · breaking)','10','Șc. 5 · sala 2 (spațioasă)','joi · vineri · sâmbătă','10:30-12:30','boxă bluetooth',''],
- ['Stand Up împotriva hărțuirii stradale (activism feminist)','20','Șc. 5 · sala 1','joi','14:00-16:00','videoproiector + boxe',''],
+ ['Stand Up împotriva hărțuirii stradale (activism feminist)','20','Șc. 5 · sala 1','joi','14:00-16:00','videoproiector + boxe să se audă',''],
  ['Se întâmplă între N-O-I (psihoeducație 10-13 ani)','15','Șc. 5 · sala 1','vineri · sâmbătă · duminică','10:30-12:30','','coli, pixuri/creioane, carioci, flipchart & foi'],
  ['Se întâmplă între N-O-I (psihoeducație 14-18 ani)','15','Șc. 5 · sala 1','vineri · sâmbătă · duminică','14:30-16:30','','coli, pixuri/creioane, carioci, flipchart & foi'],
- ['Pauza de la dezinformare (educație media, profesori)','15','Șc. 5 · sala 3','vineri','11:00-13:00','videoproiector + cabluri de conectare + sistem de sunet clar',''],
- ['Mintea ta nu e a ta (în totalitate) · AI, biasuri (educație media, copii)','15','Șc. 5 · sala 3','vineri','15:00-17:00','videoproiector + cabluri de conectare + sistem de sunet clar',''],
+ ['Pauza de la dezinformare (educație media, profesori)','15','Șc. 5 · sala 3','vineri','11:00-13:00','videoproiector și cablurile de conectare, un sistem minimal care să asigure un sunet clar',''],
+ ['Mintea ta nu e a ta (în totalitate) · AI, biasuri (educație media, copii)','15','Șc. 5 · sala 3','vineri','15:00-17:00','videoproiector și cablurile de conectare, un sistem minimal care să asigure un sunet clar',''],
  ['Siguranța bebelușului (Asociația Moașelor)','20','Șc. 5 · sala 4','sâmbătă','10:00-12:30','',''],
  ['Animalul care te locuiește (arte grafice)','15','Șc. 5 · sala 3','duminică · luni · marți','10:00-12:00','','coli, pixuri/creioane, carioci, hârtie, foarfeci, lipici, foi de flipchart'],
  ['Prim Ajutor pediatric (Asociația Moașelor)','20','Șc. 5 · sala 4','duminică','10:00-12:30','',''],

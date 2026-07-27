@@ -453,7 +453,7 @@ a.vchip:hover{border-color:#1FA35F;color:#9be8bd}
 <div class="egg" id="egg" hidden>ne vedem la #22 ♥</div>
 <button class="fab" id="fab" hidden>acum<small id="fabt"></small></button>
 
-<script src="program.js?v=44"></script>
+<script src="program.js?v=45"></script>
 <script>
 /* ── utilitare ──────────────────────────── */
 const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -660,7 +660,7 @@ function detailRows(ev,dayId){
   let rows=[], label=ev.xlabel||'detalii';
   if(ev.xlist) rows=ev.xlist.map(r=>[r[1],r[0]]);
   else if(ev.title==='ateliere teatru tânăr')
-    rows=ATELIERE_TT.map(r=>['@at', r[0], [r[1],r[3]].filter(Boolean).join(' · '), r[2]||'', r[4]?peopleButton(peopleFromStr(r[4]),'voluntari',`${r[0]} · ${r[1]}`):'']);
+    rows=ATELIERE_TT.map(r=>['@at', r[0], [r[1],r[3]].filter(Boolean).join(' · '), r[2]||'', r[4]?peopleButton(peopleFromStr(r[4]),'voluntari',`${r[0]} · ${r[1]}`):'']).concat(typeof TT_NEEDS!=='undefined'?[['kit / trupă',TT_NEEDS]]:[]);
   else if(ev.title==='ateliere arte alăturate')
     rows=ARTE_ALATURATE.map(r=>['@at', r[0], r[1]||'', r[2]||'', r[6]?peopleButton(peopleFromStr(r[6]),'voluntari',`${r[0]} · ${r[1]}`):'']);
   const lg=LOGISTICS[ev.title];
@@ -886,7 +886,7 @@ infoS.innerHTML=`
       <h3>arte alăturate</h3>
       <div class="tscroll"><table class="ttable">
         <tr><th>atelier</th><th>trainer</th><th>sală</th><th>voluntari</th><th>necesar</th></tr>
-        ${ARTE_ALATURATE.map(r=>`<tr><td><b>${r[0]}</b>${r[3]?`<br><small>${r[3]}</small>`:''}</td><td>${r[1]}</td><td><small>${r[2]}</small></td><td><small>${r[6]||'·'}</small></td><td><small>${[r[4]?'tehnic: '+r[4]:'',r[5]?'producție: '+r[5]:''].filter(Boolean).join('<br>')||'·'}</small></td></tr>`).join('')}
+        ${ARTE_ALATURATE.map(r=>`<tr><td><b>${r[0]}</b>${r[3]?`<br><small>${r[3]}</small>`:''}</td><td>${r[1]}</td><td><small>${r[2]}</small></td><td>${r[6]?peopleButton(peopleFromStr(r[6]),'voluntari',`${r[0]} · voluntari`):'·'}</td><td><small>${[r[4]?'tehnic: '+r[4]:'',r[5]?'producție: '+r[5]:''].filter(Boolean).join('<br>')||'·'}</small></td></tr>`).join('')}
       </table></div>
       ${typeof ARTE_PARTICIPANTI!=='undefined'?`<div style="margin-top:14px">${ARTE_ALATURATE.filter(r=>ARTE_PARTICIPANTI[r[0]]).map(r=>{const gs=ARTE_PARTICIPANTI[r[0]];const n=gs.reduce((s,g)=>s+g.length-1,0);return `<div class="iblock acc tacc">
         <h3>${esc(r[0])} <small>· ${esc(r[1])} · ${n} participanți</small></h3>
@@ -904,23 +904,6 @@ infoS.innerHTML=`
       <div class="irow" style="padding:12px 0"><span class="ra">program formatori Art&Play</span><a class="maplink" target="_blank" rel="noopener" href="https://ideoideis.github.io/program-intern-formatori/artplay/">deschide ↗</a></div>
       <div class="irow" style="padding:12px 0;border-bottom:0"><span class="ra">program pe trupă</span></div>
       ${typeof TRUPE_IDS==='undefined'?'':`<div class="trupechips" style="margin:2px 0 6px">${Object.entries(TRUPE_IDS).map(([s,nm])=>{const sl={leira:'trupa-leira',atelierul:'atelierul-de-teatru'}[s]||s;return `<a class="trupelink" target="_blank" rel="noopener" href="https://ideoideis.github.io/program-trupe-21/${sl}/">${esc(nm)}</a>`;}).join('')}</div>`}
-    </div>
-    <div class="iblock wide">
-      <h3>kit atelier teatru tânăr</h3>
-      <p class="inote" style="margin-bottom:10px">7 cutii · aceeași pentru toate trupele (o boxă portabilă + o cutie standard / trupă)</p>
-      <div class="tscroll"><table class="ttable" style="min-width:0">
-        <tr><th>obiect</th><th>buc.</th></tr>
-        <tr><td>eșarfe</td><td><small>1 / participant (max 15)</small></td></tr>
-        <tr><td>pixuri</td><td><small>1 / participant (max 15)</small></td></tr>
-        <tr><td>mingi de tenis</td><td><small>5</small></td></tr>
-        <tr><td>bețe (cozi de mătură)</td><td><small>5</small></td></tr>
-        <tr><td>boxă portabilă</td><td><small>1 · jack</small></td></tr>
-        <tr><td>ghem de sfoară</td><td><small>1</small></td></tr>
-        <tr><td>scotch de hârtie</td><td><small>1 rolă</small></td></tr>
-        <tr><td>top de hârtie</td><td><small>1</small></td></tr>
-        <tr><td>pahare de carton</td><td><small>10</small></td></tr>
-        <tr><td>tavă</td><td><small>1</small></td></tr>
-      </table></div>
     </div>
 
   </div>`;
