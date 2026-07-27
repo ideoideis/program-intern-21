@@ -675,11 +675,11 @@ const TT_NEEDS = 'câte o boxă portabilă + cutie standard: 1 eșarfă și 1 pi
 
 /* ateliere arte alăturate · duminică/luni/marți 10:00-14:00 */
 const ARTE_ALATURATE = [
- ['scriere dramatică','Alex Gorghe','Șc. 5 · sala 2','13 part.','','flipchart, markere, 14 pixuri, 1 top hârtie','Anastasia Corradi + Sorina Irimia'],
- ['dans 1','Eduard Chimac','Șc. 2 · sala de sport','20 part.','boxă bluetooth','','Andreea Ștefania Dragomir + Bianca Poață'],
- ['film','Tudor Platon','Șc. 5 · sala 5','14 part.','tablă inteligentă funcțională (video & audio) cu ieșire HDMI, WiFi','1 set hârtie + cartuș pt. imprimanta foto Canon Selphy CP1300','Alisia Mocanu + Eliza Dinu'],
+ ['scriere dramatică','Alex Gorghe','Șc. 5 · sala 2','13 part.','','flipchart, scaune pentru 13 copii, 14 pixuri, 1 top hârtie','Anastasia Corradi + Sorina Irimia'],
+ ['dans 1','Eduard Chimac','Șc. 2 · sala de sport','20 part.','boxă bluetooth, apă, sală potrivită pentru mișcare','','Andreea Ștefania Dragomir + Bianca Poață'],
+ ['film','Tudor Platon','Șc. 5 · sala 5','14 part.','tablă inteligentă funcțională (video & audio) cu ieșire HDMI, WiFi, aer condiționat, sală întunecoasă / cu jaluzele','1 set hârtie + cartuș pt. imprimanta foto Canon Selphy CP1300','Alisia Mocanu + Eliza Dinu'],
  ['actorie de film','Theodor Ioniță','Șc. 5 · sala 6','15 part.','videoproiector, cablu HDMI, prelungitor, perete alb, telefon bun pe cameră, set lavaliere de telefon, boxă bluetooth','','Alexandra Botorogeanu + Bianca Milcu'],
- ['dans 2','Teo Velescu','Șc. 3 · sala de sport','20 part.','boxă bluetooth','','Anda Pavel + Iulia Fusea'],
+ ['dans 2','Teo Velescu','Șc. 3 · sala de sport','20 part.','boxă bluetooth, sală potrivită pentru mișcare','','Anda Pavel + Iulia Fusea'],
  ['costume','Șteff Chelaru','Șc. 5 · sala 7','14 part.','','','Andreea Marinescu + Elena-Alexandra Gheorghe'],
  ['Train the Coordinators','mentori & coordonatori','Șc. 5 · sala 13','7 part.','videoproiector, cablu HDMI, prelungitor','',''],
 ];
