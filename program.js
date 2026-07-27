@@ -240,7 +240,7 @@ const DAYS = [
    {k:'t', t:'15:30', route:'CMT → Cămin'},
    {k:'e', t:'16:30', e:'17:30', c:true, cat:'tt', loc:'CMT', trupa:'leira', title:'repetiție și montare · <b>Trupa Leira</b>'},
    {k:'t', t:'16:15', route:'Cămin → CMT', trupa:'leira', note:'Trupa Leira'},
-   {k:'t', t:'16:10', route:'CMT → Cămin', trupa:'atelierul', note:'Atelierul de Teatru'},
+   {k:'t', t:'16:40', route:'CMT → Cămin', trupa:'atelierul', note:'Atelierul de Teatru'},
    {k:'t', t:'17:30', route:'Cămin → CMT'},
    {k:'e', t:'18:00', e:'19:00', cat:'tt', loc:'CMT', trupa:'leira', title:'spectacol teatru tânăr · Trupa Leira'},
    {k:'e', t:'19:15', e:'19:35', cat:'alt', loc:'CMT', locd:'sala mare de conferințe / etaj 1 hol', trupa:'leira', title:'feedback cu mentorii · Trupa Leira'},
