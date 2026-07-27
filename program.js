@@ -211,7 +211,7 @@ const DAYS = [
    {k:'x', t:'15:00–19:00', ts:'15:00', text:'montare & repetiție „Charlie Chaplin” (Teatrul Mic) · CMT'},
    {k:'x', t:'19:00–20:00', ts:'19:00', text:'probe gală · CMT'},
    {k:'t', t:'15:05', route:'CMT → Cămin'},
-   {k:'e', t:'17:00', e:'17:30', cat:'alt', notech:true, loc:'loc de confirmat', title:'întâlnire mentori · participanți'},
+   {k:'e', t:'15:15', e:'17:30', cat:'alt', notech:true, loc:'loc de confirmat', title:'întâlnire mentori · participanți', xlabel:'orar pe trupe', xlist:[['15:15–15:30','Trupa 1'],['15:30–15:45','Trupa 2'],['15:45–16:00','Trupa 3'],['16:15–16:30','Trupa 4'],['16:45–17:00','Trupa 5'],['17:00–17:15','Trupa 6'],['17:15–17:30','Trupa 7']]},
    {k:'t', t:'18:00', route:'Cămin → CMT'},
    {k:'m', t:'18:20', e:'19:45', meal:'cină', loc:'Alex Tell'},
    {k:'e', t:'20:00', e:'21:00', cat:'cmt', loc:'CMT', title:'paradă papainoage „Actori la înălțime” & gală de deschidere', sub:['parada: UNATC · indoor']},
