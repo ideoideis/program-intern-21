@@ -834,10 +834,11 @@ infoS.innerHTML=`
         <tr><th>trupă</th><th>trainer · sală (Șc. 5)</th><th>coordonator</th><th>ghid</th></tr>
         ${TRUPE.map(r=>{
           const tel=(n,t)=>`${esc(n||'de confirmat')}${t?`<br><a class="tel" href="tel:${t.replace(/\s/g,'')}">${t}</a>`:''}`;
-          return `<tr><td><b>${r[0]}</b></td><td><small>${r[1]}</small></td><td>${tel(r[2],r[3])}</td><td>${tel(r[4],r[5])}</td></tr>`;
+          const s=(typeof TRUPE_IDS!=='undefined')?Object.keys(TRUPE_IDS).find(k=>TRUPE_IDS[k]===r[0]):null;
+          const np=(s&&typeof REPARTIZARE!=='undefined'&&REPARTIZARE[s])?REPARTIZARE[s][1].length:0;
+          return `<tr><td><b>${r[0]}</b>${np?`<br><small>${np} participanți</small>`:''}</td><td><small>${r[1]}</small></td><td>${tel(r[2],r[3])}</td><td>${tel(r[4],r[5])}</td></tr>`;
         }).join('')}
       </table></div>
-      <p class="inote" style="margin-top:10px">sălile de atelier sunt orientative · mentorii și ghizii se completează.</p>
     </div>
     ${typeof ARTPLAY_INFO==='undefined'?'':`<div class="iblock wide acc">
       <h3>ateliere comunitate · Art&Play</h3>
