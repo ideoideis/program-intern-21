@@ -644,7 +644,7 @@ function openPrezView(id){
   const render=(st,meta)=>{
     const present=g.people.filter(p=>st[p.name]===true).length;
     const has=Object.keys(st).length;
-    const head=`<div class="pzvhead">${has?`<span class="pzvcount">${present} / ${g.people.length} prezenți</span>`:''}<span class="pzvmeta">${meta}</span></div>`;
+    const head=`<div class="pzvhead"><span class="pzvcount">${present} din ${g.people.length} prezenți</span><span class="pzvmeta">${meta}</span></div>`;
     _sb.innerHTML=head+'<div class="pzvlist">'+g.people.map(p=>{
       const s=st[p.name]; const cls=s===true?'yes':(s===false?'no':'unk'); const mk=s===true?'✓':(s===false?'✕':'–');
       return `<div class="pzvrow ${cls}"><span class="pzvck">${mk}</span><span class="pzvinfo"><span class="pnm">${esc(p.name)}</span>${p.sub?`<span class="prole">${esc(p.sub)}</span>`:''}</span></div>`;

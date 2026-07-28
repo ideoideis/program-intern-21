@@ -1141,6 +1141,21 @@ const MURALE = [
 
 
 /* locațiile din tabul +info */
+const ARTPLAY_PART = {
+  'ap-show-moves':[['Maya Ioana Lucan','0730025758'],['Răzvan Gabriel Zlate','0735262144'],['Nataliw Melinte','0766274416'],['Sebastian Rat','0769639950'],['Andrei Bursumac','0751830940'],['Sara Trifu','0767101292'],['Trifu Sara','0767101292'],['Medeea Andreea Trandafir','0765445115'],['Roxana Horlea','0766916140'],['Maia Horlea','0766916140']],
+  'ap-stand-up':[['Sara Dinca','0765205276'],['Roxana Horlea','0766916140']],
+  'ap-noi-10-13':[['Maria Iulia Iana','0747720895'],['Emanuel Gușă','0468128982'],['Ema Popescu','0768802184'],['Catalina Mihai','0773740338'],['Ilinca Folica','0762693894'],['Maria Sofia Dinu','0762693894'],['Bianca Micu','0767106856'],['Ruxandra Pavel','0744200966'],['Trifu Sara','0767101292'],['Anais-Violeta Lambrin','0766643244'],['Sofia Găman','0745116155'],['Daria Neda','0765189461'],['Andrei Mari','0763058585'],['Maya Milcu','0763058585'],['Andrei Darius Preda','0769061328'],['Ilinca Lupescu','0765510977'],['Elena Ionita','0769165337'],['Sara Iancu','0761406501'],['Maia Horlea','0766916140']],
+  'ap-noi-14-18':[['Alina Dinca','0765205276'],['Rebeca Alexandrescu','0725848282'],['Răzvan Gabriel Zlate','0735262144'],['Evelyn Zalana','0748561287'],['Sara-Maria Crăciun','0724217649'],['Andreea Dobrin','0722733612'],['Bianca Militaru','0771731578'],['Natalia Ilie','0786357775'],['Roxana Horlea','0766916140'],['Vlad Gabriel Brinceanu','0768425051']],
+  'ap-pauza':[['Ana Maria Mitrea','0744180370'],['Elena Benza','0763645928'],['Marinela Dieaconu','0751030808'],['Adelina Els','0728232246'],['Izabela Mircea','0742101633'],['Rozalia Vișan','0766680635'],['Irina Petreanu','0765699474'],['Daniela Grasu','0769231717'],['Alin Cristian Ionescu','0734115518'],['Corina Silimon','0771475745'],['Clara Elena Puiu','0761242712'],['Manuela Carabașu','0766448765']],
+  'ap-mintea':[['Maria Iulia Iana','0747720895'],['Vlad Gabriel Brinceanu','0768425051'],['Emanuel Gușă','0768128982'],['Vlad Popescu','0738136103'],['Răzvan Gabriel Zlate','0735262144'],['Irina Pinga','0773812765'],['Catalina Mihai','0773740338'],['Petru - Rares Grosu','0765523126'],['Andrei Stefan Grosu','0765523126'],['Ilinca Folica','0762693894'],['Maria Sofia Dinu','0762693894'],['Eduard Pirnea','0760714337'],['Sebastian Rat','0769639950'],['Andrei Bursumac','0751830940'],['Anais-Violeta Lambrin','0766643244'],['Sofia Găman','0745116155'],['Andrei Darius Preda','0769061328'],['Ilinca Lupescu','0765510977'],['Sara Iancu','0761406501']],
+  'ap-siguranta':[['Ionica Iuliana Popa','0760746612'],['Ciprian Stemate','0725620370'],['Alexandru Apostol','0763150902'],['Andra Apostol','0763150902']],
+  'ap-prim-ajutor':[['Ionica Iuliana Popa','0760746612'],['Ciprian Stemate','0725620370'],['Ana Maria Mitrea','0744180370'],['Alexandru Apostol','0734615004']],
+  'ap-animalul':[['Silviu Mardale','0730920407'],['Andra Maria Teodorescu','0729001485'],['Ana Maria Sbîrnea','0799146233'],['Irina Pîngă','0773812765'],['Alexandru Popescu','0749113445'],['Ilinca Popescu','0749113445'],['Raisa tosca','0749113445'],['Ema Popescu','0768802184'],['Daria Neda','0765189461'],['Daria Nedelcuță-Apope','0745018873'],['Aniela Enache','0763192220'],['Andrei Mihai','0773740338'],['Irina Bursumac','0751830940'],['Anisia Maria Bălănescu','0769923406'],['Bianca Micu','0767106856'],['Andreea Dumitrache','0747444958'],['Maria Dumitrache','0747444958'],['Maria Odangiu','0723142409'],['Maia Horlea','0766916140'],['Eva Demetria Brinceanu','0768425051']],
+  'ap-cetatenie':[['Maria Iulia Iana','0747720895'],['Vlad Popescu','0738136103'],['Raisa Tosca','0749113445'],['Petru - Rares Grosu','0765523126'],['Andrei Stefan Grosu','0765523126'],['Sebastian Rat','0769639950'],['Andrei Bursumac','0751830940'],['Sara Trifu','0767101292'],['Andrei Darius Preda','0769061328'],['Maia Horlea','0766916140']],
+  'ap-orasul':[['Roxana Horlea','0766916140']],
+  'ap-alexandria50':[['Anne Mary Bratu','0799146233']],
+};
+
 const LOCS = [
  ['CMT','Centrul Multifuncțional pentru Tineri'],
  ['Piața Ideo Ideis','parc & pietonală · scena mare + scena mică'],
