@@ -468,10 +468,14 @@ if(TECH)document.getElementById('techtag').hidden=false;
 /* ora curentă în Europe/Bucharest; până în 05:00 aparține zilei de program precedente.
    Pentru test: ?test=v31-19:32 */
 const TESTP=new URLSearchParams(location.search).get('test');
+const _testT0=Date.now(); /* ceasul de test avansează în timp real de la ora dată */
 const parseSim=s=>{const i=s.indexOf('-');return {day:s.slice(0,i), mins:mins(s.slice(i+1)), hm:s.slice(i+1), demo:true};};
 function deDiac(s){return String(s).toLowerCase().replace(/[ăâáà]/g,'a').replace(/[îí]/g,'i').replace(/[éè]/g,'e').replace(/[óò]/g,'o').replace(/[úù]/g,'u').replace(/[șş]/g,'s').replace(/[țţ]/g,'t');}
 function roNow(){
-  if(TESTP) return parseSim(TESTP);
+  if(TESTP){
+    const b=parseSim(TESTP), m=b.mins+Math.floor((Date.now()-_testT0)/60000), mm=((m%1440)+1440)%1440;
+    return {day:b.day, mins:m, hm:`${String(Math.floor(mm/60)).padStart(2,'0')}:${String(mm%60).padStart(2,'0')}`, demo:true};
+  }
   const fmt=o=>new Intl.DateTimeFormat('ro-RO',Object.assign({timeZone:'Europe/Bucharest'},o));
   const parts=fmt({year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date());
   const g=t=>parts.find(p=>p.type===t).value;
