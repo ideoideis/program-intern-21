@@ -150,6 +150,21 @@ section.day.on{display:block}
 .pbtn:hover{border-color:var(--fg)}
 .pbtn .pbn{font-family:var(--mono);font-size:11px;color:var(--muted)}
 .pbtn .pbc{color:var(--muted);font-size:14px;line-height:1}
+.pbtn.prezv{border-color:rgba(255,196,46,.5);color:var(--amber);font-family:var(--mono);font-size:11.5px}
+.pbtn.prezv:hover{border-color:var(--amber)}
+.pzvhint{color:var(--muted);font-size:13px;padding:6px 0}
+.pzvhead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:2px 0 10px;flex-wrap:wrap}
+.pzvcount{font-family:var(--mono);font-size:15px;color:var(--amber)}
+.pzvmeta{font-family:var(--mono);font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.pzvlist{display:flex;flex-direction:column;gap:1px}
+.pzvrow{display:flex;align-items:center;gap:12px;padding:9px 2px;border-bottom:1px solid var(--line-soft)}
+.pzvrow:last-child{border-bottom:0}
+.pzvck{flex:0 0 auto;width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;border:1.5px solid var(--line);color:var(--muted)}
+.pzvrow.yes .pzvck{background:var(--amber);border-color:var(--amber);color:#1c1d20}
+.pzvrow.no .pzvck{border-color:rgba(255,110,100,.6);color:#FF6E64}
+.pzvrow.unk .pzvck{color:var(--muted)}
+.pzvinfo{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:1px}
+.pzvrow.unk .pnm{color:var(--muted)}
 .sheet-bd{position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.55);display:flex;align-items:flex-end;justify-content:center}
 .sheet-bd[hidden]{display:none}
 .sheet{width:100%;max-width:560px;max-height:82vh;background:var(--panel);border-top:3px solid var(--red);display:flex;flex-direction:column;transform:translateY(100%);transition:transform .22s ease;box-shadow:0 -12px 40px rgba(0,0,0,.5)}
@@ -593,6 +608,14 @@ function peopleButton(people,btnLabel,sheetTitle){
 }
 function _initials(n){return n.split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]||'').join('').toUpperCase();}
 function _hue(n){let h=0;for(let i=0;i<n.length;i++)h=(h*31+n.charCodeAt(i))%360;return h;}
+/* ── rezultate prezență (doar vizualizare): trainerii bifează pe programul formatori, aici se văd ── */
+const PZV_URL='https://waqyaewaldphstmiobjj.supabase.co', PZV_KEY='sb_publishable_XtarsOK52eqlRUmv1ElS4Q_RwrDK78G';
+const pzGet=path=>fetch(PZV_URL+'/rest/v1'+path,{headers:{apikey:PZV_KEY,Authorization:'Bearer '+PZV_KEY}});
+const _slugOfV={}; if(typeof TRUPE_IDS!=='undefined')Object.entries(TRUPE_IDS).forEach(([slug,nm])=>{_slugOfV[nm]=slug;});
+function ttRosterV(nm){const s=_slugOfV[nm];if(s&&typeof REPARTIZARE!=='undefined'&&REPARTIZARE[s])return REPARTIZARE[s][1].map(x=>({name:x[0],sub:''}));return [];}
+function arteRosterV(nm){const g=(typeof ARTE_PARTICIPANTI!=='undefined')&&ARTE_PARTICIPANTI[nm];if(!g)return [];return g.flatMap(r=>r.slice(1).map(n=>({name:n,sub:r[0]})));}
+let _pzvSeq=0; const PREZ_V={};
+function prezViewButton(zi,atelierKey,label,people){people=(people||[]).filter(Boolean);if(!people.length||!zi)return '';const id='pv'+(++_pzvSeq);PREZ_V[id]={zi,atelier:atelierKey,label,people};return `<button type="button" class="pbtn prezv" data-prezv="${id}" aria-label="prezență ${esc(label)}">prezență<span class="pbc">›</span></button>`;}
 const _sheet=document.createElement('div');
 _sheet.className='sheet-bd'+(new URLSearchParams(location.search).get('ui')==='popup'?' popup':''); _sheet.hidden=true;
 _sheet.innerHTML='<div class="sheet" role="dialog" aria-modal="true" aria-label="contacte"><div class="sheet-grip"></div><div class="sheet-h"><span class="sheet-t" id="sheet-t"></span><button type="button" class="sheet-x" aria-label="închide">✕</button></div><div class="sheet-b" id="sheet-b"></div></div>';
@@ -615,6 +638,25 @@ function openPeople(id){
   const x=_sheet.querySelector('.sheet-x'); if(x)x.focus();
 }
 function closeSheet(){_sheet.classList.remove('open');document.body.classList.remove('sheet-open');setTimeout(()=>{_sheet.hidden=true;},220);}
+function openPrezView(id){
+  const g=PREZ_V[id]; if(!g)return;
+  _st.textContent='prezență · '+g.label;
+  const render=(st,meta)=>{
+    const present=g.people.filter(p=>st[p.name]===true).length;
+    const has=Object.keys(st).length;
+    const head=`<div class="pzvhead">${has?`<span class="pzvcount">${present} / ${g.people.length} prezenți</span>`:''}<span class="pzvmeta">${meta}</span></div>`;
+    _sb.innerHTML=head+'<div class="pzvlist">'+g.people.map(p=>{
+      const s=st[p.name]; const cls=s===true?'yes':(s===false?'no':'unk'); const mk=s===true?'✓':(s===false?'✕':'–');
+      return `<div class="pzvrow ${cls}"><span class="pzvck">${mk}</span><span class="pzvinfo"><span class="pnm">${esc(p.name)}</span>${p.sub?`<span class="prole">${esc(p.sub)}</span>`:''}</span></div>`;
+    }).join('')+'</div>';
+  };
+  render({},'se încarcă…');
+  _sheet.hidden=false; requestAnimationFrame(()=>_sheet.classList.add('open')); document.body.classList.add('sheet-open');
+  const x=_sheet.querySelector('.sheet-x'); if(x)x.focus();
+  pzGet(`/prezenta_ateliere?zi=eq.${encodeURIComponent(g.zi)}&atelier=eq.${encodeURIComponent(g.atelier)}&select=participant,prezent`)
+    .then(r=>r.ok?r.json():Promise.reject()).then(rows=>{const st={};rows.forEach(x=>{st[x.participant]=x.prezent;});render(st, rows.length?'bifat de traineri':'încă nebifat de traineri');})
+    .catch(()=>render({},'nu s-au putut încărca rezultatele'));
+}
 function openPartSheet(atelier){
   const gs=(typeof ARTE_PARTICIPANTI!=='undefined')?ARTE_PARTICIPANTI[atelier]:null; if(!gs)return;
   _st.textContent=atelier+' · cine e repartizat';
@@ -648,7 +690,7 @@ function closeZoom(){_pz.hidden=true;_pz.innerHTML='';}
 _pz.addEventListener('click',closeZoom);
 _sheet.addEventListener('click',e=>{if(e.target.closest('.pcall'))return; const row=e.target.closest('.prow[data-nm]'); if(row){zoomAvatar(row);return;} if(e.target===_sheet||e.target.closest('.sheet-x'))closeSheet();});
 document.addEventListener('keydown',e=>{if(e.key!=='Escape')return; if(!_pz.hidden)closeZoom(); else if(!_sheet.hidden)closeSheet();});
-document.addEventListener('click',e=>{const pa=e.target.closest('[data-partall]');if(pa){e.preventDefault();openAllPartSheet();return;} const b=e.target.closest('.pbtn');if(b){e.preventDefault(); if(b.dataset.part){openPartSheet(b.dataset.part);}else{openPeople(b.dataset.people);}}});
+document.addEventListener('click',e=>{const pa=e.target.closest('[data-partall]');if(pa){e.preventDefault();openAllPartSheet();return;} const b=e.target.closest('.pbtn');if(b){e.preventDefault(); if(b.dataset.prezv){openPrezView(b.dataset.prezv);}else if(b.dataset.part){openPartSheet(b.dataset.part);}else{openPeople(b.dataset.people);}}});
 document.addEventListener('click',e=>{const r=e.target.closest('.crow[data-nm]');if(r)zoomAvatar(r);});
 /* buton „sus": apare la scroll în jos, revine în capul paginii */
 const _top=document.createElement('button');
@@ -666,9 +708,17 @@ function detailRows(ev,dayId){
   let rows=[], label=ev.xlabel||'detalii';
   if(ev.xlist) rows=ev.xlist.map(r=>[r[1],r[0]]);
   else if(ev.title==='ateliere teatru tânăr')
-    rows=ATELIERE_TT.map(r=>['@at', r[0], [r[1],r[3]].filter(Boolean).join(' · '), r[2]||'', r[4]?peopleButton(peopleFromStr(r[4]),'voluntari',`${r[0]} · ${r[1]}`):'']).concat(typeof TT_NEEDS!=='undefined'?[['kit / trupă',TT_NEEDS]]:[]);
+    rows=ATELIERE_TT.map(r=>{
+      const vol=r[4]?peopleButton(peopleFromStr(r[4]),'voluntari',`${r[0]} · ${r[1]}`):'';
+      const pz=prezViewButton(dayId,'tt:'+(_slugOfV[r[0]]||r[0]),`${r[0]} · teatru tânăr`,ttRosterV(r[0]));
+      return ['@at', r[0], [r[1],r[3]].filter(Boolean).join(' · '), r[2]||'', vol+pz];
+    }).concat(typeof TT_NEEDS!=='undefined'?[['kit / trupă',TT_NEEDS]]:[]);
   else if(ev.title==='ateliere arte alăturate')
-    rows=ARTE_ALATURATE.map(r=>['@at', r[0], r[1]||'', r[2]||'', r[6]?peopleButton(peopleFromStr(r[6]),'voluntari',`${r[0]} · ${r[1]}`):'']);
+    rows=ARTE_ALATURATE.map(r=>{
+      const vol=r[6]?peopleButton(peopleFromStr(r[6]),'voluntari',`${r[0]} · ${r[1]}`):'';
+      const pz=prezViewButton(dayId,'arte:'+r[0],`${r[0]} · ${r[1]||''}`,arteRosterV(r[0]));
+      return ['@at', r[0], r[1]||'', r[2]||'', vol+pz];
+    });
   const lg=LOGISTICS[ev.title];
   if(lg){
     if(lg.n)rows.push(['participanți',lg.n]);
