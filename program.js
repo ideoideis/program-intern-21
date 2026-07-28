@@ -246,7 +246,7 @@ const DAYS = [
    {k:'e', t:'19:15', e:'19:45', cat:'alt', loc:'CMT', locd:'sala mare de conferințe / etaj 1 hol', trupa:'leira', title:'feedback cu mentorii · Trupa Leira'},
    {k:'m', t:'19:00', e:'19:30', meal:'cină', loc:'Alex Tell', trupa:'atelierul', note:'Atelierul de Teatru'},
    {k:'m', t:'19:00', e:'20:30', meal:'cină', loc:'Alex Tell'},
-   {k:'m', t:'19:00', e:'20:30', meal:'cină', loc:'Alex Tell', trupa:'leira', note:'doar Trupa Leira · (la pachet?)'},
+   {k:'m', t:'19:45', e:'20:30', meal:'cină', loc:'Alex Tell', trupa:'leira', note:'doar Trupa Leira · (la pachet?)'},
    {k:'e', t:'19:30', e:'20:00', c:true, cat:'tt', loc:'CMT', trupa:'atelierul', title:'montare · <b>Atelierul de Teatru</b>'},
    {k:'e', t:'20:30', e:'21:30', cat:'tt', loc:'CMT', trupa:'atelierul', title:'spectacol teatru tânăr · Atelierul de Teatru'},
    {k:'e', t:'21:45', e:'22:15', cat:'alt', loc:'CMT', locd:'sala mare de conferințe / etaj 1 hol', trupa:'atelierul', title:'feedback cu mentorii · Atelierul de Teatru'},
