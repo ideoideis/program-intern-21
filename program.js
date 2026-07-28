@@ -203,7 +203,7 @@ const DAYS = [
  ]},
  {id:'mi29', dw:'mi', dn:'29', full:'29 iulie', h2:'miercuri', events:[
    {k:'x', tr:true, t:'06:30', ts:'06:30', text:'preluare · UNATC → CMT · scena UNATC · microbuz Excelsior · pleacă din Pitești la 5:30'},
-   {k:'e', t:'10:00', e:'13:00', cat:'alt', loc:'CMT', locd:'sală de conf. / ceainărie (de confirmat)', title:'Bootcamp MASCA', sub:['școala de vară']},
+   {k:'e', t:'10:00', e:'13:00', cat:'alt', loc:'CMT', locd:'sala mare de conferințe', title:'Bootcamp MASCA', sub:['școala de vară']},
    {k:'e', t:'08:30', e:'13:00', cat:'alt', loc:'Cămin', title:'sosiri trupe'},
    {k:'t', t:'13:00', route:'Cămin → CMT', note:'curse la 13:00 și 13:15'},
    {k:'e', t:'13:30', e:'14:30', cat:'cmt', loc:'CMT', title:'conferință interactivă In a Relationship'},
@@ -228,7 +228,7 @@ const DAYS = [
    {k:'x', tr:true, t:'10:00', ts:'10:00', text:'preluare · spațiu copii (CIAA) · monociclu Vlad Benescu + 6 șezlonguri, 10 mese & 30 scaune copii, hamace, 2 cutii materiale · Autocora · Ștefan Craiu 0730 485 374'},
    {k:'x', tr:true, t:'11:30–12:00', ts:'11:30', text:'preluare · Intimisfera · Autocora · Alexandra Miroslav 0741 240 218 (Intrarea Platon 5)'},
    {k:'x', tr:true, t:'11:30–12:00', ts:'11:31', text:'preluare · Facultatea de Arhitectură · băncuțe · duba festival'},
-   {k:'e', t:'10:00', e:'13:00', cat:'alt', loc:'CMT', locd:'sală de conf. / ceainărie (de confirmat)', title:'Bootcamp MASCA', sub:['școala de vară']},
+   {k:'e', t:'10:00', e:'13:00', cat:'alt', loc:'CMT', locd:'sala mare de conferințe', title:'Bootcamp MASCA', sub:['școala de vară']},
    {k:'t', t:'08:15', route:'Cămin → CMT'},
    {k:'m', t:'08:30', e:'09:45', meal:'mic dejun', loc:'Alex Tell'},
    {k:'e', t:'10:00', e:'14:00', cat:'ateliere', loc:'Școala 5', title:'ateliere teatru tânăr'},
@@ -246,6 +246,7 @@ const DAYS = [
    {k:'e', t:'19:15', e:'19:45', cat:'alt', loc:'CMT', locd:'sala mare de conferințe / etaj 1 hol', trupa:'leira', title:'feedback cu mentorii · Trupa Leira'},
    {k:'m', t:'19:00', e:'20:00', meal:'cină', loc:'Alex Tell', trupa:'atelierul', note:'Atelierul de Teatru'},
    {k:'m', t:'19:00', e:'20:30', meal:'cină', loc:'Alex Tell'},
+   {k:'m', t:'19:00', e:'20:30', meal:'cină', loc:'Alex Tell', trupa:'leira', note:'doar Trupa Leira · (la pachet?)'},
    {k:'e', t:'19:30', e:'20:00', c:true, cat:'tt', loc:'CMT', trupa:'atelierul', title:'montare · <b>Atelierul de Teatru</b>'},
    {k:'e', t:'20:30', e:'21:30', cat:'tt', loc:'CMT', trupa:'atelierul', title:'spectacol teatru tânăr · Atelierul de Teatru'},
    {k:'e', t:'21:45', e:'22:15', cat:'alt', loc:'CMT', locd:'sala mare de conferințe / etaj 1 hol', trupa:'atelierul', title:'feedback cu mentorii · Atelierul de Teatru'},
@@ -256,7 +257,7 @@ const DAYS = [
    {k:'t', t:'00:15', route:'Piața Ideo Ideis → Cămin'},
  ]},
  {id:'v31', dw:'v', dn:'31', full:'31 iulie', h2:'vineri', events:[
-   {k:'e', t:'10:00', e:'13:00', cat:'alt', loc:'CMT', locd:'sală de conf. / ceainărie (de confirmat)', title:'Bootcamp MASCA', sub:['școala de vară']},
+   {k:'e', t:'10:00', e:'13:00', cat:'alt', loc:'CMT', locd:'sala mare de conferințe', title:'Bootcamp MASCA', sub:['școala de vară']},
    {k:'t', t:'08:15', route:'Cămin → CMT'},
    {k:'m', t:'08:30', e:'09:45', meal:'mic dejun', loc:'Alex Tell'},
    {k:'e', t:'10:00', e:'14:00', cat:'ateliere', loc:'Școala 5', title:'ateliere teatru tânăr'},
@@ -417,6 +418,7 @@ const DAYS = [
    {k:'e', t:'18:00', e:'19:00', cat:'tt', loc:'CMT', trupa:'protha', title:'spectacol teatru tânăr · Protha'},
    {k:'e', t:'19:15', e:'19:45', cat:'alt', loc:'CMT', locd:'sala mare de conferințe / etaj 1 hol', trupa:'protha', title:'feedback cu mentorii · Protha'},
    {k:'m', t:'19:00', e:'20:30', meal:'cină', loc:'Alex Tell'},
+   {k:'m', t:'19:00', e:'20:30', meal:'cină', loc:'Alex Tell', trupa:'protha', note:'doar Protha · (la pachet?)'},
    {k:'e', t:'19:00', e:'20:30', c:true, cat:'cmt', loc:'CMT', title:'pregătire gală'},
    {k:'e', t:'20:30', e:'22:00', cat:'cmt', loc:'CMT', title:'gală de închidere'},
    {k:'t', t:'22:15', route:'CMT → Ștrand'},
@@ -737,7 +739,7 @@ const ARTE_PARTICIPANTI = {
 const FORMATORI = [
  ['Train the Trainers','Conciato (sus?) · 15:00-16:00 · joi/vineri/sâmbătă'],
  ['Train the Coordinators','Șc. 5 · sala 12 · 10:00-14:00 · joi/vineri/sâmbătă · 7 part.'],
- ['Bootcamp MASCA (școala de vară)','CMT · 10:00-13:00 · miercuri/joi/vineri · sală de conf. / ceainărie de confirmat'],
+ ['Bootcamp MASCA (școala de vară)','CMT · 10:00-13:00 · miercuri/joi/vineri · sala mare de conferințe'],
  ['Economia Intimă · masă de discuție cu participante','Conciato (sus) · 4 august · 14:00-17:00'],
 ];
 
