@@ -203,7 +203,7 @@ const DAYS = [
  ]},
  {id:'mi29', dw:'mi', dn:'29', full:'29 iulie', h2:'miercuri', events:[
    {k:'x', tr:true, t:'06:30', ts:'06:30', text:'preluare · UNATC → CMT · scena UNATC · microbuz Excelsior · pleacă din Pitești la 5:30'},
-   {k:'e', t:'10:00', e:'13:00', cat:'cmt', loc:'CMT', locd:'sala mare de conferințe', title:'Bootcamp MASCA', sub:['școala de vară']},
+   {k:'e', t:'10:00', e:'13:00', cat:'cmt', loc:'CMT', locd:'sala mare de conferințe', title:'Bootcamp MASCA', sub:['școala de vară','flipchart & proiector (deja în sală)']},
    {k:'e', t:'08:30', e:'13:00', cat:'alt', loc:'Cămin', title:'sosiri trupe'},
    {k:'t', t:'13:00', route:'Cămin → CMT', note:'curse la 13:00 și 13:15'},
    {k:'e', t:'13:30', e:'14:30', cat:'cmt', loc:'CMT', title:'conferință interactivă In a Relationship'},
@@ -228,7 +228,7 @@ const DAYS = [
    {k:'x', tr:true, t:'10:00', ts:'10:00', text:'preluare · spațiu copii (CIAA) · monociclu Vlad Benescu + 6 șezlonguri, 10 mese & 30 scaune copii, hamace, 2 cutii materiale · Autocora · Ștefan Craiu 0730 485 374'},
    {k:'x', tr:true, t:'11:30–12:00', ts:'11:30', text:'preluare · Intimisfera · Autocora · Alexandra Miroslav 0741 240 218 (Intrarea Platon 5)'},
    {k:'x', tr:true, t:'11:30–12:00', ts:'11:31', text:'preluare · Facultatea de Arhitectură · băncuțe · duba festival'},
-   {k:'e', t:'10:00', e:'13:00', cat:'cmt', loc:'CMT', locd:'sala mare de conferințe', title:'Bootcamp MASCA', sub:['școala de vară']},
+   {k:'e', t:'10:00', e:'13:00', cat:'cmt', loc:'CMT', locd:'sala mare de conferințe', title:'Bootcamp MASCA', sub:['școala de vară','flipchart & proiector (deja în sală)']},
    {k:'t', t:'08:15', route:'Cămin → CMT'},
    {k:'m', t:'08:30', e:'09:45', meal:'mic dejun', loc:'Alex Tell'},
    {k:'e', t:'10:00', e:'14:00', cat:'ateliere', loc:'Școala 5', title:'ateliere teatru tânăr'},
@@ -253,11 +253,12 @@ const DAYS = [
    {k:'e', t:'21:30', e:'22:00', cat:'parada', loc:'Piața Ideo Ideis', title:'paradă papainoage „Actori la înălțime”', sub:['UNATC']},
    {k:'t', t:'21:45', route:'CMT → Cămin'},
    {k:'e', t:'21:30', e:'22:30', c:true, cat:'cine', loc:'Piața Ideo Ideis', locd:'scena mare', title:'montare cinematecă · „Catane”'},
-   {k:'e', t:'22:30', e:'00:30', cat:'cine', loc:'Piața Ideo Ideis', title:'cinemateca târzie · „Catane”', sub:['1 h 36 · invitat TBC']},
+   {k:'e', t:'22:30', e:'00:30', cat:'cine', loc:'Piața Ideo Ideis', title:'cinemateca târzie · „Catane”', sub:['1 h 36 · invitați: Cristina Barbu & Rareș Zimbran (clovni)']},
    {k:'t', t:'00:15', route:'Piața Ideo Ideis → Cămin'},
  ]},
  {id:'v31', dw:'v', dn:'31', full:'31 iulie', h2:'vineri', events:[
-   {k:'e', t:'10:00', e:'13:00', cat:'cmt', loc:'CMT', locd:'sala mare de conferințe', title:'Bootcamp MASCA', sub:['școala de vară']},
+   {k:'e', t:'14:00', e:'16:00', cat:'artplay', loc:'Spitalul municipal Alexandria', title:'Clovnerie terapeutică · IOTA'},
+   {k:'e', t:'10:00', e:'13:00', cat:'cmt', loc:'CMT', locd:'sala mare de conferințe', title:'Bootcamp MASCA', sub:['școala de vară','flipchart & proiector (deja în sală)']},
    {k:'t', t:'08:15', route:'Cămin → CMT'},
    {k:'m', t:'08:30', e:'09:45', meal:'mic dejun', loc:'Alex Tell'},
    {k:'e', t:'10:00', e:'14:00', cat:'ateliere', loc:'Școala 5', title:'ateliere teatru tânăr'},
@@ -296,6 +297,7 @@ const DAYS = [
    {k:'t', t:'00:15', route:'Piața Ideo Ideis → Cămin'},
  ]},
  {id:'s1', dw:'s', dn:'1', full:'1 august', h2:'sâmbătă', events:[
+   {k:'e', t:'09:00', e:'11:00', cat:'artplay', loc:'Spitalul municipal Alexandria', title:'Clovnerie terapeutică · IOTA'},
    {k:'t', t:'08:15', route:'Cămin → CMT'},
    {k:'m', t:'08:30', e:'09:45', meal:'mic dejun', loc:'Alex Tell'},
    {k:'e', t:'10:00', e:'14:00', cat:'ateliere', loc:'Școala 5', title:'ateliere teatru tânăr'},
@@ -335,6 +337,7 @@ const DAYS = [
    {k:'t', t:'00:00', route:'Piața Ideo Ideis → Cămin'},
  ]},
  {id:'d2', dw:'d', dn:'2', full:'2 august', h2:'duminică', events:[
+   {k:'e', t:'09:00', e:'11:00', cat:'artplay', loc:'Spitalul municipal Alexandria', title:'Clovnerie terapeutică · IOTA'},
    {k:'t', t:'08:15', route:'Cămin → CMT'},
    {k:'m', t:'08:30', e:'09:45', meal:'mic dejun', loc:'Alex Tell'},
    {k:'e', t:'09:30', e:'10:00', c:true, cat:'mica', loc:'Piața Ideo Ideis', locd:'scena mică', title:'repetiție · „Năzdrăvanii mărilor”'},
