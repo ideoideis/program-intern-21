@@ -1079,8 +1079,9 @@ const PERMANENTE = [
  ]],
  ['miercuri 29 iulie', [
    ['bilete · Centrul de Tineret', [['10:00-13:00','Gîlcă Rebeca Ioana + Voicu Rafael'],['13:00-16:00','Antoniu Rareș + Jainea Bianca'],['16:00 → spectacol','Chircu Rebeca + Ionescu Raul-Ionuț']]],
+   ['HQ · cort Piața', [['10:00-14:00','Enescu Sonia Maria + Medințu Emma-Gabriela'],['14:00-18:00','Anghel Mihaela + Medințu Thea-Cristiana'],['18:00 → final','Eric-Andrei Alexandri + Stănceoi Andreea Sorana']]],
    ['mese · Alex Tell', [['cină 18:00-20:00','Anelisse Vlad + Daria Micu']]],
-   ['internat · Rulmentul', [['08-12','Gabriela Prună + Lorena Maftei'],['12-16','Mihnea Spătaru + Maria Dide'],['16-20','Mihnea Nițu + Florea Angelina'],['20 → petrecere','Andres Catruna + Maria Nedelcu']]],
+   ['internat · Rulmentul', [['08-12','Gabriela Prună + Lorena Maftei'],['12-16','Mihnea Spătaru + Maria Dide'],['16-20','Jainea Bianca + Florea Angelina'],['20 → petrecere','Medeea Toma + Thea Medințu']]],
  ]],
  ['joi 30 iulie', [
    ['bilete · Centrul de Tineret', [['10:00-13:00','Gîlcă Rebeca Ioana + Voicu Rafael'],['13:00-16:00','Antoniu Rareș + Jainea Bianca'],['16:00 → spectacol','Chircu Rebeca + Ionescu Raul-Ionuț']]],
