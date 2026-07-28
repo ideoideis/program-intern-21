@@ -426,6 +426,8 @@ const DAYS = [
    {k:'t', t:'03:00', route:'Ștrand → Cămin'},
  ]},
  {id:'mi5', dw:'mi', dn:'5', full:'5 august', h2:'miercuri', events:[
+   {k:'m', t:'07:30', e:'08:00', meal:'mic dejun', loc:'la pachet'},
+   {k:'t', t:'08:00', route:'plecare acasă · autocar', note:'toate trupele, de la 08:00'},
    {k:'x', tr:true, t:'oră TBC', ts:'09:00', text:'retur · Teatrul Național Craiova · echipamente sonorizare · Dokker · depinde de Costi'},
    {k:'e', t:'08:00', e:'12:30', cat:'alt', loc:'CMT', title:'demontare și eliberare CMT'},
    {k:'e', t:'12:30', e:'14:30', cat:'alt', loc:'CMT', title:'Comunitate CMT', sub:['prezentare fundații comunitare']},
