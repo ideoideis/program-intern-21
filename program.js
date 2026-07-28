@@ -214,7 +214,8 @@ const DAYS = [
    {k:'e', t:'15:15', e:'17:30', cat:'alt', notech:true, loc:'Cămin', title:'întâlnire mentori · participanți', xlabel:'orar pe trupe', xlist:[['15:15–15:30','ACT'],['15:30–15:45','Brainstorming'],['15:45–16:00','Artwork'],['16:15–16:30','Amprente'],['16:45–17:00','Trupa Leira'],['17:00–17:15','Atelierul de Teatru'],['17:15–17:30','Protha']]},
    {k:'t', t:'18:00', route:'Cămin → CMT'},
    {k:'m', t:'18:20', e:'19:45', meal:'cină', loc:'Alex Tell'},
-   {k:'e', t:'20:00', e:'21:00', cat:'cmt', loc:'CMT', title:'paradă papainoage „Actori la înălțime” & gală de deschidere', sub:['parada: UNATC · indoor']},
+   {k:'e', t:'19:45', e:'20:00', cat:'parada', loc:'CMT', title:'paradă papainoage „Actori la înălțime”', sub:['UNATC · indoor']},
+   {k:'e', t:'20:00', e:'20:45', cat:'cmt', loc:'CMT', title:'gală de deschidere'},
    {k:'e', t:'21:00', e:'22:30', cat:'cmt', loc:'CMT', title:'„Charlie Chaplin · The X-ray of his soul”', sub:['Teatrul Mic, București · 1 h 30']},
    {k:'t', t:'22:45', route:'CMT → Ștrand'},
    {k:'e', t:'23:00', e:'23:30', cat:'alt', loc:'Ștrand', locd:'Ștrandul Vedea', title:'concert trupă rock din Alexandria'},
@@ -258,7 +259,7 @@ const DAYS = [
  ]},
  {id:'v31', dw:'v', dn:'31', full:'31 iulie', h2:'vineri', events:[
    {k:'e', t:'14:00', e:'16:00', cat:'artplay', loc:'Spitalul municipal Alexandria', title:'Clovnerie terapeutică · IOTA'},
-   {k:'e', t:'10:00', e:'13:00', cat:'cmt', loc:'CMT', locd:'sala mare de conferințe', title:'Bootcamp MASCA', sub:['școala de vară','flipchart & proiector (deja în sală)']},
+   {k:'e', t:'10:00', e:'14:00', cat:'cmt', loc:'CMT', locd:'sala mare de conferințe', title:'Bootcamp MASCA', sub:['școala de vară','flipchart & proiector (deja în sală)','ultimul atelier · vineri până la 14:00']},
    {k:'t', t:'08:15', route:'Cămin → CMT'},
    {k:'m', t:'08:30', e:'09:45', meal:'mic dejun', loc:'Alex Tell'},
    {k:'e', t:'10:00', e:'14:00', cat:'ateliere', loc:'Școala 5', title:'ateliere teatru tânăr'},
@@ -745,7 +746,7 @@ const ARTE_PARTICIPANTI = {
 const FORMATORI = [
  ['Train the Trainers','Conciato (sus?) · 15:00-16:00 · joi/vineri/sâmbătă'],
  ['Train the Coordinators','Șc. 5 · sala 12 · 10:00-14:00 · joi/vineri/sâmbătă · 7 part.'],
- ['Bootcamp MASCA (școala de vară)','CMT · 10:00-13:00 · miercuri/joi/vineri · sala mare de conferințe'],
+ ['Bootcamp MASCA (școala de vară)','CMT · miercuri/joi 10:00-13:00 · vineri 10:00-14:00 (ultimul) · sala mare de conferințe'],
  ['Economia Intimă · masă de discuție cu participante','Conciato (sus) · 4 august · 14:00-17:00'],
 ];
 
