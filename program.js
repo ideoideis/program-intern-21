@@ -985,6 +985,8 @@ const CONTACTS = [
 
 /* voluntari pe evenimente · [ziua, ora de start, cuvânt-cheie din titlu, echipă]
    se afișează la „detalii” pe evenimentul potrivit */
+/* telefoane care nu sunt în CONTACTS (ex. voluntari de atelier scoși din roster) */
+const EXTRA_PHONES = {'Anda Pavel':'0784423900','Pavel Anda':'0784423900','Trandafir Ariana':'0785835360','Ariana Trandafir':'0785835360'};
 const CREW_CMT = "Gîgîlice Gabriela, Stan Daria, Nedeluș Bogdan Gabriel, Șurcan Eduard, Mihai Daria Elena, Tănăsescu Ana, Irimia Sorina Georgiana, Vasile Alexandra, Pavel Anda, Botorogeanu Alexandra, Anastasia Corradi, Robert Mocanu, Florea Angelina";
 const VOL_EV = [
  // 29 iul

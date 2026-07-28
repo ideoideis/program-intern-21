@@ -453,7 +453,7 @@ a.vchip:hover{border-color:#1FA35F;color:#9be8bd}
 <div class="egg" id="egg" hidden>ne vedem la #22 ♥</div>
 <button class="fab" id="fab" hidden>acum<small id="fabt"></small></button>
 
-<script src="program.js?v=55"></script>
+<script src="program.js?v=56"></script>
 <script>
 /* ── utilitare ──────────────────────────── */
 const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -529,7 +529,9 @@ const normKey=s=>norm(s).split(/[^a-z0-9]+/).filter(Boolean).sort().join(' ');
 const TEL_LIST=(()=>{const a=[];
   if(typeof CONTACTS!=='undefined')CONTACTS.forEach(([dep,ppl])=>ppl.forEach(x=>{
     if(x[2]&&/\d/.test(x[2]))a.push({t:new Set(norm(x[0]).split(/[^a-z0-9]+/).filter(Boolean)),ph:x[2]});
-  })); return a;})();
+  }));
+  if(typeof EXTRA_PHONES!=='undefined')Object.entries(EXTRA_PHONES).forEach(([n,ph])=>a.push({t:new Set(norm(n).split(/[^a-z0-9]+/).filter(Boolean)),ph}));
+  return a;})();
 function resolvePhone(name){
   const t=new Set(norm(name).split(/[^a-z0-9]+/).filter(Boolean));
   let exact=TEL_LIST.find(e=>e.t.size===t.size&&[...t].every(x=>e.t.has(x)));
