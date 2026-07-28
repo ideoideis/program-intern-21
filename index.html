@@ -453,7 +453,7 @@ a.vchip:hover{border-color:#1FA35F;color:#9be8bd}
 <div class="egg" id="egg" hidden>ne vedem la #22 ♥</div>
 <button class="fab" id="fab" hidden>acum<small id="fabt"></small></button>
 
-<script src="program.js?v=49"></script>
+<script src="program.js?v=50"></script>
 <script>
 /* ── utilitare ──────────────────────────── */
 const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -676,6 +676,7 @@ function detailRows(ev,dayId){
   if(ev.trupa){const gp=ghidPerson(ev.trupa); if(gp)rows.push(['ghid',peopleButton([gp],'ghid',TRUPE_IDS[ev.trupa]+' · ghid')]);}
   const v=volFor(ev,dayId);
   if(v)rows.push(['voluntari',peopleButton(peopleFromStr(v),'voluntari',ev.title.replace(/<[^>]*>/g,'')+' · voluntari')]);
+  if(Array.isArray(ev.ppl)&&ev.ppl.length) rows.push(['participante',peopleButton(ev.ppl.map(x=>({name:x[0],role:x[1],tel:x[2],photo:(typeof photoFor==='function'?photoFor(x[0]):null)})),'participante',ev.title.replace(/<[^>]*>/g,''))]);
   if(ev.title==='ateliere arte alăturate' && typeof ARTE_PARTICIPANTI!=='undefined') rows.push(['@partlink','']);
   return rows.length?{label,rows}:null;
 }
@@ -695,7 +696,7 @@ function evHtml(ev,dayId){
         ? `<div class="xrow atrow"><div class="atinfo"><span class="atname">${r[1]}</span>${r[2]?`<span class="atsub">${r[2]}</span>`:''}</div><div class="atside">${r[3]?`<span class="atsala">${r[3]}</span>`:''}${r[4]}</div></div>`
       : r[0]==='@partlink'
         ? `<button type="button" class="partlink" data-partall>vezi repartizarea participanților pe ateliere <span class="pbc">›</span></button>`
-      : (r[0]==='voluntari'||r[0]==='ghid')
+      : (r[0]==='voluntari'||r[0]==='ghid'||r[0]==='participante')
         ? `<div class="xrow btnrow">${r[1]}</div>`
         : `<div class="xrow"><span class="xa">${r[0]}</span><span class="xb">${r[1]}</span></div>`
     ).join('');
