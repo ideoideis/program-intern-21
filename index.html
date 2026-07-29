@@ -718,7 +718,7 @@ function detailRows(ev,dayId){
       const vol=r[6]?peopleButton(peopleFromStr(r[6]),'voluntari',`${r[0]} · ${r[1]}`):'';
       const pz=prezViewButton(dayId,'arte:'+r[0],`${r[0]} · ${r[1]||''}`,arteRosterV(r[0]));
       return ['@at', r[0], r[1]||'', r[2]||'', vol+pz];
-    });
+    }).concat([['@at','Poziția Zero','Noreen Elamir & Andrei Dumitrescu · teatru tânăr','Șc. 5 · sala 4', prezViewButton(dayId,'tt:'+(_slugOfV['Poziția Zero']||'Poziția Zero'),'Poziția Zero · teatru tânăr',ttRosterV('Poziția Zero'))]]);
   const lg=LOGISTICS[ev.title];
   if(lg){
     if(lg.n)rows.push(['participanți',lg.n]);
