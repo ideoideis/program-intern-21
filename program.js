@@ -580,14 +580,14 @@ const PRE_FESTIVAL_UNTIL = '27.07.2026';
 /* trupele #21: [nume, trainer · sala, coordonator, tel coordonator, ghid, tel ghid]
    telefoanele se scriu ca '07xx xxx xxx' și devin tap-to-call */
 const TRUPE = [
- ['Trupa Leira','Adelin Tudorache · sala 10','Nicolae Cătălin','0723 682 361','Ana Maria Georgescu','0771582928'],
+ ['Trupa Leira','Adelin Tudorache · sala 1','Nicolae Cătălin','0723 682 361','Ana Maria Georgescu','0771582928'],
  ['Atelierul de Teatru','Mădălina Stoica · sala 7','Lenuș Moraru','0745 658 769','Dragomir Maria-Cătălina','0773780320'],
- ['Artwork','Oana Jipa · sala 6','Diana Roman','0740 127 623','Horvath Valentin','0760111213'],
- ['Amprente','Ioana Brumar · sala 9','Anca Maria Băcanu','0721 916 009','Ariana Mișu',''],
- ['Brainstorming','Cezara Petredeanu · sala 5','Ruxandra Stoica','0770 346 780','Dide Noemi','0770597515'],
- ['Alexandria','Noreen Elamir & Andrei Dumitrana · sala 12','Eric Alexandru','','',''],
- ['ACT','Alexa Tofan · sala 8','Andi Andriucă','0784 246 202','Sebe Cristina','0756557105'],
- ['Protha','Bogdan Tulbure · sala 11','Alexandru Stan','0744 871 882','Dinu Andrei','0722112111'],
+ ['Artwork','Oana Jipa · sala 8','Diana Roman','0740 127 623','Horvath Valentin','0760111213'],
+ ['Amprente','Ioana Brumar · sala 3','Anca Maria Băcanu','0721 916 009','Ariana Mișu',''],
+ ['Brainstorming','Cezara Petredeanu · sala 10','Ruxandra Stoica','0770 346 780','Dide Noemi','0770597515'],
+ ['Alexandria','Noreen Elamir & Andrei Dumitrana · sala 4','Eric Alexandru','','',''],
+ ['ACT','Alexa Tofan · sala 12','Andi Andriucă','0784 246 202','Sebe Cristina','0756557105'],
+ ['Protha','Bogdan Tulbure · sala 13','Alexandru Stan','0744 871 882','Dinu Andrei','0722112111'],
 ];
 
 /* ── spectacolele trupelor: fișa fiecărui spectacol (afișată pe
@@ -745,7 +745,7 @@ const ARTE_PARTICIPANTI = {
 /* ateliere formatori (orientativ / de confirmat) */
 const FORMATORI = [
  ['Train the Trainers','Conciato (sus?) · 15:00-16:00 · joi/vineri/sâmbătă'],
- ['Train the Coordinators','Șc. 5 · sala 12 · 10:00-14:00 · joi/vineri/sâmbătă · 7 part.'],
+ ['Train the Coordinators','Șc. 5 · sala 6 · 10:00-14:00 · zilnic 30 iul–4 aug · 7 part.'],
  ['Bootcamp MASCA (școala de vară)','CMT · miercuri/joi 10:00-13:00 · vineri 10:00-14:00 (ultimul) · sala mare de conferințe'],
  ['Economia Intimă · masă de discuție cu participante','Conciato (sus) · 4 august · 14:00-17:00'],
 ];
@@ -753,24 +753,24 @@ const FORMATORI = [
 /* ateliere comunitate (Art&Play): tabelul din +info
    [atelier, participanți, sală, zile, necesar tehnic, necesar producție] */
 const ARTPLAY_INFO = [
- ['Show Your Moves (dans · breaking)','10','Șc. 5 · sala 2 (spațioasă)','joi · vineri · sâmbătă','10:30-12:30','boxă bluetooth',''],
- ['Stand Up împotriva hărțuirii stradale (activism feminist)','20','Șc. 5 · sala 1','joi','14:00-16:00','videoproiector + boxe să se audă',''],
- ['Se întâmplă între N-O-I (psihoeducație 10-13 ani)','15','Șc. 5 · sala 1','vineri · sâmbătă · duminică','10:30-12:30','','coli, pixuri/creioane, carioci, flipchart & foi'],
- ['Se întâmplă între N-O-I (psihoeducație 14-18 ani)','15','Șc. 5 · sala 1','vineri · sâmbătă · duminică','14:30-16:30','','coli, pixuri/creioane, carioci, flipchart & foi'],
- ['Pauza de la dezinformare (educație media, profesori)','15','Șc. 5 · sala 3','vineri','11:00-13:00','videoproiector și cablurile de conectare, un sistem minimal care să asigure un sunet clar',''],
- ['Mintea ta nu e a ta (în totalitate) · AI, biasuri (educație media, copii)','15','Șc. 5 · sala 3','vineri','15:00-17:00','videoproiector și cablurile de conectare, un sistem minimal care să asigure un sunet clar',''],
- ['Siguranța bebelușului (Asociația Moașelor)','20','Șc. 5 · sala 4','sâmbătă','10:00-12:30','',''],
- ['Animalul care te locuiește (arte grafice)','15','Șc. 5 · sala 3','duminică · luni · marți','10:00-12:00','','coli, pixuri/creioane, carioci, hârtie, foarfeci, lipici, foi de flipchart'],
- ['Prim Ajutor pediatric (Asociația Moașelor)','20','Șc. 5 · sala 4','duminică','10:00-12:30','',''],
+ ['Show Your Moves (dans · breaking)','10','Șc. 3 · sala de sport','joi · vineri · sâmbătă','10:30-12:30','boxă bluetooth',''],
+ ['Stand Up împotriva hărțuirii stradale (activism feminist)','20','Șc. 5 · amfiteatru (sala 2)','joi','14:00-16:00','videoproiector + boxe să se audă',''],
+ ['Se întâmplă între N-O-I (psihoeducație 10-13 ani)','15','CMT · hol etaj 1','vineri · sâmbătă · duminică','10:30-12:30','','coli, pixuri/creioane, carioci, flipchart & foi'],
+ ['Se întâmplă între N-O-I (psihoeducație 14-18 ani)','15','CMT · hol etaj 1','vineri · sâmbătă · duminică','14:30-16:30','','coli, pixuri/creioane, carioci, flipchart & foi'],
+ ['Pauza de la dezinformare (educație media, profesori)','15','Șc. 5 · amfiteatru (sala 2)','vineri','11:00-13:00','videoproiector și cablurile de conectare, un sistem minimal care să asigure un sunet clar',''],
+ ['Mintea ta nu e a ta (în totalitate) · AI, biasuri (educație media, copii)','15','Șc. 5 · amfiteatru (sala 2)','vineri','15:00-17:00','videoproiector și cablurile de conectare, un sistem minimal care să asigure un sunet clar',''],
+ ['Siguranța bebelușului (Asociația Moașelor)','20','CMT · sala mare de conferințe','sâmbătă','10:00-12:30','',''],
+ ['Animalul care te locuiește (arte grafice)','15','Șc. 5 · sala 1','duminică · luni · marți','10:00-12:00','','coli, pixuri/creioane, carioci, hârtie, foarfeci, lipici, foi de flipchart'],
+ ['Prim Ajutor pediatric (Asociația Moașelor)','20','CMT · sala mare de conferințe','duminică','10:00-12:30','',''],
  ['Alexandria la 50 de grade (prospectivă)','30','Piața · scena mică','duminică','16:00-18:00','',''],
- ['Cetățenie activă: manual de utilizare (educație civică 11-14)','15','Șc. 5 · sala 1','luni','10:00-12:00','videoproiector','coli, pixuri/creioane, carioci, foi de flipchart'],
- ['Orașul e al tău · dacă știi cum (educație civică 15-19)','15','Șc. 5 · sala 1','luni','14:00-16:00','videoproiector','coli, pixuri/creioane, carioci, foi de flipchart'],
+ ['Cetățenie activă: manual de utilizare (educație civică 11-14)','15','Șc. 5 · sala 10','luni','10:00-12:00','videoproiector','coli, pixuri/creioane, carioci, foi de flipchart'],
+ ['Orașul e al tău · dacă știi cum (educație civică 15-19)','15','Șc. 5 · sala 10','luni','14:00-16:00','videoproiector','coli, pixuri/creioane, carioci, foi de flipchart'],
 ];
 
 /* logistica Art&Play, cu cheia = titlul evenimentului din program */
 const LOGISTICS = {
- 'atelier Train the Coordinators': {sala:'sala 13', n:'7', tehnic:'videoproiector, cablu HDMI, prelungitor'},
- 'Show Your Moves': {sala:'sala 2 (spațioasă)', n:'10', tehnic:'sonorizare'},
+ 'atelier Train the Coordinators': {sala:'sala 6', n:'7', tehnic:'videoproiector, cablu HDMI, prelungitor'},
+ 'Show Your Moves': {sala:'Șc. 3 · sala de sport', n:'10', tehnic:'sonorizare'},
  'Stand Up împotriva hărțuirii stradale': {sala:'sala 1', n:'20', tehnic:'videoproiector + boxe'},
  'Se întâmplă între N-O-I': {sala:'sala 1', n:'15', prod:'coli, pixuri/creioane, carioci, flipchart & foi de flipchart'},
  'Pauza de la dezinformare': {sala:'sala 3', n:'15'},
