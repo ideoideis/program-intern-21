@@ -771,16 +771,16 @@ const ARTPLAY_INFO = [
 const LOGISTICS = {
  'atelier Train the Coordinators': {sala:'sala 6', n:'7', tehnic:'videoproiector, cablu HDMI, prelungitor'},
  'Show Your Moves': {sala:'Șc. 3 · sala de sport', n:'10', tehnic:'sonorizare'},
- 'Stand Up împotriva hărțuirii stradale': {sala:'sala 1', n:'20', tehnic:'videoproiector + boxe'},
- 'Se întâmplă între N-O-I': {sala:'sala 1', n:'15', prod:'coli, pixuri/creioane, carioci, flipchart & foi de flipchart'},
- 'Pauza de la dezinformare': {sala:'sala 3', n:'15'},
- 'Mintea ta nu e a ta (în totalitate)': {sala:'sala 3', n:'15'},
- 'Siguranța bebelușului': {sala:'sala 4', n:'20'},
- 'Animalul care te locuiește': {sala:'sala 3', n:'15'},
- 'Prim ajutor pediatric': {sala:'sala 4', n:'20'},
+ 'Stand Up împotriva hărțuirii stradale': {sala:'Șc. 5 · amfiteatru (sala 2)', n:'20', tehnic:'videoproiector + boxe'},
+ 'Se întâmplă între N-O-I': {sala:'CMT · hol etaj 1', n:'15', prod:'coli, pixuri/creioane, carioci, flipchart & foi de flipchart'},
+ 'Pauza de la dezinformare': {sala:'Șc. 5 · amfiteatru (sala 2)', n:'15'},
+ 'Mintea ta nu e a ta (în totalitate)': {sala:'Șc. 5 · amfiteatru (sala 2)', n:'15'},
+ 'Siguranța bebelușului': {sala:'CMT · sala mare de conferințe', n:'20'},
+ 'Animalul care te locuiește': {sala:'Șc. 5 · sala 1', n:'15'},
+ 'Prim ajutor pediatric': {sala:'CMT · sala mare de conferințe', n:'20'},
  'Alexandria la 50 de grade': {n:'30'},
- 'Cetățenie activă: manual de utilizare': {sala:'sala 1', n:'15', tehnic:'videoproiector', prod:'coli, pixuri/creioane, carioci, foi de flipchart'},
- 'Orașul e al tău · dacă știi cum': {sala:'sala 1', n:'15', tehnic:'videoproiector', prod:'coli, pixuri/creioane, carioci, foi de flipchart'},
+ 'Cetățenie activă: manual de utilizare': {sala:'Șc. 5 · sala 10', n:'15', tehnic:'videoproiector', prod:'coli, pixuri/creioane, carioci, foi de flipchart'},
+ 'Orașul e al tău · dacă știi cum': {sala:'Șc. 5 · sala 10', n:'15', tehnic:'videoproiector', prod:'coli, pixuri/creioane, carioci, foi de flipchart'},
 };
 
 /* ── contactele echipei #21 · [nume, rol, telefon?] ──
