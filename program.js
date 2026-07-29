@@ -395,10 +395,10 @@ const DAYS = [
    {k:'m', t:'14:00', e:'15:30', meal:'prânz', loc:'Alex Tell'},
    {k:'e', t:'14:00', e:'16:00', cat:'artplay', loc:'Școala 5', locd:'sala 10', title:'Orașul e al tău · dacă știi cum', sub:['educație civică · 15-19 ani']},
    {k:'t', t:'15:30', route:'Alex Tell → Cămin'},
-   {k:'e', t:'15:30', e:'16:30', c:true, cat:'tt', loc:'CMT', trupa:'alexandria', title:'repetiție și montare · <b>Alexandria</b>'},
+   {k:'e', t:'15:30', e:'16:30', c:true, cat:'tt', loc:'CMT', trupa:'alexandria', title:'repetiție și montare · <b>Poziția Zero</b>'},
    {k:'t', t:'16:45', route:'Cămin → CMT'},
-   {k:'e', t:'17:00', e:'18:00', cat:'tt', loc:'CMT', trupa:'alexandria', title:'spectacol teatru tânăr · Alexandria'},
-   {k:'e', t:'18:15', e:'19:00', cat:'alt', loc:'CMT', locd:'sala mare de conferințe', trupa:'alexandria', title:'feedback cu mentorii · Alexandria'},
+   {k:'e', t:'17:00', e:'18:00', cat:'tt', loc:'CMT', trupa:'alexandria', title:'spectacol teatru tânăr · Poziția Zero'},
+   {k:'e', t:'18:15', e:'19:00', cat:'alt', loc:'CMT', locd:'sala mare de conferințe', trupa:'alexandria', title:'feedback cu mentorii · Poziția Zero'},
    {k:'e', t:'18:00', e:'19:00', c:true, cat:'tt', loc:'CMT', trupa:'act', title:'repetiție și montare · <b>ACT</b>'},
    {k:'m', t:'17:00', e:'18:00', meal:'cină', loc:'pachet', trupa:'act', note:'doar trupa ACT'},
    {k:'m', t:'18:00', e:'19:30', meal:'cină', loc:'Alex Tell'},
@@ -443,7 +443,7 @@ const DAYS = [
 /* id-urile trupelor pentru linkurile personale (?t=<id>) */
 const TRUPE_IDS = {
   leira:'Trupa Leira', atelierul:'Atelierul de Teatru', artwork:'Artwork',
-  amprente:'Amprente', brainstorming:'Brainstorming', alexandria:'Alexandria',
+  amprente:'Amprente', brainstorming:'Brainstorming', alexandria:'Poziția Zero',
   act:'ACT', protha:'Protha',
 };
 
@@ -585,7 +585,7 @@ const TRUPE = [
  ['Artwork','Oana Jipa · sala 8','Diana Roman','0740 127 623','Horvath Valentin','0760111213'],
  ['Amprente','Ioana Brumar · sala 3','Anca Maria Băcanu','0721 916 009','Ariana Mișu',''],
  ['Brainstorming','Cezara Petredeanu · sala 10','Ruxandra Stoica','0770 346 780','Dide Noemi','0770597515'],
- ['Alexandria','Noreen Elamir & Andrei Dumitrana · sala 4','Eric Alexandru','','',''],
+ ['Poziția Zero','Noreen Elamir & Andrei Dumitrescu · sala 4','Eric Alexandru','','',''],
  ['ACT','Alexa Tofan · sala 12','Andi Andriucă','0784 246 202','Sebe Cristina','0756557105'],
  ['Protha','Bogdan Tulbure · sala 13','Alexandru Stan','0744 871 882','Dinu Andrei','0722112111'],
 ];
@@ -675,7 +675,7 @@ const ATELIERE_TT = [
  ['Artwork','Oana Jipa','sala 8','14 part.','Horvath Valentin (ghid) + Ana Tănăsescu'],
  ['Amprente','Ioana Brumar','sala 3','11 part.','Ariana Mișu (ghid) + Delia Mocioi'],
  ['Brainstorming','Cezara Petredeanu','sala 10','14 part.','Dide Noemi (ghid) + Isabel Zlotea'],
- ['Alexandria','trainer de confirmat','sala 4','',''],
+ ['Poziția Zero','Noreen Elamir & Andrei Dumitrescu','sala 4','',''],
  ['ACT','Alexa Tofan','sala 12','14 part.','Sebe Cristina (ghid) + Anda Pavel'],
  ['Protha','Bogdan Tulbure','sala 13','14 part.','Dinu Andrei (ghid) + Ariana Trandafir'],
  ['Train the Coordinators','mentori & coordonatori','sala 6','7 part.',''],
@@ -1060,7 +1060,7 @@ const VOL_EV = [
  ['l3','10:00','Cetățenie activă','Marin Maria, Chircu Rebeca'],
  ['l3','10:00','Animalul care te locuiește','Vatui Ioana-Rebeca, Mihnea Nițu'],
  ['l3','14:00','Orașul e al tău','Ionescu Betty, Trandafir Ariana'],
- ['l3','17:00','spectacol teatru tânăr · Alexandria',CREW_CMT],
+ ['l3','17:00','spectacol teatru tânăr · Poziția Zero',CREW_CMT],
  ['l3','19:30','spectacol teatru tânăr · ACT',CREW_CMT],
  ['l3','21:00','Atlasul','Zlotea Liviu, Gheorghe Elena-Alexandra, Toader Roberta Elena Maria, Trancă Alexandru Ionuț, Coconu Livia, Chircu Rebeca, Marin Maria, Ivanuș Denisa Mihaela, Vatui Ioana-Rebeca, Zlate Răzvan, Iriș Marius-Andrei'],
  // 4 aug
