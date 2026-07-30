@@ -258,7 +258,6 @@ const DAYS = [
    {k:'t', t:'00:15', route:'Piața Ideo Ideis → Cămin'},
  ]},
  {id:'v31', dw:'v', dn:'31', full:'31 iulie', h2:'vineri', events:[
-   {k:'e', t:'14:00', e:'16:00', cat:'artplay', loc:'Spitalul municipal Alexandria', title:'Clovnerie terapeutică · IOTA'},
    {k:'e', t:'10:00', e:'14:00', cat:'cmt', loc:'CMT', locd:'sala mare de conferințe', title:'Bootcamp MASCA', sub:['școala de vară','flipchart & proiector (deja în sală)','ultimul atelier · vineri până la 14:00']},
    {k:'t', t:'08:15', route:'Cămin → CMT'},
    {k:'m', t:'08:30', e:'09:45', meal:'mic dejun', loc:'Alex Tell'},
@@ -298,7 +297,7 @@ const DAYS = [
    {k:'t', t:'00:15', route:'Piața Ideo Ideis → Cămin'},
  ]},
  {id:'s1', dw:'s', dn:'1', full:'1 august', h2:'sâmbătă', events:[
-   {k:'e', t:'09:00', e:'11:00', cat:'artplay', loc:'Spitalul municipal Alexandria', title:'Clovnerie terapeutică · IOTA'},
+   {k:'e', t:'13:30', e:'15:00', cat:'artplay', loc:'Spitalul municipal Alexandria', title:'Clovnerie terapeutică · IOTA'},
    {k:'t', t:'08:15', route:'Cămin → CMT'},
    {k:'m', t:'08:30', e:'09:45', meal:'mic dejun', loc:'Alex Tell'},
    {k:'e', t:'10:00', e:'14:00', cat:'ateliere', loc:'Școala 5', title:'ateliere teatru tânăr'},
@@ -338,7 +337,6 @@ const DAYS = [
    {k:'t', t:'00:00', route:'Piața Ideo Ideis → Cămin'},
  ]},
  {id:'d2', dw:'d', dn:'2', full:'2 august', h2:'duminică', events:[
-   {k:'e', t:'09:00', e:'11:00', cat:'artplay', loc:'Spitalul municipal Alexandria', title:'Clovnerie terapeutică · IOTA'},
    {k:'t', t:'08:15', route:'Cămin → CMT'},
    {k:'m', t:'08:30', e:'09:45', meal:'mic dejun', loc:'Alex Tell'},
    {k:'e', t:'09:30', e:'10:00', c:true, cat:'mica', loc:'Piața Ideo Ideis', locd:'scena mică', title:'repetiție · „Năzdrăvanii mărilor”'},
