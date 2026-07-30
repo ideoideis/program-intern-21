@@ -394,6 +394,8 @@ a.vchip:hover{border-color:#1FA35F;color:#9be8bd}
 .anunt{border:1px solid rgba(255,196,46,.55);background:rgba(255,196,46,.08);color:var(--fg);padding:12px 14px;font-size:14px;margin-top:18px}
 .anunt small{font-family:var(--mono);color:var(--amber);margin-left:6px}
 .waterbanner{background:rgba(255,196,46,.12);border:1px solid rgba(255,196,46,.55);color:var(--fg);padding:11px 14px;font-size:14.5px;font-weight:500;margin:0 0 16px;display:flex;align-items:center;gap:9px}
+.clap{position:fixed;z-index:3000;pointer-events:none;font-size:22px;animation:clapUp .95s ease-out forwards}
+@keyframes clapUp{0%{opacity:0;transform:translateY(0) scale(.6)}18%{opacity:1}100%{opacity:0;transform:translateY(-72px) scale(1.15)}}
 .fbox{width:100%;background:var(--panel);border:1px solid var(--line);color:var(--fg);padding:9px 11px;font-size:14px;font-family:inherit;margin-top:10px}
 .fsend{margin-top:8px;background:var(--red);color:#fff;font-weight:600;font-size:13px;padding:8px 14px}
 .ftips{display:flex;gap:6px;margin-top:10px}
@@ -470,7 +472,7 @@ a.vchip:hover{border-color:#1FA35F;color:#9be8bd}
 <div class="egg" id="egg" hidden>ne vedem la #22 ♥</div>
 <button class="fab" id="fab" hidden>acum<small id="fabt"></small></button>
 
-<script src="program.js?v=66"></script>
+<script src="program.js?v=67"></script>
 <script>
 /* ── utilitare ──────────────────────────── */
 const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -1274,6 +1276,11 @@ if(TRUPA){
 
 /* pornim pe ziua curentă a festivalului; în afara lui, pe cea mai apropiată */
 selectDay(roNow().day||nearestDay(),false);
+/* banner apă/caniculă (12–16) + aplauze pe spectacole */
+function _hotWater(){const el=document.querySelector('.waterbanner');if(!el)return;const mm=((roNow().mins%1440)+1440)%1440;el.textContent=(mm>=720&&mm<960)?'🔥 caniculă la Alexandria · bea apă!':'💧 nu uita să bei apă!';}
+_hotWater(); setInterval(_hotWater,30000);
+function _clap(x,y){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;for(let i=0;i<5;i++){const c=document.createElement('span');c.className='clap';c.textContent='👏';c.style.left=(x+(Math.random()*40-20))+'px';c.style.top=(y-8)+'px';c.style.animationDelay=(i*55)+'ms';document.body.appendChild(c);setTimeout(()=>c.remove(),1200+i*55);}}
+document.addEventListener('click',_e=>{if(_e.target.closest('button,a,input,summary,[data-x],.pbtn,.pzbtn,.xbtn'))return;const card=_e.target.closest('.ev');if(card&&/spectacol/i.test(card.textContent))_clap(_e.clientX,_e.clientY);});
 /* la deschidere, în timpul festivalului, aterizăm direct pe „acum” (posterul
    rămâne un swipe mai sus); în afara festivalului rămânem pe poster */
 function landOnNow(){
