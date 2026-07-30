@@ -451,7 +451,7 @@ a.vchip:hover{border-color:#1FA35F;color:#9be8bd}
 <nav class="rail" aria-label="zilele festivalului"><div class="rail-inner"><div class="rail-days" id="rail"></div><div class="rail-pins" id="railpins"></div></div></nav>
 
 <div class="wrap">
-  <div class="waterbanner">💧 nu uita să bei apă!</div>
+  <div class="waterbanner" style="display:none"></div>
   <div id="anuntbar"></div>
   <div class="filters collapsed" id="filters">
     <div class="viewtog" role="group" aria-label="mod de afișare">
@@ -1277,7 +1277,7 @@ if(TRUPA){
 /* pornim pe ziua curentă a festivalului; în afara lui, pe cea mai apropiată */
 selectDay(roNow().day||nearestDay(),false);
 /* banner apă/caniculă (12–16) + aplauze pe spectacole */
-function _hotWater(){const el=document.querySelector('.waterbanner');if(!el)return;const mm=((roNow().mins%1440)+1440)%1440;el.textContent=(mm>=720&&mm<960)?'🔥 caniculă la Alexandria · bea apă!':'💧 nu uita să bei apă!';}
+function _hotWater(){const el=document.querySelector('.waterbanner');if(!el)return;const mm=((roNow().mins%1440)+1440)%1440;if(mm>=720&&mm<960){el.style.display='flex';el.textContent='🔥 caniculă la Alexandria · bea apă!';}else{el.style.display='none';}}
 _hotWater(); setInterval(_hotWater,30000);
 function _clap(x,y){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;for(let i=0;i<5;i++){const c=document.createElement('span');c.className='clap';c.textContent='👏';c.style.left=(x+(Math.random()*40-20))+'px';c.style.top=(y-8)+'px';c.style.animationDelay=(i*55)+'ms';document.body.appendChild(c);setTimeout(()=>c.remove(),1200+i*55);}}
 document.addEventListener('click',_e=>{if(_e.target.closest('button,a,input,summary,[data-x],.pbtn,.pzbtn,.xbtn'))return;const card=_e.target.closest('.ev');if(card&&/spectacol/i.test(card.textContent))_clap(_e.clientX,_e.clientY);});
