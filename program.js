@@ -1029,7 +1029,6 @@ const VOL_EV = [
  ['v31','22:00','standup','Marinescu Andreea, Ionescu Raul-Ionuț, Adriana Popescu, Andres Catruna, Zlotea Isabel, Maria Nedelcu'],
  ['v31','22:30','De capul nostru','Zlotea Liviu, Gheorghe Elena-Alexandra, Dragomir Andreea Ștefania, Vatui Ioana-Rebeca, Chircu Rebeca, Dragoș Erimia, Brîndaș Elena-Daniela, Zlate Răzvan'],
  // 1 aug
- ['s1','09:30','Animalul care te locuiește','Ionescu Betty, Florea Angelina'],
  ['s1','10:30','Se întâmplă între N-O-I','Mihnea Nițu, Vatui Ioana-Rebeca'],
  ['s1','10:30','Show Your Moves','Chircu Rebeca, Marin Maria'],
  ['s1','10:30','Când mă fac mare','Zlotea Liviu, Marinescu Andreea, Botorogeanu Alexandra Iuliana, Popescu Amalia Ioana, Milcu Alessia'],
@@ -1104,6 +1103,7 @@ const PERMANENTE = [
    ['HQ · cort Piața', [['10:00-14:00','Enescu Sonia Maria + Medințu Emma-Gabriela'],['14:00-18:00','Anghel Mihaela + Medințu Thea-Cristiana'],['18:00 → final','Eric-Andrei Alexandri + Stănceoi Andreea Sorana']]],
    ['mese · Alex Tell', [['mic dejun 8:15-9:45','Anelisse Vlad + Daria Micu'],['prânz 13:45-15:30','Anelisse Vlad + Daria Micu'],['cină 18:45-20:30','Anelisse Vlad + Daria Micu']]],
    ['internat · Rulmentul', [['08-12','Mihnea Spătaru + Mihnea Nițu'],['12-16','Gabriela Prună + Lorena Maftei'],['16-20','Andres Catruna + Maria Nedelcu'],['20-24','Florea Angelina + Maria Dide']]],
+   ['piața Ideo Ideis', [['toată ziua','Stan Daria + Șurcan Eduard + Ioana Chivu']]],
  ]],
  ['sâmbătă 1 august', [
    ['bilete · Centrul de Tineret', [['10:00-13:00','Gîlcă Rebeca Ioana + Voicu Rafael'],['13:00-16:00','Antoniu Rareș + Jainea Bianca'],['16:00 → spectacol','Chircu Rebeca + Ionescu Raul-Ionuț']]],
