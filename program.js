@@ -1031,6 +1031,7 @@ const VOL_EV = [
  ['s1','10:30','Show Your Moves','Chircu Rebeca, Marin Maria'],
  ['s1','10:30','Când mă fac mare','Zlotea Liviu, Marinescu Andreea, Botorogeanu Alexandra Iuliana, Popescu Amalia Ioana, Milcu Alessia'],
  ['s1','11:30','sesiune face painting','Zlotea Liviu, Marinescu Andreea, Botorogeanu Alexandra Iuliana, Popescu Amalia Ioana, Milcu Alessia'],
+ ['s1','13:30','Clovnerie','Eric-Andrei Alexandri, Gheorghe Elena-Alexandra, Milcu Bianca Alessia'],
  ['s1','10:30','cursa cu obstacole','Irimia Sorina, Robert Mocanu, Iulia Fusea, Coconu Livia, Toader Roberta Elena Maria'],
  ['s1','10:00','paradă papainoage','Irimia Sorina, Robert Mocanu, Iulia Fusea, Coconu Livia, Toader Roberta Elena Maria'],
  ['s1','14:30','Se întâmplă între N-O-I','Brîndaș Elena-Daniela, Ivanuș Denisa Mihaela'],
