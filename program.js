@@ -276,7 +276,7 @@ const DAYS = [
    {k:'m', t:'14:00', e:'15:30', meal:'prânz', loc:'Alex Tell'},
    {k:'e', t:'14:30', e:'16:30', cat:'artplay', loc:'CMT', locd:'hol etaj 1', title:'Se întâmplă între N-O-I', sub:['psihoeducație · 14-18 ani']},
    {k:'e', t:'15:00', e:'17:00', cat:'artplay', loc:'Școala 5', locd:'amfiteatru (sala 2)', title:'Mintea ta nu e a ta (în totalitate)', sub:['AI, biasuri și persuasiune · educație media pentru copii']},
-   {k:'e', t:'15:30', e:'16:15', cat:'alt', title:'paul duolingo', sub:['dacă nu ești paul dă scroll sau fă și tu lecția de duolingo']},
+   {k:'e', t:'15:30', e:'16:15', cat:'alt', onlyMain:true, title:'paul duolingo', sub:['dacă nu ești paul dă scroll sau fă și tu lecția de duolingo']},
    {k:'t', t:'15:30', route:'CMT → Cămin'},
    {k:'e', t:'15:30', e:'16:30', c:true, cat:'mica', loc:'Piața Ideo Ideis', locd:'scena mică', title:'repetiție · „Bunicul și bunica se poartă ciudat”'},
    {k:'t', t:'16:15', route:'Cămin → CMT', trupa:'artwork', note:'Artwork'},
