@@ -293,7 +293,7 @@ const DAYS = [
    {k:'e', t:'22:00', e:'23:00', cat:'alt', loc:'Alex Tell', title:'standup: Larisa Bănuță, Theodor Abagiu, Geo Adrian'},
    {k:'t', t:'22:30', route:'spre Cămin'},
    {k:'e', t:'21:30', e:'22:30', c:true, cat:'cine', loc:'Piața Ideo Ideis', locd:'scena mare', title:'montare cinematecă · „De capul nostru”'},
-   {k:'e', t:'22:30', e:'00:30', cat:'cine', loc:'Piața Ideo Ideis', locd:'scena mare', title:'cinemateca târzie · „De capul nostru”', sub:['1 h 34 · Q&A cu Tudor Jurgiu (30 min)']},
+   {k:'e', t:'22:30', e:'00:30', cat:'cine', loc:'Piața Ideo Ideis', locd:'scena mare', title:'cinemateca târzie · „De capul nostru”', sub:['1 h 34 · Q&A cu Tudor Jurgiu ANULAT']},
    {k:'t', t:'00:15', route:'Piața Ideo Ideis → Cămin'},
  ]},
  {id:'s1', dw:'s', dn:'1', full:'1 august', h2:'sâmbătă', events:[
