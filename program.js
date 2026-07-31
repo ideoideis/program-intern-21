@@ -422,7 +422,7 @@ const DAYS = [
  {id:'ma4', dw:'ma', dn:'4', full:'4 august', h2:'marți', events:[
    {k:'t', t:'08:15', route:'Cămin → CMT'},
    {k:'m', t:'08:30', e:'09:45', meal:'mic dejun', loc:'Alex Tell'},
-   {k:'e', t:'10:00', e:'14:00', cat:'ateliere', loc:'Școala 5', title:'ateliere arte alăturate', sub:['+ sălile de sport „Mihai Viteazul” & „Ștefan cel Mare”']},
+   {k:'e', t:'10:00', e:'14:00', cat:'ateliere', loc:'Școala 5', title:'ateliere arte alăturate', trupaStart:{protha:'10:30'}, sub:['+ sălile de sport „Mihai Viteazul” & „Ștefan cel Mare”']},
    {k:'e', t:'09:30', e:'10:30', cat:'alt', loc:'Școala 5', trupa:'protha', title:'întâlnire cu mentorii · Protha'},
    {k:'e', t:'10:30', e:'11:30', cat:'alt', loc:'Școala 5', trupa:'protha', title:'întâlnire cu mentorii · coordonator Protha'},
    {k:'e', t:'10:00', e:'12:00', cat:'artplay', loc:'Școala 5', locd:'sala 1', title:'Animalul care te locuiește', sub:['atelier de arte grafice']},
