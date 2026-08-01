@@ -328,7 +328,7 @@ const DAYS = [
    {k:'e', t:'15:30', e:'16:45', c:true, cat:'mica', loc:'Piața Ideo Ideis', locd:'scena mică', title:'repetiție · „Țup”'},
    {k:'t', t:'16:15', route:'Cămin → CMT', trupa:'amprente', note:'Amprente'},
    {k:'e', t:'16:30', e:'17:30', c:true, cat:'tt', loc:'CMT', trupa:'amprente', title:'repetiție și montare · <b>Amprente</b>'},
-   {k:'e', t:'17:00', e:'19:00', cat:'kauf', loc:'parc lângă Școala 5', locd:'pe iarbă', title:'sesiune face painting', sub:['cu Alexa Istrate']},
+   {k:'e', t:'17:00', e:'19:00', cat:'kauf', loc:'Kaufland', locd:'în parcare', title:'sesiune face painting', sub:['cu Alexa Istrate']},
    {k:'e', t:'17:00', e:'17:50', cat:'mica', loc:'Piața Ideo Ideis', locd:'scena mică', title:'spectacol „Țup · Imposibil e doar un cuvânt”', sub:['CIAA']},
    {k:'t', t:'17:30', route:'Cămin → CMT'},
    {k:'e', t:'17:45', e:'18:00', c:true, cat:'mare', loc:'Piața Ideo Ideis', locd:'scena mare', title:'probe sunet · invitați'},
