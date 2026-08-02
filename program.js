@@ -354,7 +354,7 @@ const DAYS = [
    {k:'e', t:'09:30', e:'10:00', c:true, cat:'mica', loc:'Piața Ideo Ideis', locd:'scena mică', title:'repetiție · „Năzdrăvanii mărilor”'},
    {k:'e', t:'10:00', e:'14:00', cat:'ateliere', loc:'Școala 5', title:'ateliere arte alăturate', sub:['+ sălile de sport „Mihai Viteazul” & „Ștefan cel Mare”']},
    {k:'e', t:'10:00', e:'16:30', c:true, cat:'cmt', loc:'CMT', title:'montare și repetiție · <b>ODD COUTURE</b>'},
-   {k:'e', t:'10:00', e:'12:30', cat:'artplay', loc:'CMT', locd:'sala mare de conferințe', title:'Prim ajutor pediatric', sub:['Asociația Moașelor']},
+   {k:'e', t:'16:00', e:'18:00', cat:'artplay', loc:'CMT', locd:'sala mare de conferințe', title:'Prim ajutor pediatric', sub:['Asociația Moașelor']},
    {k:'e', t:'10:00', e:'12:00', cat:'artplay', loc:'Școala 5', locd:'sala 1', title:'Animalul care te locuiește', sub:['atelier de arte grafice']},
    {k:'e', t:'10:00', e:'10:30', cat:'parada', loc:'Kaufland', locd:'în magazin', title:'paradă papainoage „Actori la înălțime”', sub:['UNATC']},
    {k:'e', t:'10:30', e:'12:00', cat:'kauf', loc:'Kaufland', locd:'în parcare', title:'face painting & baloane', sub:['CIAA']},
@@ -1059,7 +1059,7 @@ const VOL_EV = [
  ['s1','20:30','paradă papainoage','Ivanuș Denisa Mihaela, Jainea Bianca, Antoniu Rareș, Marin Maria'],
  ['s1','22:30','Multisenzorial','Zlotea Liviu, Gheorghe Elena-Alexandra, Zlate Răzvan, Vatui Ioana-Rebeca, Chircu Rebeca, Dragoș Erimia, Brîndaș Elena-Daniela, Dragomir Andreea Ștefania'],
  // 2 aug
- ['d2','10:00','Prim ajutor pediatric','Stan Daria, Șurcan Eduard'],
+ ['d2','16:00','Prim ajutor pediatric','Stan Daria, Șurcan Eduard'],
  ['d2','10:00','Animalul care te locuiește','Ionescu Betty, Trandafir Ariana'],
  ['d2','10:00','paradă','Ioana Chivu, Vasile Alexandra, Irimia Sorina, Coconu Livia, Toader Roberta Elena Maria'],
  ['d2','10:30','Se întâmplă între N-O-I','Mihnea Nițu, Vatui Ioana-Rebeca'],
