@@ -355,6 +355,7 @@ const DAYS = [
    {k:'e', t:'10:00', e:'14:00', cat:'ateliere', loc:'Școala 5', title:'ateliere arte alăturate', sub:['+ sălile de sport „Mihai Viteazul” & „Ștefan cel Mare”']},
    {k:'e', t:'10:00', e:'16:30', c:true, cat:'cmt', loc:'CMT', title:'montare și repetiție · <b>ODD COUTURE</b>'},
    {k:'e', t:'16:00', e:'18:00', cat:'artplay', loc:'CMT', locd:'sala mare de conferințe', title:'Prim ajutor pediatric', sub:['Asociația Moașelor']},
+   {k:'e', t:'16:00', e:'17:00', cat:'alt', loc:'Cămin', title:'discuție mentori · artwork'},
    {k:'e', t:'10:00', e:'12:00', cat:'artplay', loc:'Școala 5', locd:'sala 1', title:'Animalul care te locuiește', sub:['atelier de arte grafice']},
    {k:'e', t:'10:00', e:'10:30', cat:'parada', loc:'Kaufland', locd:'în magazin', title:'paradă papainoage „Actori la înălțime”', sub:['UNATC']},
    {k:'e', t:'10:30', e:'12:00', cat:'kauf', loc:'Kaufland', locd:'în parcare', title:'face painting & baloane', sub:['CIAA']},
